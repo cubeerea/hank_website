@@ -45,7 +45,9 @@
 }
 
 /* Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -74,7 +76,10 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
     font-weight: 600;
     line-height: var(--line-height-tight);
 }
@@ -159,7 +164,23 @@ ul {
 .hero__subtitle {
     font-size: var(--text-lg);
     color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+}
+
+.hero__context {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-lg);
+}
+
+.hero__description {
     margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-lg);
+}
+
+.hero__description p {
+    margin-bottom: var(--space-sm);
+    color: var(--color-text-secondary);
 }
 
 .hero__meta {
@@ -180,6 +201,7 @@ ul {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
+    margin-top: var(--space-xl);
     margin-bottom: var(--space-xl);
 }
 
