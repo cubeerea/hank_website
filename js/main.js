@@ -7,7 +7,7 @@
     'use strict';
 
     // Central source for 'Last updated' timestamp
-    const datetime = 'January 25, 2026';
+    const datetime = 'February 1, 2026';
 
     /**
      * Automatically replaces placeholders like ${datetime} in the DOM.
@@ -24,7 +24,7 @@
         // Also update machine-readable datetime if it exists
         const timeEl = document.querySelector('.hero__timestamp time');
         if (timeEl) {
-            timeEl.setAttribute('datetime', '2026-01-25');
+            timeEl.setAttribute('datetime', '2026-02-01');
         }
     }
 

@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="[Your Name] — Early-career AI practitioner. Learning velocity, applied reasoning, research-adjacent work.">
+        content="Hank Sha — Early-career AI practitioner. Learning velocity, applied reasoning, research-adjacent work.">
+    <meta property="og:title" content="Hank Sha | AI Practitioner & Researcher">
+    <meta property="og:description"
+        content="Building and auditing ML systems under uncertainty. Explore my work in applied ML and AI research.">
     <title>Hank Sha</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -15,48 +18,36 @@
         <!-- Landing / Orientation Section -->
         <header class="section section--hero">
             <h1 class="hero__title">Hank Sha</h1>
-            <p class="hero__subtitle">Early-career AI practitioner building and auditing ML systems under uncertainty
-            </p>
-
-            <p class="hero__context">Data Science @ UC Santa Barbara · Applying for Data Science / ML / Analytics roles
-            </p>
-
-            <div class="hero__description">
-                <p>High-agency work across research, engineering, and applied data science.</p>
-                <p>I ramp quickly in new domains, isolate constraints, and validate or pivot ideas fast.</p>
-            </div>
-
-            <div class="hero__interests">
-                <span class="interest-tag">mechanistic interpretability</span>
-                <span class="interest-tag">applied ML</span>
-                <span class="interest-tag">data science</span>
-            </div>
+            <p class="hero__subtitle">Building and auditing ML systems under uncertainty. Graduating senior @ UC Santa
+                Barbara · Data Science & ML</p>
 
             <div class="hero__meta">
-                <p class="hero__timestamp">Last updated: <time datetime="2026-01-25">January 25, 2026</time></p>
+                <p class="hero__timestamp">Last updated: <time datetime="2026-02-01">${datetime}</time></p>
             </div>
         </header>
 
         <!-- About Section -->
         <section class="section" id="about">
             <h2 class="section__title">About</h2>
-            <p>I'm a graduating senior studying Statistics & Data Science @ UCSB, working across AI research and
-                engineering. I'm
-                interested in problems where modeling, systems, and product constraints intersect—especially in applied
-                ML and LLM-based systems.</p>
-            <p>I've worked on production ML systems at early-stage startups, contributed to peer-reviewed research, and
-                enjoy operating in ambiguous, fast-moving environments. This site reflects how I think, learn, and
-                evaluate technical tradeoffs.</p>
+            <p class="about__tagline">Applied ML & AI Research</p>
+            <p>Navigating ambiguity to ship or falsify ideas. I bridge the gap between first-principles research and
+                production-grade ML systems.</p>
+
+            <h3 class="about__focus-title">Focus</h3>
+            <ul class="about__focus-list">
+                <li><strong>Applied ML & LLMs:</strong> Designing robust systems for real-world deployment.</li>
+                <li><strong>Mechanistic Interpretability:</strong> Understanding the internal logic of neural networks.
+                </li>
+                <li><strong>System Reasoning:</strong> Evaluating technical tradeoffs from first principles.</li>
+            </ul>
         </section>
 
         <!-- Learning Philosophy Section -->
         <section class="section" id="philosophy">
             <h2 class="section__title">Learning Philosophy</h2>
-            <p><strong>Skills as investments.</strong> I view skills as investments rather than virtues. Every new skill
-                has an opportunity cost in time, energy, and focus, so gaps are often the result of intentional
-                prioritization rather than lack of ability. My learning decisions are guided by expected leverage—how
-                much a skill expands my ability to reason about systems, deliver impact, or adapt to new problem
-                spaces—rather than by checklist completeness.</p>
+            <p><strong>Skill Investment.</strong> I prioritize skills based on leverage, not checklists. I focus on
+                high-impact capabilities that expand my system-level reasoning, viewing every new skill as a strategic
+                allocation of time and focus.</p>
         </section>
 
         <!-- How I Learn & Ramp (Primary Section) -->
@@ -67,27 +58,19 @@
 
             <ul class="ramp-list">
                 <li>
-                    <strong>Start with a high-level map, then drill down.</strong> I often begin with summaries or
-                    overviews to orient myself, but I don't stop there. I move quickly to primary sources—papers,
-                    documentation, raw artifacts—and build my own understanding from first principles.
+                    <strong>Map to Source:</strong> From high-level overviews to first-principles depth.
                 </li>
                 <li>
-                    <strong>Get hands-on early and iterate.</strong> Rather than waiting to "fully understand" a
-                    concept, I get directly involved with it—experimenting, breaking things, and improving through
-                    mistakes. Progress comes from iteration, not polished first attempts.
+                    <strong>Iterative Testing:</strong> Learning by breaking, building, and rapid experimentation.
                 </li>
                 <li>
-                    <strong>Think in counterexamples, edge cases, and first principles.</strong> I stress-test ideas by
-                    asking when they fail, what assumptions they rely on, and where intuition breaks. This helps
-                    distinguish surface-level understanding from structural understanding.
+                    <strong>Stress-Testing:</strong> Identifying edge cases to find where intuition fails.
                 </li>
                 <li>
-                    <strong>Course-correct explicitly.</strong> When my understanding turns out to be wrong or
-                    incomplete, I document what failed and why. The goal is to update my mental model, not defend it.
+                    <strong>Active Correction:</strong> Updating mental models through documented failure.
                 </li>
                 <li>
-                    <strong>Write as I go.</strong> Writing forces clarity. Publishing (when appropriate) creates
-                    accountability and invites correction, which accelerates learning.
+                    <strong>Clarification by Writing:</strong> Forcing precision and accountability through synthesis.
                 </li>
             </ul>
         </section>
@@ -140,8 +123,6 @@
             <div class="writing-intro">
                 <p>I write to clarify my own thinking. Publishing creates accountability and invites correction from
                     people who know more than I do.</p>
-                <p>This is intellectual exploration, not expertise. My understanding evolves; older posts may reflect
-                    superseded views.</p>
             </div>
 
             <div class="writing-links">
@@ -173,84 +154,12 @@
                 constraints) → Action (what I learned, evaluated, built) → Lessons (judgment, tradeoffs, generalizable
                 insights).</p>
 
-            <!-- Biotech / Clinical Trials -->
-            <article class="experience-card" data-expanded="false">
-                <button class="experience-card__header" aria-expanded="false">
-                    <div class="experience-card__summary">
-                        <h3 class="experience-card__title">Clinical Data Science Internship</h3>
-                        <span class="experience-card__meta">Pre-IPO Biotech · Phase II MDD Trial</span>
-                    </div>
-                    <span class="experience-card__toggle" aria-hidden="true">+</span>
-                </button>
-                <div class="experience-card__content">
-                    <div class="experience-card__tldr">
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">The Gist:</span>
-                            <span class="experience-card__tldr-value">Applied ML to Phase II clinical trial data for MDD
-                                (Major Depressive Disorder). Conducted deep exploratory data analysis to find signals in
-                                high-noise environments.</span>
-                        </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Key Win:</span>
-                            <span class="experience-card__tldr-value">Provided a high-integrity technical audit that
-                                correctly identified ML as not suitable for the dataset, preventing action on unreliable
-                                signals.</span>
-                        </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Tech:</span>
-                            <span class="experience-card__tldr-value">XGBoost, Statistical Modeling, EDA,
-                                Biostatistics.</span>
-                        </div>
-                    </div>
-                    <hr class="experience-card__tldr-divider">
-                    <div class="experience-card__section">
-                        <h4>Context</h4>
-                        <p>Analyzed Phase II clinical trial data for an MDD drug at a pre-IPO biotech company.
-                            Objective: use ML and statistical methods to identify potential gaps, latent signals, or
-                            patterns not captured by traditional analyses. I had no prior experience in clinical trials
-                            or biostatistics.</p>
-                        <p>Constraints: small trial size, limited data points, high noise, and significant placebo
-                            effects—conditions that are common in psychiatric trials and fundamentally limit what ML can
-                            detect.</p>
-                    </div>
-                    <div class="experience-card__section">
-                        <h4>Action</h4>
-                        <p><strong>Domain ramp-up:</strong> Navigated extensive clinical trial documentation, unfamiliar
-                            terminology, trial protocols, and outcome measures. Synthesized enough context to work
-                            effectively within weeks.</p>
-                        <p><strong>Exploratory analysis:</strong> Conducted deep EDA—placebo response patterns, subgroup
-                            analyses, outcome distribution shifts. Compared findings against traditional statistical
-                            outputs to evaluate where additional methods might add signal versus noise.</p>
-                        <p><strong>ML experimentation:</strong> Trained multiple classification models to explore
-                            whether ML could surface patterns missed by standard analyses. XGBoost performed best among
-                            the models tested. However, accuracy and precision were unstable across folds; performance
-                            was insufficient for any production or decision-support use. Made a deliberate judgment that
-                            these results should not be over-interpreted or presented as actionable.</p>
-                    </div>
-                    <div class="experience-card__section">
-                        <h4>Lessons</h4>
-                        <ul>
-                            <li>Knowing when ML doesn't apply is part of the job. Small, noisy clinical datasets often
-                                lack the statistical power for ML to add value. Recognizing this early prevents wasted
-                                effort and misleading conclusions.</li>
-                            <li>EDA and domain understanding matter more than model complexity. The most useful insights
-                                came from careful exploratory analysis, not from algorithmic sophistication.</li>
-                            <li>Negative results are still results. Concluding that ML was not appropriate for this
-                                dataset was the correct scientific judgment—not a failure.</li>
-                            <li>Unfamiliar domains become navigable quickly with focused reading. Clinical trial
-                                structure, terminology, and conventions are learnable; the key is knowing what to
-                                prioritize.</li>
-                        </ul>
-                    </div>
-                </div>
-            </article>
-
             <!-- Research Role -->
             <article class="experience-card" data-expanded="false">
                 <button class="experience-card__header" aria-expanded="false">
                     <div class="experience-card__summary">
                         <h3 class="experience-card__title">Research Assistant</h3>
-                        <span class="experience-card__meta">2025-Present · Yuzhou Chen's Lab · LLMs, Graph
+                        <span class="experience-card__meta">Jun 2025 – Present · Yuzhou Chen's Lab · LLMs, Graph
                             Unlearning</span>
                     </div>
                     <span class="experience-card__toggle" aria-hidden="true">+</span>
@@ -269,8 +178,8 @@
                                 optimizing CUDA configurations and quantization settings.</span>
                         </div>
                         <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Tech:</span>
-                            <span class="experience-card__tldr-value">PyTorch, Hugging Face, CUDA, vLLM, Graph Neural
+                            <span class="experience-card__tldr-label">Skills:</span>
+                            <span class="experience-card__tldr-value">PyTorch, Hugging Face, CUDA, Graph Neural
                                 Networks.</span>
                         </div>
                     </div>
@@ -322,7 +231,7 @@
                 <button class="experience-card__header" aria-expanded="false">
                     <div class="experience-card__summary">
                         <h3 class="experience-card__title">Venture Scout</h3>
-                        <span class="experience-card__meta">2025–Present · Bouken Capital</span>
+                        <span class="experience-card__meta">Oct 2025 – Present · Bouken Capital</span>
                     </div>
                     <span class="experience-card__toggle" aria-hidden="true">+</span>
                 </button>
@@ -339,7 +248,7 @@
                                 skills, bridging deep-tech capabilities with market viability.</span>
                         </div>
                         <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Focus:</span>
+                            <span class="experience-card__tldr-label">Skills:</span>
                             <span class="experience-card__tldr-value">Startup Evaluation, Market Research, Professional
                                 Outreach.</span>
                         </div>
@@ -382,12 +291,85 @@
                 </div>
             </article>
 
+            <!-- Biotech / Clinical Trials -->
+            <article class="experience-card" data-expanded="false">
+                <button class="experience-card__header" aria-expanded="false">
+                    <div class="experience-card__summary">
+                        <h3 class="experience-card__title">Clinical Data Science Internship</h3>
+                        <span class="experience-card__meta">Aug 2025 – Dec 2025 · Pre-IPO Biotech · Phase II MDD
+                            Trial</span>
+                    </div>
+                    <span class="experience-card__toggle" aria-hidden="true">+</span>
+                </button>
+                <div class="experience-card__content">
+                    <div class="experience-card__tldr">
+                        <div class="experience-card__tldr-item">
+                            <span class="experience-card__tldr-label">The Gist:</span>
+                            <span class="experience-card__tldr-value">Applied ML to Phase II clinical trial data for MDD
+                                (Major Depressive Disorder). Conducted deep exploratory data analysis to find signals in
+                                high-noise environments.</span>
+                        </div>
+                        <div class="experience-card__tldr-item">
+                            <span class="experience-card__tldr-label">Key Win:</span>
+                            <span class="experience-card__tldr-value">Provided a high-integrity technical audit that
+                                correctly identified ML as not suitable for the dataset, preventing action on unreliable
+                                signals.</span>
+                        </div>
+                        <div class="experience-card__tldr-item">
+                            <span class="experience-card__tldr-label">Skills:</span>
+                            <span class="experience-card__tldr-value">XGBoost, Statistical Modeling, EDA,
+                                Biostatistics.</span>
+                        </div>
+                    </div>
+                    <hr class="experience-card__tldr-divider">
+                    <div class="experience-card__section">
+                        <h4>Context</h4>
+                        <p>Analyzed Phase II clinical trial data for an MDD drug at a pre-IPO biotech company.
+                            Objective: use ML and statistical methods to identify potential gaps, latent signals, or
+                            patterns not captured by traditional analyses. I had no prior experience in clinical trials
+                            or biostatistics.</p>
+                        <p>Constraints: small trial size, limited data points, high noise, and significant placebo
+                            effects—conditions that are common in psychiatric trials and fundamentally limit what ML can
+                            detect.</p>
+                    </div>
+                    <div class="experience-card__section">
+                        <h4>Action</h4>
+                        <p><strong>Domain ramp-up:</strong> Navigated extensive clinical trial documentation, unfamiliar
+                            terminology, trial protocols, and outcome measures. Synthesized enough context to work
+                            effectively within weeks.</p>
+                        <p><strong>Exploratory analysis:</strong> Conducted deep EDA—placebo response patterns, subgroup
+                            analyses, outcome distribution shifts. Compared findings against traditional statistical
+                            outputs to evaluate where additional methods might add signal versus noise.</p>
+                        <p><strong>ML experimentation:</strong> Trained multiple classification models to explore
+                            whether ML could surface patterns missed by standard analyses. XGBoost performed best among
+                            the models tested. However, accuracy and precision were unstable across folds; performance
+                            was insufficient for any production or decision-support use. Made a deliberate judgment that
+                            these results should not be over-interpreted or presented as actionable.</p>
+                    </div>
+                    <div class="experience-card__section">
+                        <h4>Lessons</h4>
+                        <ul>
+                            <li>Knowing when ML doesn't apply is part of the job. Small, noisy clinical datasets often
+                                lack the statistical power for ML to add value. Recognizing this early prevents wasted
+                                effort and misleading conclusions.</li>
+                            <li>EDA and domain understanding matter more than model complexity. The most useful insights
+                                came from careful exploratory analysis, not from algorithmic sophistication.</li>
+                            <li>Negative results are still results. Concluding that ML was not appropriate for this
+                                dataset was the correct scientific judgment—not a failure.</li>
+                            <li>Unfamiliar domains become navigable quickly with focused reading. Clinical trial
+                                structure, terminology, and conventions are learnable; the key is knowing what to
+                                prioritize.</li>
+                        </ul>
+                    </div>
+                </div>
+            </article>
+
             <!-- GitRoll Internship -->
             <article class="experience-card" data-expanded="false">
                 <button class="experience-card__header" aria-expanded="false">
                     <div class="experience-card__summary">
                         <h3 class="experience-card__title">AI/ML Engineer Intern</h3>
-                        <span class="experience-card__meta">2024-2025 · GitRoll (HR-Tech, Pre-Seed)</span>
+                        <span class="experience-card__meta">Sep 2024 – Apr 2025 · GitRoll (HR-Tech, Pre-Seed)</span>
                     </div>
                     <span class="experience-card__toggle" aria-hidden="true">+</span>
                 </button>
@@ -405,7 +387,7 @@
                                 performance by 20% through iterative benchmarking of GPT, Gemini, and Claude.</span>
                         </div>
                         <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Tech:</span>
+                            <span class="experience-card__tldr-label">Skills:</span>
                             <span class="experience-card__tldr-value">Python, LLMs, NLP, ast-grep, Supervised
                                 Learning.</span>
                         </div>
