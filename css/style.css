@@ -506,12 +506,6 @@ ul {
     gap: var(--space-lg);
 }
 
-@media (max-width: 600px) {
-    .skill-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 .skill-column {
     padding: var(--space-lg);
     background: var(--color-bg-alt);
@@ -678,4 +672,246 @@ html.dark .theme-toggle__icon--sun {
 html.dark .theme-toggle__icon--moon {
     opacity: 1;
     transform: rotate(0deg);
+}
+
+/* ========================================
+   Responsive Design — Mobile & Tablet
+   ======================================== */
+
+/* Tablet Breakpoint (768px and below) */
+@media (max-width: 768px) {
+    :root {
+        --space-xl: 1.5rem;
+        --space-2xl: 2rem;
+        --space-3xl: 3rem;
+        --space-4xl: 4rem;
+    }
+
+    .container {
+        padding: var(--space-lg) var(--space-md);
+    }
+
+    .hero__title {
+        font-size: var(--text-2xl);
+    }
+
+    .hero__subtitle {
+        font-size: var(--text-base);
+    }
+
+    .section__title {
+        font-size: var(--text-xl);
+    }
+
+    /* Skill grid: 2 columns on tablet */
+    .skill-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+    }
+
+    /* Theme toggle position adjustment */
+    .theme-toggle {
+        top: var(--space-md);
+        right: var(--space-md);
+    }
+
+    /* Contact links: improved touch targets */
+    .contact-list {
+        gap: var(--space-md);
+    }
+
+    .contact-list li a {
+        display: inline-block;
+        padding: var(--space-sm) var(--space-md);
+        min-height: 44px;
+        min-width: 44px;
+        line-height: 1.5;
+    }
+
+    /* Writing links: improved touch targets */
+    .writing-list li {
+        margin-bottom: var(--space-lg);
+    }
+
+    .writing-list__link {
+        display: inline-block;
+        padding: var(--space-xs) 0;
+    }
+
+    .writing-cta a {
+        display: inline-block;
+        padding: var(--space-sm) 0;
+        min-height: 44px;
+    }
+}
+
+/* Mobile Breakpoint (480px and below) */
+@media (max-width: 480px) {
+    :root {
+        --text-3xl: 1.5rem;
+        --text-2xl: 1.25rem;
+        --text-xl: 1.125rem;
+        --space-lg: 1rem;
+        --space-xl: 1.25rem;
+        --space-2xl: 1.5rem;
+        --space-3xl: 2rem;
+        --space-4xl: 2.5rem;
+    }
+
+    html {
+        font-size: 15px;
+    }
+
+    .container {
+        padding: var(--space-md) var(--space-sm);
+        width: 100%;
+    }
+
+    .hero__title {
+        font-size: var(--text-xl);
+    }
+
+    .hero__subtitle {
+        font-size: var(--text-sm);
+        line-height: 1.5;
+    }
+
+    .section {
+        margin-bottom: var(--space-2xl);
+    }
+
+    .section__title {
+        font-size: var(--text-lg);
+    }
+
+    .section__intro {
+        font-size: var(--text-sm);
+    }
+
+    /* About section */
+    .about__tagline {
+        font-size: var(--text-lg);
+    }
+
+    .about__focus-list li {
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-sm);
+    }
+
+    /* Ramp list */
+    .ramp-list li {
+        font-size: var(--text-sm);
+        padding-left: var(--space-md);
+    }
+
+    /* Skill grid: single column on mobile */
+    .skill-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-sm);
+    }
+
+    .skill-column {
+        padding: var(--space-md);
+    }
+
+    /* Experience cards */
+    .experience-card__header {
+        padding: var(--space-md);
+    }
+
+    .experience-card__title {
+        font-size: var(--text-sm);
+        font-weight: 600;
+    }
+
+    .experience-card__meta {
+        font-size: var(--text-xs);
+    }
+
+    .experience-card__content {
+        padding: 0 var(--space-md) var(--space-md);
+    }
+
+    .experience-card__tldr {
+        padding: var(--space-sm) var(--space-md);
+        font-size: var(--text-xs);
+    }
+
+    .experience-card__section h4 {
+        font-size: var(--text-sm);
+    }
+
+    .experience-card__section p,
+    .experience-card__section li {
+        font-size: var(--text-sm);
+    }
+
+    /* Contact list: stack vertically on mobile */
+    .contact-list {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .contact-list li a {
+        display: block;
+        padding: var(--space-md);
+        background: var(--color-bg-alt);
+        border-radius: 4px;
+        text-align: center;
+        min-height: 48px;
+        line-height: 1.5;
+    }
+
+    .contact-list li a:hover {
+        background: var(--color-border);
+    }
+
+    /* Writing section */
+    .writing-list__link {
+        font-size: var(--text-sm);
+        line-height: 1.4;
+    }
+
+    .writing-list__meta {
+        display: block;
+        margin-top: var(--space-xs);
+        font-size: var(--text-xs);
+    }
+
+    /* Footer */
+    .footer__resume p {
+        font-size: var(--text-xs);
+    }
+
+    /* Theme toggle: smaller on mobile */
+    .theme-toggle {
+        width: 36px;
+        height: 36px;
+        top: var(--space-sm);
+        right: var(--space-sm);
+    }
+
+    .theme-toggle__icon {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Touch-friendly improvements for all mobile devices */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase all interactive element sizes for touch */
+    a, button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .experience-card__header {
+        min-height: 60px;
+    }
+
+    .contact-list li a,
+    .writing-list__link,
+    .writing-cta a {
+        padding: var(--space-sm) var(--space-md);
+    }
 }
