@@ -45,6 +45,40 @@
     --line-height-tight: 1.3;
 }
 
+/* Dark Mode Colors */
+html.dark {
+    --color-bg: #0f0f0f;
+    --color-bg-alt: #1a1a1a;
+    --color-text: #e5e5e5;
+    --color-text-secondary: #a3a3a3;
+    --color-text-tertiary: #737373;
+    --color-border: #2a2a2a;
+    --color-border-dark: #3a3a3a;
+    --color-accent: #e5e5e5;
+    --color-link: #e5e5e5;
+    --color-link-hover: #a3a3a3;
+}
+
+/* Smooth theme transition — Universal fade effect
+   Transition is disabled by default to prevent FOUC on page load.
+   The .theme-ready class is added via JS after initial render. */
+html.theme-ready,
+html.theme-ready *,
+html.theme-ready *::before,
+html.theme-ready *::after {
+    transition: background-color 0.5s ease-in-out,
+                color 0.5s ease-in-out,
+                border-color 0.5s ease-in-out,
+                box-shadow 0.5s ease-in-out;
+}
+
+/* Dark mode gradient adjustment */
+html.dark .about__tagline {
+    background: linear-gradient(135deg, #e5e5e5 0%, #a3a3a3 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
 /* Reset */
 *,
 *::before,
@@ -311,7 +345,6 @@ ul {
     border-radius: 4px;
     margin-bottom: var(--space-md);
     background: var(--color-bg);
-    transition: border-color 0.15s ease;
 }
 
 .experience-card:hover {
@@ -339,6 +372,7 @@ ul {
     font-size: var(--text-base);
     font-weight: 600;
     margin-bottom: var(--space-xs);
+    color: var(--color-text);
 }
 
 .experience-card__meta {
@@ -352,7 +386,6 @@ ul {
     font-weight: 300;
     width: 24px;
     text-align: center;
-    transition: transform 0.2s ease;
 }
 
 .experience-card[data-expanded="true"] .experience-card__toggle {
@@ -589,4 +622,60 @@ button:focus {
         font-size: var(--text-xs);
         color: var(--color-text-tertiary);
     }
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    top: var(--space-lg);
+    right: var(--space-lg);
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--color-bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, border-color 0.3s ease, background-color 0.5s ease-in-out;
+    z-index: 100;
+}
+
+.theme-toggle:hover {
+    border-color: var(--color-border-dark);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.theme-toggle__icon {
+    width: 20px;
+    height: 20px;
+    color: var(--color-text-secondary);
+    position: absolute;
+    transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+}
+
+/* Sun icon — visible in light mode */
+.theme-toggle__icon--sun {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+html.dark .theme-toggle__icon--sun {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+/* Moon icon — visible in dark mode */
+.theme-toggle__icon--moon {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+html.dark .theme-toggle__icon--moon {
+    opacity: 1;
+    transform: rotate(0deg);
 }

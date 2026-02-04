@@ -171,11 +171,27 @@
     }
 
     // ========================================
+    // Theme Toggle
+    // ========================================
+
+    function initThemeToggle() {
+        const toggle = document.getElementById('themeToggle');
+        if (!toggle) return;
+
+        toggle.addEventListener('click', () => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            trackEvent('theme_toggle', { theme: isDark ? 'dark' : 'light' });
+        });
+    }
+
+    // ========================================
     // Initialize
     // ========================================
 
     function init() {
         applyTemplates();
+        initThemeToggle();
         initExperienceCards();
         initScrollTracking();
         initSectionTracking();

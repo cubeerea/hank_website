@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hank Sha - Resume">
+    <title>Resume | Hank Sha</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'selector',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="js/theme.js"></script>
+    <style>
+        /* Smooth theme transition — enabled after initial render */
+        html.theme-ready *,
+        html.theme-ready *::before,
+        html.theme-ready *::after {
+            transition: background-color 0.5s ease-in-out,
+                        color 0.5s ease-in-out,
+                        border-color 0.5s ease-in-out,
+                        box-shadow 0.5s ease-in-out;
+        }
+
+        /* Theme Toggle for Resume Page */
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s ease, border-color 0.3s ease, background-color 0.5s ease-in-out;
+            z-index: 100;
+        }
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+        .theme-toggle__icon {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+        }
+        /* Sun icon — visible in light mode */
+        .theme-toggle__icon--sun {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+        html.dark .theme-toggle__icon--sun {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+        /* Moon icon — visible in dark mode */
+        .theme-toggle__icon--moon {
+            opacity: 0;
+            transform: rotate(90deg);
+        }
+        html.dark .theme-toggle__icon--moon {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+    </style>
+</head>
+
+<body class="h-screen flex flex-col overflow-hidden bg-slate-100 dark:bg-slate-900 font-sans">
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="theme-toggle bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600" aria-label="Toggle dark mode">
+        <svg class="theme-toggle__icon theme-toggle__icon--sun text-slate-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon text-slate-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+    </button>
+
+    <!-- Fixed Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </a>
+                <div>
+                    <h1 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Hank Sha</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Resume</p>
+                </div>
+            </div>
+            <!-- Zoom Controls -->
+            <div class="flex items-center gap-2">
+                <button onclick="zoomOut()"
+                    class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 transition-colors"
+                    aria-label="Zoom out">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 12H4" />
+                    </svg>
+                </button>
+                <span id="zoomLevel" class="text-sm font-medium text-slate-600 dark:text-slate-300 min-w-[3rem] text-center">200%</span>
+                <button onclick="zoomIn()"
+                    class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 transition-colors"
+                    aria-label="Zoom in">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- PDF Viewport Container -->
+    <main class="flex-1 overflow-auto pt-16 pb-4 touch-pan-x touch-pan-y">
+        <div class="min-h-full flex flex-col items-center justify-start py-6 px-4">
+            <!-- Loading State -->
+            <div id="loadingState" class="flex flex-col items-center justify-center py-20">
+                <div class="animate-spin rounded-full h-10 w-10 border-2 border-slate-300 border-t-blue-600 mb-4"></div>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Loading resume...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="hidden flex-col items-center justify-center py-20 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-slate-400 mb-4" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <p class="text-slate-600 dark:text-slate-300 font-medium mb-2">Unable to load resume</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">The PDF file could not be loaded.</p>
+                <a href="assets/hank_sha_resume.pdf" download="hank_sha_resume.pdf"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Download PDF
+                </a>
+            </div>
+
+            <!-- PDF Canvas Container -->
+            <div id="canvasContainer" class="hidden">
+                <canvas id="pdfCanvas"
+                    class="shadow-2xl border border-slate-200 dark:border-slate-700 bg-white mx-auto rounded-sm"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Button (Download) -->
+    <a href="assets/hank_sha_resume.pdf" download="hank_sha_resume.pdf" id="downloadFab"
+        class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-105 active:scale-95"
+        aria-label="Download resume">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+    </a>
+
+    <script>
+        // PDF.js Configuration
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+        // State
+        let pdfDoc = null;
+        let scale = 2.0;
+        const minScale = 0.5;
+        const maxScale = 3.0;
+        const scaleStep = 0.25;
+
+        // DOM Elements
+        const canvas = document.getElementById('pdfCanvas');
+        const ctx = canvas.getContext('2d');
+        const loadingState = document.getElementById('loadingState');
+        const errorState = document.getElementById('errorState');
+        const canvasContainer = document.getElementById('canvasContainer');
+        const zoomLevelDisplay = document.getElementById('zoomLevel');
+
+        // Load PDF
+        async function loadPDF() {
+            try {
+                pdfDoc = await pdfjsLib.getDocument('assets/hank_sha_resume.pdf').promise;
+                loadingState.classList.add('hidden');
+                canvasContainer.classList.remove('hidden');
+                canvasContainer.classList.add('flex', 'flex-col', 'items-center');
+                renderPage();
+            } catch (error) {
+                console.error('Error loading PDF:', error);
+                loadingState.classList.add('hidden');
+                errorState.classList.remove('hidden');
+                errorState.classList.add('flex');
+            }
+        }
+
+        // Render PDF Page
+        async function renderPage() {
+            if (!pdfDoc) return;
+
+            const page = await pdfDoc.getPage(1);
+            const viewport = page.getViewport({ scale: scale * window.devicePixelRatio });
+
+            // Set canvas dimensions for high DPI displays
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            // Set display size
+            canvas.style.width = `${viewport.width / window.devicePixelRatio}px`;
+            canvas.style.height = `${viewport.height / window.devicePixelRatio}px`;
+
+            const renderContext = {
+                canvasContext: ctx,
+                viewport: viewport
+            };
+
+            await page.render(renderContext).promise;
+            updateZoomDisplay();
+        }
+
+        // Zoom Functions
+        function zoomIn() {
+            if (scale < maxScale) {
+                scale = Math.min(scale + scaleStep, maxScale);
+                renderPage();
+            }
+        }
+
+        function zoomOut() {
+            if (scale > minScale) {
+                scale = Math.max(scale - scaleStep, minScale);
+                renderPage();
+            }
+        }
+
+        function updateZoomDisplay() {
+            zoomLevelDisplay.textContent = `${Math.round(scale * 100)}%`;
+        }
+
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (pdfDoc) renderPage();
+            }, 150);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '+' || e.key === '=') {
+                e.preventDefault();
+                zoomIn();
+            } else if (e.key === '-') {
+                e.preventDefault();
+                zoomOut();
+            }
+        });
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+        }
+
+        // Initialize
+        loadPDF();
+    </script>
+</body>
+
+</html>
