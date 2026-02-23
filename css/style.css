@@ -67,9 +67,9 @@ html.theme-ready *,
 html.theme-ready *::before,
 html.theme-ready *::after {
     transition: background-color 0.5s ease-in-out,
-                color 0.5s ease-in-out,
-                border-color 0.5s ease-in-out,
-                box-shadow 0.5s ease-in-out;
+        color 0.5s ease-in-out,
+        border-color 0.5s ease-in-out,
+        box-shadow 0.5s ease-in-out;
 }
 
 /* Dark mode gradient adjustment */
@@ -494,6 +494,10 @@ ul {
     margin-top: var(--space-lg);
 }
 
+.writing-links+.writing-links {
+    margin-top: var(--space-2xl);
+}
+
 .writing-cta a {
     font-size: var(--text-sm);
     color: var(--color-text-secondary);
@@ -899,8 +903,10 @@ html.dark .theme-toggle__icon--moon {
 
 /* Touch-friendly improvements for all mobile devices */
 @media (hover: none) and (pointer: coarse) {
+
     /* Increase all interactive element sizes for touch */
-    a, button {
+    a,
+    button {
         min-height: 44px;
         min-width: 44px;
     }
