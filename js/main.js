@@ -7,7 +7,7 @@
     'use strict';
 
     // Central source for 'Last updated' timestamp
-    const datetime = 'February 1, 2026';
+    const datetime = 'March 21, 2026';
 
     /**
      * Automatically replaces placeholders like ${datetime} in the DOM.
