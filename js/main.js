@@ -1,6 +1,7 @@
 /**
  * Portfolio Site — Main JavaScript
- * Handles: expand/collapse cards, scroll tracking, section visibility analytics, and template variables.
+ * Handles: cursor aura, expand/collapse cards, scroll animations,
+ * nav active state, scroll tracking, and template variables.
  */
 
 (function () {
@@ -20,12 +21,64 @@
                 node.nodeValue = node.nodeValue.replace(/\$\{datetime\}/g, datetime);
             }
         }
+    }
 
-        // Also update machine-readable datetime if it exists
-        const timeEl = document.querySelector('.hero__timestamp time');
-        if (timeEl) {
-            timeEl.setAttribute('datetime', '2026-02-01');
-        }
+    // ========================================
+    // Cursor Aura
+    // ========================================
+
+    function initCursorAura() {
+        const aura = document.getElementById('cursor-aura');
+        if (!aura) return;
+
+        window.addEventListener('mousemove', (e) => {
+            aura.style.setProperty('--x', `${e.clientX}px`);
+            aura.style.setProperty('--y', `${e.clientY}px`);
+        });
+    }
+
+    // ========================================
+    // Fade-in on Scroll
+    // ========================================
+
+    function initFadeInObserver() {
+        const elements = document.querySelectorAll('.fade-in');
+        if (!('IntersectionObserver' in window) || !elements.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        elements.forEach(el => observer.observe(el));
+    }
+
+    // ========================================
+    // Active Nav Link Tracking
+    // ========================================
+
+    function initNavTracking() {
+        const sections = document.querySelectorAll('.section[id]');
+        const navLinks = document.querySelectorAll('.nav__link');
+        if (!('IntersectionObserver' in window) || !sections.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    navLinks.forEach(link => {
+                        link.classList.toggle('nav__link--active',
+                            link.getAttribute('href') === `#${id}`);
+                    });
+                }
+            });
+        }, { threshold: 0.3, rootMargin: '-80px 0px -50% 0px' });
+
+        sections.forEach(section => observer.observe(section));
     }
 
     // ========================================
@@ -171,27 +224,14 @@
     }
 
     // ========================================
-    // Theme Toggle
-    // ========================================
-
-    function initThemeToggle() {
-        const toggle = document.getElementById('themeToggle');
-        if (!toggle) return;
-
-        toggle.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-            trackEvent('theme_toggle', { theme: isDark ? 'dark' : 'light' });
-        });
-    }
-
-    // ========================================
     // Initialize
     // ========================================
 
     function init() {
         applyTemplates();
-        initThemeToggle();
+        initCursorAura();
+        initFadeInObserver();
+        initNavTracking();
         initExperienceCards();
         initScrollTracking();
         initSectionTracking();
