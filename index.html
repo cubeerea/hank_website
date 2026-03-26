@@ -13,14 +13,30 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/theme.js"></script>
 </head>
 
 <body>
     <!-- Cursor Aura -->
     <div class="cursor-aura" id="cursor-aura"></div>
+
+    <!-- Theme Toggle -->
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle light mode">
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+    </button>
 
     <!-- Floating Nav -->
     <nav class="nav">
@@ -60,59 +76,14 @@
             <p>I solve ambiguous product and customer problems with scalable AI, backend engineering, and strong
                 technical communication.</p>
 
-            <h3 class="about__focus-title">Focus</h3>
-            <ul class="about__focus-list">
-                <li><strong>Applied ML &amp; LLM Systems</strong> — Building and optimizing production-oriented
-                    pipelines.</li>
-                <li><strong>Engineering &amp; Infrastructure</strong> — End-to-end data engineering and deployment.</li>
-                <li><strong>Technical Communication</strong> — Clear translation between technical tradeoffs and product
-                    impact.</li>
-            </ul>
         </section>
 
-        <!-- Learning Philosophy Section -->
-        <section class="section fade-in" id="philosophy">
-            <h2 class="section__title">Learning Philosophy</h2>
-            <p>I prioritize skills based on <strong>leverage</strong>, not checklists. I focus on
-                high-impact capabilities that expand my system-level reasoning, viewing every new skill as a strategic
-                allocation of time and focus.</p>
-        </section>
 
-        <!-- How I Learn & Ramp -->
-        <section class="section section--highlight fade-in" id="learning">
-            <h2 class="section__title">How I Learn &amp; Ramp</h2>
-            <p class="section__intro">My approach to quickly entering new domains and delivering working solutions.
-                Built for engineering, product, and customer-facing environments.</p>
-
-            <ul class="ramp-list">
-                <li>
-                    <strong>Map to System:</strong> Move from high-level context to architecture-level understanding of
-                    how things actually run.
-                </li>
-                <li>
-                    <strong>Build to Understand:</strong> Learn by shipping small, functional versions early and
-                    iterating fast.
-                </li>
-                <li>
-                    <strong>Edge-Case Driven:</strong> Actively probe failure points to harden systems for real-world
-                    use.
-                </li>
-                <li>
-                    <strong>Tight Feedback Loops:</strong> Incorporate stakeholder and user feedback to refine direction
-                    quickly.
-                </li>
-                <li>
-                    <strong>Write to Align:</strong> Use concise documentation to clarify tradeoffs and align technical
-                    decisions with business goals.
-                </li>
-            </ul>
-        </section>
 
         <!-- Skill Map Section -->
         <section class="section fade-in" id="skills">
             <h2 class="section__title">Skill Map</h2>
-            <p class="section__intro">An honest self-assessment. Gaps are current learning priorities, not apologies.
-            </p>
+            <p class="section__intro"></p>
             <div class="skill-grid">
                 <div class="skill-column skill-column--strong">
                     <h3 class="skill-column__title">Strong</h3>

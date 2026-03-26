@@ -25,6 +25,34 @@
     color-scheme: dark;
 }
 
+/* Light Mode Colors */
+html.light {
+    --ink: #f8fafc;
+    --ink-light: #f1f5f9;
+    --ink-card: #ffffff;
+    --cyan: #0891b2;
+    --cyan-dim: rgba(8, 145, 178, 0.4);
+    --cyan-glow: rgba(8, 145, 178, 0.2);
+    --white: #0f172a;
+    --slate: #475569;
+    --slate-dim: #64748b;
+    --border: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(0, 0, 0, 0.15);
+
+    color-scheme: light;
+}
+
+/* Smooth theme transition — prevents FOUC on load */
+html.theme-ready,
+html.theme-ready *,
+html.theme-ready *::before,
+html.theme-ready *::after {
+    transition: background-color 0.4s ease-in-out,
+        color 0.4s ease-in-out,
+        border-color 0.4s ease-in-out,
+        box-shadow 0.4s ease-in-out;
+}
+
 /* Reset */
 *,
 *::before,
@@ -60,6 +88,10 @@ body::before {
     z-index: 0;
 }
 
+html.light body::before {
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.06) 100%);
+}
+
 /* Noise texture */
 body::after {
     content: '';
@@ -69,6 +101,10 @@ body::after {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 0;
+}
+
+html.light body::after {
+    opacity: 0.015;
 }
 
 /* Cursor Aura */
@@ -84,6 +120,10 @@ body::after {
     z-index: 1;
 }
 
+html.light .cursor-aura {
+    background: radial-gradient(circle 600px at var(--x, 50%) var(--y, 50%), rgba(8, 145, 178, 0.04), transparent 70%);
+}
+
 /* Container */
 .container {
     position: relative;
@@ -94,7 +134,12 @@ body::after {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
 }
@@ -183,6 +228,11 @@ ul {
     -webkit-backdrop-filter: blur(12px);
     border-radius: 1rem;
     border: 1px solid var(--border);
+}
+
+html.light .nav__pill {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
 }
 
 .nav__link {
@@ -314,71 +364,10 @@ ul {
     background-clip: text;
 }
 
-.about__focus-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: var(--white);
-}
-
-.about__focus-list {
-    padding-left: 1rem;
-}
-
-.about__focus-list li {
-    position: relative;
-    padding-left: 1.5rem;
-    margin-bottom: 0.5rem;
-    color: var(--slate);
-}
-
-.about__focus-list li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--cyan-dim);
-}
-
-/* ========================================
-   Highlight Section (Learning & Ramp)
-   ======================================== */
-
-.section--highlight {
-    background: var(--ink-light);
-    margin-left: -1.5rem;
-    margin-right: -1.5rem;
-    padding: 2rem 1.5rem;
-    border-radius: 1rem;
-    border: 1px solid var(--border);
-}
-
-.section--highlight .section__title {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-/* Ramp List */
-.ramp-list {
-    padding-left: 1rem;
-}
-
-.ramp-list li {
-    position: relative;
-    padding-left: 1.5rem;
-    margin-bottom: 1rem;
-    color: var(--slate);
-}
-
-.ramp-list li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--cyan-dim);
-}
-
-.ramp-list li:last-child {
-    margin-bottom: 0;
+html.light .about__tagline {
+    background: linear-gradient(135deg, #0f172a 0%, #0891b2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
 }
 
 /* ========================================
@@ -529,7 +518,7 @@ ul {
     margin-bottom: 2rem;
 }
 
-.writing-links + .writing-links {
+.writing-links+.writing-links {
     margin-top: 2.5rem;
 }
 
@@ -714,6 +703,66 @@ button:focus-visible {
 }
 
 /* ========================================
+   Theme Toggle Button
+   ======================================== */
+
+.theme-toggle {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.5rem;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--ink-card);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    transition: transform 0.15s ease, border-color 0.3s ease, background-color 0.4s ease-in-out;
+}
+
+.theme-toggle:hover {
+    border-color: var(--border-hover);
+    transform: scale(1.05);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.theme-toggle__icon {
+    width: 18px;
+    height: 18px;
+    color: var(--slate);
+    position: absolute;
+    transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+}
+
+/* Sun icon — hidden in dark mode (default), shown in light mode */
+.theme-toggle__icon--sun {
+    opacity: 0;
+    transform: rotate(-90deg);
+}
+
+html.light .theme-toggle__icon--sun {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+/* Moon icon — shown in dark mode (default), hidden in light mode */
+.theme-toggle__icon--moon {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+html.light .theme-toggle__icon--moon {
+    opacity: 0;
+    transform: rotate(90deg);
+}
+
+/* ========================================
    Print styles
    ======================================== */
 
@@ -784,11 +833,7 @@ button:focus-visible {
         font-size: 0.8rem;
     }
 
-    .section--highlight {
-        margin-left: -1rem;
-        margin-right: -1rem;
-        padding: 1.5rem 1rem;
-    }
+
 
     .footer__layout {
         flex-direction: column;
@@ -888,11 +933,7 @@ button:focus-visible {
         font-size: 0.75rem;
     }
 
-    .section--highlight {
-        margin-left: -0.75rem;
-        margin-right: -0.75rem;
-        border-radius: 0.5rem;
-    }
+
 
     .cursor-aura {
         display: none;

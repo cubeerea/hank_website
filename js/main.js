@@ -115,6 +115,21 @@
     }
 
     // ========================================
+    // Theme Toggle
+    // ========================================
+
+    function initThemeToggle() {
+        const toggle = document.getElementById('themeToggle');
+        if (!toggle) return;
+
+        toggle.addEventListener('click', () => {
+            const isLight = document.documentElement.classList.toggle('light');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            trackEvent('theme_toggle', { theme: isLight ? 'light' : 'dark' });
+        });
+    }
+
+    // ========================================
     // Lightweight Analytics
     // ========================================
 
@@ -233,6 +248,7 @@
         initFadeInObserver();
         initNavTracking();
         initExperienceCards();
+        initThemeToggle();
         initScrollTracking();
         initSectionTracking();
         initTimeTracking();
