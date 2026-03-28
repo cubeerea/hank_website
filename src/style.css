@@ -1,0 +1,323 @@
+@import "tailwindcss";
+
+/* ========================================
+   Theme Configuration
+   ======================================== */
+
+@theme {
+  --font-ui: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #0a0f1c;
+  --color-ink-light: #111827;
+  --color-ink-card: #0f1629;
+  --color-cyan: #5ce1e6;
+  --color-cyan-dim: rgba(92, 225, 230, 0.4);
+  --color-cyan-glow: rgba(92, 225, 230, 0.25);
+  --color-slate-text: #94a3b8;
+  --color-slate-dim: #64748b;
+  --color-border: rgba(255, 255, 255, 0.05);
+  --color-border-hover: rgba(255, 255, 255, 0.12);
+}
+
+/* ========================================
+   Light Mode Overrides
+   ======================================== */
+
+html.light {
+  --color-ink: #f8fafc;
+  --color-ink-light: #f1f5f9;
+  --color-ink-card: #ffffff;
+  --color-cyan: #0891b2;
+  --color-cyan-dim: rgba(8, 145, 178, 0.4);
+  --color-cyan-glow: rgba(8, 145, 178, 0.2);
+  --color-slate-text: #475569;
+  --color-slate-dim: #64748b;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-hover: rgba(0, 0, 0, 0.15);
+  color-scheme: light;
+}
+
+/* ========================================
+   Base Styles
+   ======================================== */
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+/* Smooth theme transition — prevents FOUC on load */
+html.theme-ready,
+html.theme-ready *,
+html.theme-ready *::before,
+html.theme-ready *::after {
+  transition: background-color 0.4s ease-in-out,
+    color 0.4s ease-in-out,
+    border-color 0.4s ease-in-out,
+    box-shadow 0.4s ease-in-out;
+}
+
+/* Vignette overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+html.light body::before {
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.06) 100%);
+}
+
+/* Noise texture */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+html.light body::after {
+  opacity: 0.015;
+}
+
+/* ========================================
+   Cursor Aura
+   ======================================== */
+
+.cursor-aura {
+  background: radial-gradient(circle 600px at var(--x, 50%) var(--y, 50%), rgba(92, 225, 230, 0.06), transparent 70%);
+  transition: background 0.15s;
+}
+
+html.light .cursor-aura {
+  background: radial-gradient(circle 600px at var(--x, 50%) var(--y, 50%), rgba(8, 145, 178, 0.04), transparent 70%);
+}
+
+/* ========================================
+   About Tagline Gradient
+   ======================================== */
+
+.about-tagline {
+  background: linear-gradient(135deg, var(--color-white, #fff) 0%, var(--color-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html.light .about-tagline {
+  background: linear-gradient(135deg, #0f172a 0%, #0891b2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* ========================================
+   Nav Pill Light Mode
+   ======================================== */
+
+html.light .nav-pill {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ========================================
+   Experience Card List Bullets
+   ======================================== */
+
+.experience-list li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.experience-list li::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--color-cyan-dim);
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+/* ========================================
+   Skill List Bullets
+   ======================================== */
+
+.skill-list li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.skill-list li::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--color-cyan-dim);
+  font-size: 0.75rem;
+}
+
+/* ========================================
+   Fade-in Animations
+   ======================================== */
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ========================================
+   Theme Toggle Icon Transitions
+   ======================================== */
+
+.theme-icon {
+  transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.theme-icon--sun {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+html.light .theme-icon--sun {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.theme-icon--moon {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+html.light .theme-icon--moon {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+/* ========================================
+   Experience Card Toggle Rotation
+   ======================================== */
+
+.experience-card[data-expanded="true"] .card-toggle {
+  transform: rotate(45deg);
+  color: var(--color-cyan);
+}
+
+.experience-card[data-expanded="true"] .card-content {
+  display: block;
+}
+
+/* ========================================
+   Selection
+   ======================================== */
+
+::selection {
+  background: var(--color-cyan);
+  color: var(--color-ink);
+}
+
+/* ========================================
+   Resume Page Spinner
+   ======================================== */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+/* ========================================
+   Writing Link Underline
+   ======================================== */
+
+.writing-link {
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.1);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s ease;
+}
+
+.writing-link:hover {
+  text-decoration-color: var(--color-cyan);
+}
+
+/* ========================================
+   Print Styles
+   ======================================== */
+
+@media print {
+  .card-content {
+    display: block !important;
+  }
+
+  .card-toggle,
+  .nav-pill,
+  .cursor-aura {
+    display: none;
+  }
+
+  body::before,
+  body::after {
+    display: none;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* ========================================
+   Mobile: Hide Cursor Aura
+   ======================================== */
+
+@media (max-width: 480px) {
+  .cursor-aura {
+    display: none;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .cursor-aura {
+    display: none;
+  }
+
+  a,
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* ========================================
+   Mobile Footer Links
+   ======================================== */
+
+@media (max-width: 480px) {
+  .footer-link-mobile {
+    display: block;
+    padding: 0.75rem 1rem;
+    background: var(--color-ink-light);
+    border-radius: 0.5rem;
+    text-align: center;
+  }
+
+  .footer-link-mobile:hover {
+    background: var(--color-border-hover);
+    text-decoration: none;
+  }
+}

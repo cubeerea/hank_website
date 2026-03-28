@@ -16,82 +16,90 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/theme.js"></script>
+    <script type="module" src="/src/theme.ts"></script>
 </head>
 
-<body>
+<body class="font-ui text-base leading-relaxed text-white bg-ink">
     <!-- Cursor Aura -->
-    <div class="cursor-aura" id="cursor-aura"></div>
+    <div class="cursor-aura fixed top-0 left-0 w-screen h-screen pointer-events-none z-1" id="cursor-aura"></div>
 
     <!-- Theme Toggle -->
-    <button id="themeToggle" class="theme-toggle" aria-label="Toggle light mode">
-        <svg class="theme-toggle__icon theme-toggle__icon--sun" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <button id="themeToggle"
+        class="fixed top-5 right-6 w-10 h-10 border border-border rounded-full bg-ink-card cursor-pointer flex items-center justify-center z-50 transition-transform duration-150 ease-in-out hover:border-border-hover hover:scale-105 active:scale-95"
+        aria-label="Toggle light mode">
+        <svg class="theme-icon theme-icon--sun w-[18px] h-[18px] text-slate-text absolute"
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"
                 d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
-        <svg class="theme-toggle__icon theme-toggle__icon--moon" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <svg class="theme-icon theme-icon--moon w-[18px] h-[18px] text-slate-text absolute"
+            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"
                 d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
         </svg>
     </button>
 
     <!-- Floating Nav -->
-    <nav class="nav">
-        <div class="nav__pill">
-            <a href="#top" class="nav__link nav__link--active">Home</a>
-            <a href="#about" class="nav__link">About</a>
-            <a href="#work" class="nav__link">Work</a>
-            <a href="#writing" class="nav__link">Writing</a>
-            <a href="#contact" class="nav__link">Contact</a>
+    <nav class="fixed top-0 left-0 right-0 z-40 flex justify-center pt-4">
+        <div class="nav-pill flex gap-5 px-4 py-2 bg-[rgba(10,15,28,0.8)] backdrop-blur-[12px] rounded-2xl border border-border max-[768px]:gap-3 max-[768px]:px-3 max-[768px]:py-1.5 max-[480px]:gap-2 max-[480px]:px-2 max-[480px]:py-1">
+            <a href="#top" class="nav-link text-sm text-white border-b border-cyan-dim no-underline transition-colors duration-200 hover:text-white hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Home</a>
+            <a href="#about" class="nav-link text-sm text-slate-text no-underline transition-colors duration-200 hover:text-white hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">About</a>
+            <a href="#work" class="nav-link text-sm text-slate-text no-underline transition-colors duration-200 hover:text-white hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Work</a>
+            <a href="#writing" class="nav-link text-sm text-slate-text no-underline transition-colors duration-200 hover:text-white hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Writing</a>
+            <a href="#contact" class="nav-link text-sm text-slate-text no-underline transition-colors duration-200 hover:text-white hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Contact</a>
         </div>
     </nav>
 
-    <main class="container" id="top">
+    <main class="relative z-2 max-w-4xl mx-auto pt-28 px-6 pb-24 max-[768px]:pt-24 max-[768px]:px-4 max-[768px]:pb-16 max-[480px]:pt-20 max-[480px]:px-3 max-[480px]:pb-12" id="top">
         <!-- Hero Section -->
-        <header class="section section--hero">
-            <div class="hero__layout">
-                <div class="hero__text">
-                    <h1 class="hero__title">
-                        I'm <span class="text-cyan">Hank</span>.
-                    </h1>
-                    <p class="hero__subtitle">Bridging ML, engineering &amp; business impact in scalable AI products.
-                        Graduating senior @ UC Santa Barbara &middot; Data Science &amp; ML</p>
-                    <p class="hero__seeking">Seeking roles in applied ML / AI engineering, forward deployed engineering,
-                        and solutions engineering.</p>
-                    <div class="hero__cta">
-                        <a href="/resume" class="btn btn--primary">View Resume</a>
-                        <a href="#contact" class="btn btn--ghost">Contact</a>
-                    </div>
+        <header class="pt-16 pb-8 mb-16 max-[768px]:pt-8 max-[480px]:pt-4" id="hero">
+            <div class="max-w-3xl">
+                <h1 class="font-display text-[clamp(2.5rem,6vw,4.5rem)] leading-tight font-bold tracking-tight mb-4 max-[768px]:text-[2.5rem] max-[480px]:text-[2rem]">
+                    I'm <span class="text-cyan">Hank</span>.
+                </h1>
+                <p class="text-lg text-slate-text mb-3 max-w-[42rem] leading-relaxed max-[768px]:text-base max-[480px]:text-sm">
+                    Bridging ML, engineering &amp; business impact in scalable AI products.
+                    Graduating senior @ UC Santa Barbara &middot; Data Science &amp; ML
+                </p>
+                <p class="text-sm text-slate-dim mb-8 italic">
+                    Seeking roles in applied ML / AI engineering, forward deployed engineering,
+                    and solutions engineering.
+                </p>
+                <div class="inline-flex gap-4 max-[480px]:flex max-[480px]:flex-col max-[480px]:gap-3">
+                    <a href="/resume"
+                        class="inline-block px-4 py-2 rounded-xl text-sm font-medium no-underline border border-cyan-dim text-white shadow-[0_10px_40px_-10px_var(--color-cyan-glow)] transition-all duration-200 hover:border-cyan hover:shadow-[0_10px_50px_-10px_var(--color-cyan-glow)] hover:no-underline max-[480px]:text-center">
+                        View Resume
+                    </a>
+                    <a href="#contact"
+                        class="inline-block px-4 py-2 rounded-xl text-sm font-medium text-slate-text no-underline transition-all duration-200 hover:text-white hover:underline hover:underline-offset-4 max-[480px]:text-center">
+                        Contact
+                    </a>
                 </div>
             </div>
         </header>
 
         <!-- About Section -->
-        <section class="section fade-in" id="about">
-            <h2 class="section__title">About</h2>
-            <p class="about__tagline">AI enthusiast interested in scaling AI systems.</p>
-            <p>I enjoy working across the stack—from ML research to building AI systems that solve real-world problems.
+        <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="about">
+            <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">About</h2>
+            <p class="about-tagline font-display text-2xl font-bold tracking-tight mb-4 max-[480px]:text-xl">
+                AI enthusiast interested in scaling AI systems.
             </p>
-            <p>
+            <p class="text-slate-text mb-4">
+                I enjoy working across the stack—from ML research to building AI systems that solve real-world problems.
+            </p>
+            <p class="text-slate-text">
                 Outside of work, I write blogs, train at the gym, explore new music, and occasionally experiment in the
                 kitchen.
             </p>
-
         </section>
 
-
-
         <!-- Skill Map Section -->
-        <section class="section fade-in" id="skills">
-            <h2 class="section__title">Skill Map</h2>
-            <p class="section__intro"></p>
-            <div class="skill-grid">
-                <div class="skill-column skill-column--strong">
-                    <h3 class="skill-column__title">Strong</h3>
-                    <ul class="skill-list">
+        <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="skills">
+            <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">Skill Map</h2>
+            <div class="grid grid-cols-3 gap-6 max-[768px]:grid-cols-2 max-[768px]:gap-4 max-[480px]:grid-cols-1 max-[480px]:gap-3">
+                <div class="p-6 bg-ink-card rounded-xl border border-border transition-colors duration-300 hover:border-border-hover max-[480px]:p-4">
+                    <h3 class="text-xs uppercase tracking-widest text-cyan mb-4 pb-2 border-b border-border font-display font-semibold">Strong</h3>
+                    <ul class="skill-list list-none space-y-2 text-sm text-slate-text">
                         <li>Python for production ML (NumPy, PyTorch, pandas)</li>
                         <li>Technical writing &amp; documentation</li>
                         <li>Rapid domain ramp-up</li>
@@ -100,9 +108,9 @@
                         <li>Communicating tradeoffs &amp; uncertainty</li>
                     </ul>
                 </div>
-                <div class="skill-column skill-column--moderate">
-                    <h3 class="skill-column__title">Working Knowledge</h3>
-                    <ul class="skill-list">
+                <div class="p-6 bg-ink-card rounded-xl border border-border transition-colors duration-300 hover:border-border-hover max-[480px]:p-4">
+                    <h3 class="text-xs uppercase tracking-widest text-slate-text mb-4 pb-2 border-b border-border font-display font-semibold">Working Knowledge</h3>
+                    <ul class="skill-list list-none space-y-2 text-sm text-slate-text">
                         <li>LLM &amp; Transformer systems</li>
                         <li>Experiment design &amp; evaluation pipelines</li>
                         <li>Statistical modeling</li>
@@ -111,9 +119,9 @@
                         <li>Operating under ambiguous requirements</li>
                     </ul>
                 </div>
-                <div class="skill-column skill-column--growing">
-                    <h3 class="skill-column__title">Currently Expanding</h3>
-                    <ul class="skill-list">
+                <div class="p-6 bg-ink-card rounded-xl border border-border transition-colors duration-300 hover:border-border-hover max-[480px]:p-4">
+                    <h3 class="text-xs uppercase tracking-widest text-slate-dim mb-4 pb-2 border-b border-border font-display font-semibold">Currently Expanding</h3>
+                    <ul class="skill-list list-none space-y-2 text-sm text-slate-text">
                         <li>GPU-level optimization (CUDA fundamentals)</li>
                         <li>Distributed training systems</li>
                         <li>Advanced LLM interpretability tooling</li>
@@ -124,336 +132,236 @@
         </section>
 
         <!-- Building/Learning in Public Section -->
-        <section class="section fade-in" id="writing">
-            <h2 class="section__title">Building/Learning in Public</h2>
-            <div class="writing-intro">
-                <p>I write to clarify my own thinking. Publishing creates accountability and invites correction from
+        <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="writing">
+            <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">Building/Learning in Public</h2>
+            <div class="mb-8">
+                <p class="text-slate-text">I write to clarify my own thinking. Publishing creates accountability and invites correction from
                     people who know more than I do.</p>
             </div>
 
-            <div class="writing-links">
-                <h3 class="writing-links__title">Selected Writing</h3>
-                <ul class="writing-list">
+            <div class="mb-8">
+                <h3 class="text-xs uppercase tracking-[0.1em] text-slate-dim mb-4 font-display font-semibold">Selected Writing</h3>
+                <ul class="list-none space-y-4">
                     <li>
                         <a href="https://medium.com/@cubeerea/ai-prompts-i-use-everyday-37f71a7b3cde"
-                            class="writing-list__link">5 AI Prompts That Will Seriously Save You 20+ Hours a Week (Free
-                            Guide)</a>
-                        <span class="writing-list__meta">— Sharing AI prompts in my workflow.</span>
+                            class="writing-link font-medium text-white">5 AI Prompts That Will Seriously Save You 20+ Hours a Week (Free Guide)</a>
+                        <span class="text-slate-dim text-sm">— Sharing AI prompts in my workflow.</span>
                     </li>
                     <li>
                         <a href="https://medium.com/@cubeerea/5-steps-to-memorizing-the-autograd-implementation-for-good-9e49b683fe9c"
-                            class="writing-list__link">Under the Hood of Neural Networks: Implementing Autograd from
-                            Scratch</a>
-                        <span class="writing-list__meta">— Technical notes on Autograd implementation.</span>
+                            class="writing-link font-medium text-white">Under the Hood of Neural Networks: Implementing Autograd from Scratch</a>
+                        <span class="text-slate-dim text-sm">— Technical notes on Autograd implementation.</span>
                     </li>
                 </ul>
-                <p class="writing-cta">
-                    <a href="https://medium.com/@cubeerea">More writing on Medium &rarr;</a>
+                <p class="mt-6">
+                    <a href="https://medium.com/@cubeerea" class="text-sm text-slate-text hover:text-cyan transition-colors duration-200">More writing on Medium &rarr;</a>
                 </p>
             </div>
 
-            <div class="writing-links">
-                <h3 class="writing-links__title">Competitions</h3>
-                <ul class="writing-list">
+            <div class="mt-10">
+                <h3 class="text-xs uppercase tracking-[0.1em] text-slate-dim mb-4 font-display font-semibold">Competitions</h3>
+                <ul class="list-none space-y-4">
                     <li>
-                        <a href="https://devpost.com/software/project-nexus" class="writing-list__link" target="_blank"
-                            rel="noopener noreferrer">Data4Good Datathon — 1st Place, Civic Engagement &amp; Policy
-                            Track</a>
-                        <span class="writing-list__meta">— UCSB, 2026. Won the Civic Engagement &amp; Policy track at
-                            the Data4Good hackathon.</span>
+                        <a href="https://devpost.com/software/project-nexus" class="writing-link font-medium text-white" target="_blank"
+                            rel="noopener noreferrer">Data4Good Datathon — 1st Place, Civic Engagement &amp; Policy Track</a>
+                        <span class="text-slate-dim text-sm">— UCSB, 2026. Won the Civic Engagement &amp; Policy track at the Data4Good hackathon.</span>
                     </li>
                 </ul>
             </div>
         </section>
 
         <!-- Selected Work -->
-        <section class="section fade-in" id="work">
-            <h2 class="section__title">Selected Work</h2>
-            <p class="section__intro">Applications of the above. Each follows: Context &rarr; Action &rarr; Lessons</p>
+        <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="work">
+            <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">Selected Work</h2>
+            <p class="text-slate-text mb-6">Applications of the above. Each follows: Context &rarr; Action &rarr; Lessons</p>
 
             <!-- Research Role -->
-            <article class="experience-card" data-expanded="false">
-                <button class="experience-card__header" aria-expanded="false">
-                    <div class="experience-card__summary">
-                        <h3 class="experience-card__title">Research Assistant</h3>
-                        <span class="experience-card__meta">Jun 2025 – Present · Yuzhou Chen's Lab · LLMs, Graph
-                            Unlearning</span>
+            <article class="experience-card border border-border rounded-xl mb-4 bg-ink-card transition-all duration-300 hover:border-border-hover hover:shadow-[0_4px_20px_-4px_rgba(92,225,230,0.08)]" data-expanded="false">
+                <button class="card-header flex justify-between items-center w-full p-6 bg-transparent border-none cursor-pointer text-left font-inherit text-inherit max-[480px]:p-4" aria-expanded="false">
+                    <div class="flex-1">
+                        <h3 class="card-title font-display text-base font-semibold mb-1 text-white max-[480px]:text-sm">Research Assistant</h3>
+                        <span class="text-sm text-slate-dim max-[480px]:text-xs">Jun 2025 – Present · Yuzhou Chen's Lab · LLMs, Graph Unlearning</span>
                     </div>
-                    <span class="experience-card__toggle" aria-hidden="true">+</span>
+                    <span class="card-toggle text-xl text-slate-dim font-light w-6 text-center transition-all duration-300" aria-hidden="true">+</span>
                 </button>
-                <div class="experience-card__content">
-                    <div class="experience-card__tldr">
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">The Gist:</span>
-                            <span class="experience-card__tldr-value">Second author on research involving LLMs and Graph
-                                Unlearning. Built experimental pipelines and optimized local model inference under
-                                compute constraints.</span>
+                <div class="card-content hidden px-6 pb-6 border-t border-border max-[480px]:px-4 max-[480px]:pb-4">
+                    <div class="bg-white/[0.03] p-4 px-6 mb-6 rounded-lg text-sm border border-border max-[480px]:p-3 max-[480px]:px-4 max-[480px]:text-xs">
+                        <div class="mb-2">
+                            <span class="font-semibold text-cyan">The Gist:</span>
+                            <span class="text-slate-text">Second author on research involving LLMs and Graph Unlearning. Built experimental pipelines and optimized local model inference under compute constraints.</span>
                         </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Key Win:</span>
-                            <span class="experience-card__tldr-value">Achieved a 4x speedup in experiment runtimes by
-                                optimizing CUDA configurations and quantization settings.</span>
+                        <div class="mb-2">
+                            <span class="font-semibold text-cyan">Key Win:</span>
+                            <span class="text-slate-text">Achieved a 4x speedup in experiment runtimes by optimizing CUDA configurations and quantization settings.</span>
                         </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Skills:</span>
-                            <span class="experience-card__tldr-value">PyTorch, Hugging Face, CUDA, Graph Neural
-                                Networks.</span>
+                        <div>
+                            <span class="font-semibold text-cyan">Skills:</span>
+                            <span class="text-slate-text">PyTorch, Hugging Face, CUDA, Graph Neural Networks.</span>
                         </div>
                     </div>
-                    <hr class="experience-card__divider">
-                    <div class="experience-card__section">
-                        <h4>Context</h4>
-                        <p>Research assistant on projects involving large language models, graph unlearning, and
-                            topological graph structures. Primary responsibilities: replicating results from existing
-                            papers, implementing experimental pipelines, and supporting ongoing research. Second author
-                            on a paper exploring the use of LLMs for node and graph unlearning tasks.</p>
-                        <p>Constraints: limited compute budget, tight publication timelines, no dedicated
-                            infrastructure.</p>
+                    <hr class="border-none border-t border-border my-6">
+                    <div class="mt-6 first:mt-4">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Context</h4>
+                        <p class="text-slate-text mb-4">Research assistant on projects involving large language models, graph unlearning, and topological graph structures. Primary responsibilities: replicating results from existing papers, implementing experimental pipelines, and supporting ongoing research. Second author on a paper exploring the use of LLMs for node and graph unlearning tasks.</p>
+                        <p class="text-slate-text">Constraints: limited compute budget, tight publication timelines, no dedicated infrastructure.</p>
                     </div>
-                    <div class="experience-card__section">
-                        <h4>Action</h4>
-                        <p><strong>Model inference & systems work:</strong> Set up local inference for an open-source
-                            Hugging Face model on my own machine. Worked directly with CUDA, VRAM constraints, and
-                            memory optimization. Evaluated vLLM as a serving framework for improved throughput;
-                            determined that setup complexity and time constraints made it impractical for this project.
-                            Made a deliberate decision to revert to a simpler CUDA-based configuration. Optimized
-                            quantization settings and achieved ~4x speedup in experiment runtime.</p>
-                        <p><strong>Data collection & tooling:</strong> Tasked with collecting datasets related to AI
-                            conference discourse on X (Twitter)—follower graphs, post content, engagement data. Assessed
-                            that building a custom scraping solution would be slow, brittle, and blocked by rate limits
-                            and firewalls. Recommended using existing third-party tools. No single tool satisfied all
-                            requirements, so I combined multiple tools to assemble the dataset—effectively a
-                            "frankensteined" pipeline that prioritized speed and reliability over elegance.</p>
+                    <div class="mt-6">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Action</h4>
+                        <p class="text-slate-text mb-4"><strong class="font-semibold text-white">Model inference & systems work:</strong> Set up local inference for an open-source Hugging Face model on my own machine. Worked directly with CUDA, VRAM constraints, and memory optimization. Evaluated vLLM as a serving framework for improved throughput; determined that setup complexity and time constraints made it impractical for this project. Made a deliberate decision to revert to a simpler CUDA-based configuration. Optimized quantization settings and achieved ~4x speedup in experiment runtime.</p>
+                        <p class="text-slate-text"><strong class="font-semibold text-white">Data collection & tooling:</strong> Tasked with collecting datasets related to AI conference discourse on X (Twitter)—follower graphs, post content, engagement data. Assessed that building a custom scraping solution would be slow, brittle, and blocked by rate limits and firewalls. Recommended using existing third-party tools. No single tool satisfied all requirements, so I combined multiple tools to assemble the dataset—effectively a "frankensteined" pipeline that prioritized speed and reliability over elegance.</p>
                     </div>
-                    <div class="experience-card__section">
-                        <h4>Lessons</h4>
-                        <ul>
-                            <li>Sophistication has overhead. A simpler CUDA setup outperformed a more advanced serving
-                                framework given the constraints. Knowing when not to use a tool is as important as
-                                knowing how.</li>
-                            <li>Economic thinking applies to research. Time spent building infrastructure is time not
-                                spent running experiments. I learned to evaluate build-vs-buy tradeoffs quickly.</li>
-                            <li>Execution quality matters. Replication work and pipeline implementation aren't
-                                glamorous, but they're where most research actually happens. Doing them reliably builds
-                                trust.</li>
-                            <li>Scrappy solutions can be correct solutions. The data pipeline wasn't elegant, but it
-                                worked, and the alternative would have taken weeks longer.</li>
+                    <div class="mt-6">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Lessons</h4>
+                        <ul class="experience-list list-none pl-4 space-y-2 text-slate-text">
+                            <li>Sophistication has overhead. A simpler CUDA setup outperformed a more advanced serving framework given the constraints. Knowing when not to use a tool is as important as knowing how.</li>
+                            <li>Economic thinking applies to research. Time spent building infrastructure is time not spent running experiments. I learned to evaluate build-vs-buy tradeoffs quickly.</li>
+                            <li>Execution quality matters. Replication work and pipeline implementation aren't glamorous, but they're where most research actually happens. Doing them reliably builds trust.</li>
+                            <li>Scrappy solutions can be correct solutions. The data pipeline wasn't elegant, but it worked, and the alternative would have taken weeks longer.</li>
                         </ul>
                     </div>
                 </div>
             </article>
 
             <!-- Venture Scout -->
-            <article class="experience-card" data-expanded="false">
-                <button class="experience-card__header" aria-expanded="false">
-                    <div class="experience-card__summary">
-                        <h3 class="experience-card__title">Venture Scout</h3>
-                        <span class="experience-card__meta">Oct 2025 – Present · Bouken Capital</span>
+            <article class="experience-card border border-border rounded-xl mb-4 bg-ink-card transition-all duration-300 hover:border-border-hover hover:shadow-[0_4px_20px_-4px_rgba(92,225,230,0.08)]" data-expanded="false">
+                <button class="card-header flex justify-between items-center w-full p-6 bg-transparent border-none cursor-pointer text-left font-inherit text-inherit max-[480px]:p-4" aria-expanded="false">
+                    <div class="flex-1">
+                        <h3 class="card-title font-display text-base font-semibold mb-1 text-white max-[480px]:text-sm">Venture Scout</h3>
+                        <span class="text-sm text-slate-dim max-[480px]:text-xs">Oct 2025 – Present · Bouken Capital</span>
                     </div>
-                    <span class="experience-card__toggle" aria-hidden="true">+</span>
+                    <span class="card-toggle text-xl text-slate-dim font-light w-6 text-center transition-all duration-300" aria-hidden="true">+</span>
                 </button>
-                <div class="experience-card__content">
-                    <div class="experience-card__tldr">
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">The Gist:</span>
-                            <span class="experience-card__tldr-value">Developed a commercial lens for evaluating AI and
-                                deep-tech startups at pre-seed and seed stages.</span>
+                <div class="card-content hidden px-6 pb-6 border-t border-border max-[480px]:px-4 max-[480px]:pb-4">
+                    <div class="bg-white/[0.03] p-4 px-6 mb-6 rounded-lg text-sm border border-border max-[480px]:p-3 max-[480px]:px-4 max-[480px]:text-xs">
+                        <div class="mb-2">
+                            <span class="font-semibold text-cyan">The Gist:</span>
+                            <span class="text-slate-text">Developed a commercial lens for evaluating AI and deep-tech startups at pre-seed and seed stages.</span>
                         </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Key Win:</span>
-                            <span class="experience-card__tldr-value">Built strong technical communication and sourcing
-                                skills, bridging deep-tech capabilities with market viability.</span>
+                        <div class="mb-2">
+                            <span class="font-semibold text-cyan">Key Win:</span>
+                            <span class="text-slate-text">Built strong technical communication and sourcing skills, bridging deep-tech capabilities with market viability.</span>
                         </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Skills:</span>
-                            <span class="experience-card__tldr-value">Startup Evaluation, Market Research, Professional
-                                Outreach.</span>
+                        <div>
+                            <span class="font-semibold text-cyan">Skills:</span>
+                            <span class="text-slate-text">Startup Evaluation, Market Research, Professional Outreach.</span>
                         </div>
                     </div>
-                    <hr class="experience-card__divider">
-                    <div class="experience-card__section">
-                        <h4>Context</h4>
-                        <p>Part-time scout role at an early-stage fund (pre-seed, seed, early Series A) investing across
-                            AI, deep tech, energy, cleantech, and web3. This was a sourcing and light evaluation
-                            role—not deal-leading or deep diligence. I did not make or influence investment decisions.
-                        </p>
+                    <hr class="border-none border-t border-border my-6">
+                    <div class="mt-6 first:mt-4">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Context</h4>
+                        <p class="text-slate-text">Part-time scout role at an early-stage fund (pre-seed, seed, early Series A) investing across AI, deep tech, energy, cleantech, and web3. This was a sourcing and light evaluation role—not deal-leading or deep diligence. I did not make or influence investment decisions.</p>
                     </div>
-                    <div class="experience-card__section">
-                        <h4>Action</h4>
-                        <p><strong>Sourcing & outreach:</strong> Sourced startups through university venture clubs,
-                            campus events, and founder communities. Conducted high-volume cold outreach via email and
-                            LinkedIn. Learned that many student startups were too early for fundraising, and that
-                            effective sourcing requires persistence and tolerance for rejection and non-responses.</p>
-                        <p><strong>Evaluation & research:</strong> Performed light startup evaluation—value proposition
-                            clarity, market opportunity, team background, early traction, competitive landscape.
-                            Reviewed pitch decks with a critical but early-stage lens. Summarized findings for partners
-                            and answered basic diligence questions when asked.</p>
-                        <p><strong>Internal coordination:</strong> Communicated regularly with firm partners. Provided
-                            concise updates and timely responses. Helped advise and onboard newer scouts.</p>
+                    <div class="mt-6">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Action</h4>
+                        <p class="text-slate-text mb-4"><strong class="font-semibold text-white">Sourcing & outreach:</strong> Sourced startups through university venture clubs, campus events, and founder communities. Conducted high-volume cold outreach via email and LinkedIn. Learned that many student startups were too early for fundraising, and that effective sourcing requires persistence and tolerance for rejection and non-responses.</p>
+                        <p class="text-slate-text mb-4"><strong class="font-semibold text-white">Evaluation & research:</strong> Performed light startup evaluation—value proposition clarity, market opportunity, team background, early traction, competitive landscape. Reviewed pitch decks with a critical but early-stage lens. Summarized findings for partners and answered basic diligence questions when asked.</p>
+                        <p class="text-slate-text"><strong class="font-semibold text-white">Internal coordination:</strong> Communicated regularly with firm partners. Provided concise updates and timely responses. Helped advise and onboard newer scouts.</p>
                     </div>
-                    <div class="experience-card__section">
-                        <h4>Lessons</h4>
-                        <ul>
-                            <li>Communication is foundational. Clarity, tone, and responsiveness matter more than I
-                                expected. This role was a training ground for professional communication—cold
-                                approaches, follow-ups, handling rejection without disengaging.</li>
-                            <li>Early-stage evaluation is different. At pre-seed, there's little data; the work is about
-                                identifying potential under uncertainty, not validating traction.</li>
-                            <li>Cold outreach is a learned skill. I started uncomfortable with it; I improved through
-                                repetition. Rejection is normal and not personal.</li>
-                            <li>This role pushed me outside my comfort zone socially, which was valuable independent of
-                                any specific outcome.</li>
+                    <div class="mt-6">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Lessons</h4>
+                        <ul class="experience-list list-none pl-4 space-y-2 text-slate-text">
+                            <li>Communication is foundational. Clarity, tone, and responsiveness matter more than I expected. This role was a training ground for professional communication—cold approaches, follow-ups, handling rejection without disengaging.</li>
+                            <li>Early-stage evaluation is different. At pre-seed, there's little data; the work is about identifying potential under uncertainty, not validating traction.</li>
+                            <li>Cold outreach is a learned skill. I started uncomfortable with it; I improved through repetition. Rejection is normal and not personal.</li>
+                            <li>This role pushed me outside my comfort zone socially, which was valuable independent of any specific outcome.</li>
                         </ul>
                     </div>
                 </div>
             </article>
 
             <!-- Biotech / Clinical Trials -->
-            <article class="experience-card" data-expanded="false">
-                <button class="experience-card__header" aria-expanded="false">
-                    <div class="experience-card__summary">
-                        <h3 class="experience-card__title">Clinical Data Science Internship</h3>
-                        <span class="experience-card__meta">Aug 2025 – Dec 2025 · Pre-IPO Biotech · Phase II MDD
-                            Trial</span>
+            <article class="experience-card border border-border rounded-xl mb-4 bg-ink-card transition-all duration-300 hover:border-border-hover hover:shadow-[0_4px_20px_-4px_rgba(92,225,230,0.08)]" data-expanded="false">
+                <button class="card-header flex justify-between items-center w-full p-6 bg-transparent border-none cursor-pointer text-left font-inherit text-inherit max-[480px]:p-4" aria-expanded="false">
+                    <div class="flex-1">
+                        <h3 class="card-title font-display text-base font-semibold mb-1 text-white max-[480px]:text-sm">Clinical Data Science Internship</h3>
+                        <span class="text-sm text-slate-dim max-[480px]:text-xs">Aug 2025 – Dec 2025 · Pre-IPO Biotech · Phase II MDD Trial</span>
                     </div>
-                    <span class="experience-card__toggle" aria-hidden="true">+</span>
+                    <span class="card-toggle text-xl text-slate-dim font-light w-6 text-center transition-all duration-300" aria-hidden="true">+</span>
                 </button>
-                <div class="experience-card__content">
-                    <div class="experience-card__tldr">
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">The Gist:</span>
-                            <span class="experience-card__tldr-value">Applied ML to Phase II clinical trial data for MDD
-                                (Major Depressive Disorder). Conducted deep exploratory data analysis to find signals in
-                                high-noise environments.</span>
+                <div class="card-content hidden px-6 pb-6 border-t border-border max-[480px]:px-4 max-[480px]:pb-4">
+                    <div class="bg-white/[0.03] p-4 px-6 mb-6 rounded-lg text-sm border border-border max-[480px]:p-3 max-[480px]:px-4 max-[480px]:text-xs">
+                        <div class="mb-2">
+                            <span class="font-semibold text-cyan">The Gist:</span>
+                            <span class="text-slate-text">Applied ML to Phase II clinical trial data for MDD (Major Depressive Disorder). Conducted deep exploratory data analysis to find signals in high-noise environments.</span>
                         </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Key Win:</span>
-                            <span class="experience-card__tldr-value">Provided a high-integrity technical audit that
-                                correctly identified ML as not suitable for the dataset, preventing action on unreliable
-                                signals.</span>
+                        <div class="mb-2">
+                            <span class="font-semibold text-cyan">Key Win:</span>
+                            <span class="text-slate-text">Provided a high-integrity technical audit that correctly identified ML as not suitable for the dataset, preventing action on unreliable signals.</span>
                         </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Skills:</span>
-                            <span class="experience-card__tldr-value">XGBoost, Statistical Modeling, EDA,
-                                Biostatistics.</span>
+                        <div>
+                            <span class="font-semibold text-cyan">Skills:</span>
+                            <span class="text-slate-text">XGBoost, Statistical Modeling, EDA, Biostatistics.</span>
                         </div>
                     </div>
-                    <hr class="experience-card__divider">
-                    <div class="experience-card__section">
-                        <h4>Context</h4>
-                        <p>Analyzed Phase II clinical trial data for an MDD drug at a pre-IPO biotech company.
-                            Objective: use ML and statistical methods to identify potential gaps, latent signals, or
-                            patterns not captured by traditional analyses. I had no prior experience in clinical trials
-                            or biostatistics.</p>
-                        <p>Constraints: small trial size, limited data points, high noise, and significant placebo
-                            effects—conditions that are common in psychiatric trials and fundamentally limit what ML can
-                            detect.</p>
+                    <hr class="border-none border-t border-border my-6">
+                    <div class="mt-6 first:mt-4">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Context</h4>
+                        <p class="text-slate-text mb-4">Analyzed Phase II clinical trial data for an MDD drug at a pre-IPO biotech company. Objective: use ML and statistical methods to identify potential gaps, latent signals, or patterns not captured by traditional analyses. I had no prior experience in clinical trials or biostatistics.</p>
+                        <p class="text-slate-text">Constraints: small trial size, limited data points, high noise, and significant placebo effects—conditions that are common in psychiatric trials and fundamentally limit what ML can detect.</p>
                     </div>
-                    <div class="experience-card__section">
-                        <h4>Action</h4>
-                        <p><strong>Domain ramp-up:</strong> Navigated extensive clinical trial documentation, unfamiliar
-                            terminology, trial protocols, and outcome measures. Synthesized enough context to work
-                            effectively within weeks.</p>
-                        <p><strong>Exploratory analysis:</strong> Conducted deep EDA—placebo response patterns, subgroup
-                            analyses, outcome distribution shifts. Compared findings against traditional statistical
-                            outputs to evaluate where additional methods might add signal versus noise.</p>
-                        <p><strong>ML experimentation:</strong> Trained multiple classification models to explore
-                            whether ML could surface patterns missed by standard analyses. XGBoost performed best among
-                            the models tested. However, accuracy and precision were unstable across folds; performance
-                            was insufficient for any production or decision-support use. Made a deliberate judgment that
-                            these results should not be over-interpreted or presented as actionable.</p>
+                    <div class="mt-6">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Action</h4>
+                        <p class="text-slate-text mb-4"><strong class="font-semibold text-white">Domain ramp-up:</strong> Navigated extensive clinical trial documentation, unfamiliar terminology, trial protocols, and outcome measures. Synthesized enough context to work effectively within weeks.</p>
+                        <p class="text-slate-text mb-4"><strong class="font-semibold text-white">Exploratory analysis:</strong> Conducted deep EDA—placebo response patterns, subgroup analyses, outcome distribution shifts. Compared findings against traditional statistical outputs to evaluate where additional methods might add signal versus noise.</p>
+                        <p class="text-slate-text"><strong class="font-semibold text-white">ML experimentation:</strong> Trained multiple classification models to explore whether ML could surface patterns missed by standard analyses. XGBoost performed best among the models tested. However, accuracy and precision were unstable across folds; performance was insufficient for any production or decision-support use. Made a deliberate judgment that these results should not be over-interpreted or presented as actionable.</p>
                     </div>
-                    <div class="experience-card__section">
-                        <h4>Lessons</h4>
-                        <ul>
-                            <li>Knowing when ML doesn't apply is part of the job. Small, noisy clinical datasets often
-                                lack the statistical power for ML to add value. Recognizing this early prevents wasted
-                                effort and misleading conclusions.</li>
-                            <li>EDA and domain understanding matter more than model complexity. The most useful insights
-                                came from careful exploratory analysis, not from algorithmic sophistication.</li>
-                            <li>Negative results are still results. Concluding that ML was not appropriate for this
-                                dataset was the correct scientific judgment—not a failure.</li>
-                            <li>Unfamiliar domains become navigable quickly with focused reading. Clinical trial
-                                structure, terminology, and conventions are learnable; the key is knowing what to
-                                prioritize.</li>
+                    <div class="mt-6">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Lessons</h4>
+                        <ul class="experience-list list-none pl-4 space-y-2 text-slate-text">
+                            <li>Knowing when ML doesn't apply is part of the job. Small, noisy clinical datasets often lack the statistical power for ML to add value. Recognizing this early prevents wasted effort and misleading conclusions.</li>
+                            <li>EDA and domain understanding matter more than model complexity. The most useful insights came from careful exploratory analysis, not from algorithmic sophistication.</li>
+                            <li>Negative results are still results. Concluding that ML was not appropriate for this dataset was the correct scientific judgment—not a failure.</li>
+                            <li>Unfamiliar domains become navigable quickly with focused reading. Clinical trial structure, terminology, and conventions are learnable; the key is knowing what to prioritize.</li>
                         </ul>
                     </div>
                 </div>
             </article>
 
             <!-- GitRoll Internship -->
-            <article class="experience-card" data-expanded="false">
-                <button class="experience-card__header" aria-expanded="false">
-                    <div class="experience-card__summary">
-                        <h3 class="experience-card__title">AI/ML Engineer Intern</h3>
-                        <span class="experience-card__meta">Sep 2024 – Apr 2025 · GitRoll (HR-Tech, Pre-Seed)</span>
+            <article class="experience-card border border-border rounded-xl mb-4 bg-ink-card transition-all duration-300 hover:border-border-hover hover:shadow-[0_4px_20px_-4px_rgba(92,225,230,0.08)]" data-expanded="false">
+                <button class="card-header flex justify-between items-center w-full p-6 bg-transparent border-none cursor-pointer text-left font-inherit text-inherit max-[480px]:p-4" aria-expanded="false">
+                    <div class="flex-1">
+                        <h3 class="card-title font-display text-base font-semibold mb-1 text-white max-[480px]:text-sm">AI/ML Engineer Intern</h3>
+                        <span class="text-sm text-slate-dim max-[480px]:text-xs">Sep 2024 – Apr 2025 · GitRoll (HR-Tech, Pre-Seed)</span>
                     </div>
-                    <span class="experience-card__toggle" aria-hidden="true">+</span>
+                    <span class="card-toggle text-xl text-slate-dim font-light w-6 text-center transition-all duration-300" aria-hidden="true">+</span>
                 </button>
-                <div class="experience-card__content">
-                    <div class="experience-card__tldr">
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">The Gist:</span>
-                            <span class="experience-card__tldr-value">Scaled an LLM-based developer evaluation system to
-                                1.4M+ users. Focused on prompt engineering, cost optimization, and reducing algorithmic
-                                bias.</span>
+                <div class="card-content hidden px-6 pb-6 border-t border-border max-[480px]:px-4 max-[480px]:pb-4">
+                    <div class="bg-white/[0.03] p-4 px-6 mb-6 rounded-lg text-sm border border-border max-[480px]:p-3 max-[480px]:px-4 max-[480px]:text-xs">
+                        <div class="mb-2">
+                            <span class="font-semibold text-cyan">The Gist:</span>
+                            <span class="text-slate-text">Scaled an LLM-based developer evaluation system to 1.4M+ users. Focused on prompt engineering, cost optimization, and reducing algorithmic bias.</span>
                         </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Key Win:</span>
-                            <span class="experience-card__tldr-value">Reduced API costs by 13% and improved model
-                                performance by 20% through iterative benchmarking of GPT, Gemini, and Claude.</span>
+                        <div class="mb-2">
+                            <span class="font-semibold text-cyan">Key Win:</span>
+                            <span class="text-slate-text">Reduced API costs by 13% and improved model performance by 20% through iterative benchmarking of GPT, Gemini, and Claude.</span>
                         </div>
-                        <div class="experience-card__tldr-item">
-                            <span class="experience-card__tldr-label">Skills:</span>
-                            <span class="experience-card__tldr-value">Python, LLMs, NLP, ast-grep, Supervised
-                                Learning.</span>
+                        <div>
+                            <span class="font-semibold text-cyan">Skills:</span>
+                            <span class="text-slate-text">Python, LLMs, NLP, ast-grep, Supervised Learning.</span>
                         </div>
                     </div>
-                    <hr class="experience-card__divider">
-                    <div class="experience-card__section">
-                        <h4>Context</h4>
-                        <p>GitRoll is a pre-seed HR-tech startup that scans GitHub repositories to evaluate developer
-                            contributions—designed to surface signal beyond resumes and help underrepresented developers
-                            get fairer evaluations.</p>
-                        <p><strong>How I got here:</strong> As a junior without a summer internship, I attended a demo
-                            event at Draper University specifically to network and find opportunities. After initial
-                            conversations with the founders, I interviewed but felt I performed poorly due to
-                            inexperience. I proposed working unpaid for 1–2 weeks so they could evaluate my contribution
-                            before committing. Instead, they gave me a take-home project: evaluate and tune prompts for
-                            their LLM-based grading system. Given two weeks, I completed it in one. The work exceeded
-                            expectations; I received an offer.</p>
+                    <hr class="border-none border-t border-border my-6">
+                    <div class="mt-6 first:mt-4">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Context</h4>
+                        <p class="text-slate-text mb-4">GitRoll is a pre-seed HR-tech startup that scans GitHub repositories to evaluate developer contributions—designed to surface signal beyond resumes and help underrepresented developers get fairer evaluations.</p>
+                        <p class="text-slate-text"><strong class="font-semibold text-white">How I got here:</strong> As a junior without a summer internship, I attended a demo event at Draper University specifically to network and find opportunities. After initial conversations with the founders, I interviewed but felt I performed poorly due to inexperience. I proposed working unpaid for 1–2 weeks so they could evaluate my contribution before committing. Instead, they gave me a take-home project: evaluate and tune prompts for their LLM-based grading system. Given two weeks, I completed it in one. The work exceeded expectations; I received an offer.</p>
                     </div>
-                    <div class="experience-card__section">
-                        <h4>Action</h4>
-                        <p><strong>LLM & NLP systems:</strong> Led R&D for a uniqueness grading model using LLMs and NLP
-                            techniques. The system has been applied to 1.4M+ users. Proposed and implemented improved
-                            grading metrics, prompt engineering strategies, and output calibration for consistency.</p>
-                        <p><strong>Model evaluation & cost optimization:</strong> Benchmarked LLMs (GPT, Gemini, Claude)
-                            for cost and performance tradeoffs. Reduced LLM-related costs by ~13% through model
-                            selection and prompt optimization.</p>
-                        <p><strong>Repository analysis & bias reduction:</strong> Scanned and analyzed 200+ GitHub
-                            repositories. Iterated on grading logic through user collaboration and internal feedback.
-                            Improved model performance by ~20% over previous versions. Explicitly worked on bias
-                            reduction and fairness-aware evaluation.</p>
-                        <p><strong>Supervised learning & labeling:</strong> Manually labeled 216+ GitHub pull request
-                            issues. Built classification models achieving ~92% precision. Experimented with word-bank
-                            approaches and NLTK-based categorization. Classified issues into 3 impact levels; this logic
-                            was integrated into contribution scoring and CURISM metrics.</p>
-                        <p><strong>Static analysis & tooling:</strong> Used ast-grep for code linting and analysis.
-                            Built a programming language progression roadmap (Python, JavaScript, TypeScript) for
-                            developers. Improved internal development velocity by ~30%.</p>
+                    <div class="mt-6">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Action</h4>
+                        <p class="text-slate-text mb-4"><strong class="font-semibold text-white">LLM & NLP systems:</strong> Led R&D for a uniqueness grading model using LLMs and NLP techniques. The system has been applied to 1.4M+ users. Proposed and implemented improved grading metrics, prompt engineering strategies, and output calibration for consistency.</p>
+                        <p class="text-slate-text mb-4"><strong class="font-semibold text-white">Model evaluation & cost optimization:</strong> Benchmarked LLMs (GPT, Gemini, Claude) for cost and performance tradeoffs. Reduced LLM-related costs by ~13% through model selection and prompt optimization.</p>
+                        <p class="text-slate-text mb-4"><strong class="font-semibold text-white">Repository analysis & bias reduction:</strong> Scanned and analyzed 200+ GitHub repositories. Iterated on grading logic through user collaboration and internal feedback. Improved model performance by ~20% over previous versions. Explicitly worked on bias reduction and fairness-aware evaluation.</p>
+                        <p class="text-slate-text mb-4"><strong class="font-semibold text-white">Supervised learning & labeling:</strong> Manually labeled 216+ GitHub pull request issues. Built classification models achieving ~92% precision. Experimented with word-bank approaches and NLTK-based categorization. Classified issues into 3 impact levels; this logic was integrated into contribution scoring and CURISM metrics.</p>
+                        <p class="text-slate-text"><strong class="font-semibold text-white">Static analysis & tooling:</strong> Used ast-grep for code linting and analysis. Built a programming language progression roadmap (Python, JavaScript, TypeScript) for developers. Improved internal development velocity by ~30%.</p>
                     </div>
-                    <div class="experience-card__section">
-                        <h4>Lessons</h4>
-                        <ul>
-                            <li>Opportunities can be created, not just found. Proposing a trial period was uncomfortable
-                                but effective. Execution speaks louder than credentials.</li>
-                            <li>Early-stage startups reward breadth. I touched LLM systems, labeling, static analysis,
-                                and product iteration—all within a few months. Context-switching is the job.</li>
-                            <li>Fairness in ML is a design problem, not just a metrics problem. Bias reduction required
-                                iterating on grading logic with real users, not just adjusting thresholds.</li>
-                            <li>Speed matters at pre-seed. Completing the take-home in half the time signaled more than
-                                the work itself.</li>
+                    <div class="mt-6">
+                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">Lessons</h4>
+                        <ul class="experience-list list-none pl-4 space-y-2 text-slate-text">
+                            <li>Opportunities can be created, not just found. Proposing a trial period was uncomfortable but effective. Execution speaks louder than credentials.</li>
+                            <li>Early-stage startups reward breadth. I touched LLM systems, labeling, static analysis, and product iteration—all within a few months. Context-switching is the job.</li>
+                            <li>Fairness in ML is a design problem, not just a metrics problem. Bias reduction required iterating on grading logic with real users, not just adjusting thresholds.</li>
+                            <li>Speed matters at pre-seed. Completing the take-home in half the time signaled more than the work itself.</li>
                         </ul>
                     </div>
                 </div>
@@ -461,22 +369,22 @@
         </section>
 
         <!-- Footer / Contact -->
-        <footer class="section section--footer fade-in" id="contact">
-            <h2 class="section__title">Contact</h2>
-            <div class="footer__layout">
-                <div class="footer__links">
-                    <a href="mailto:hankssha@gmail.com" class="footer__link">Email</a>
-                    <a href="https://github.com/cubeerea" class="footer__link">GitHub</a>
-                    <a href="https://medium.com/@cubeerea" class="footer__link">Medium</a>
-                    <a href="https://www.linkedin.com/in/hank-sha/" class="footer__link">LinkedIn</a>
-                    <a href="/resume" class="footer__link">Resume</a>
+        <footer class="pt-8 border-t border-border fade-in" id="contact">
+            <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">Contact</h2>
+            <div class="flex flex-wrap items-center justify-between gap-4 max-[768px]:flex-col max-[768px]:items-start">
+                <div class="flex flex-wrap gap-6 max-[480px]:flex-col max-[480px]:gap-3">
+                    <a href="mailto:hankssha@gmail.com" class="footer-link-mobile text-sm text-slate-text no-underline transition-colors duration-200 hover:text-white hover:underline hover:underline-offset-4">Email</a>
+                    <a href="https://github.com/cubeerea" class="footer-link-mobile text-sm text-slate-text no-underline transition-colors duration-200 hover:text-white hover:underline hover:underline-offset-4">GitHub</a>
+                    <a href="https://medium.com/@cubeerea" class="footer-link-mobile text-sm text-slate-text no-underline transition-colors duration-200 hover:text-white hover:underline hover:underline-offset-4">Medium</a>
+                    <a href="https://www.linkedin.com/in/hank-sha/" class="footer-link-mobile text-sm text-slate-text no-underline transition-colors duration-200 hover:text-white hover:underline hover:underline-offset-4">LinkedIn</a>
+                    <a href="/resume" class="footer-link-mobile text-sm text-slate-text no-underline transition-colors duration-200 hover:text-white hover:underline hover:underline-offset-4">Resume</a>
                 </div>
-                <p class="footer__timestamp">Last updated: <time datetime="2026-03-21">${datetime}</time></p>
+                <p class="text-xs text-slate-dim m-0">Last updated: <time datetime="2026-03-21" class="text-slate-text">${datetime}</time></p>
             </div>
         </footer>
     </main>
 
-    <script src="js/main.js"></script>
+    <script type="module" src="/src/main.ts"></script>
 </body>
 
 </html>
