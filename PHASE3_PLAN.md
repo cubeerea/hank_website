@@ -1,88 +1,100 @@
-# Phase 3 — Hero Snap & Globe Icon Fixes
+# Phase 4 — Polish: Fonts, Nav Order, Icon Footer
 
-## 1. Hero as Full-Screen Snap Section with Resistance Effect
+## 1. Font Consistency
 
-**Problem:** Hero and Skill Map bleed together with no visual boundary; the user wants the hero to feel like its own "page" with a natural resistance before the next section scrolls in.
+**Problem:** Mixed font classes across sections — some headings use `font-display` (Sora), some body text accidentally picks up `font-display`, and `font-ui` (Inter) isn't always explicit on body copy.
 
-**Approach:** CSS `scroll-snap` on the page container. The hero takes `min-height: 100vh`, is a snap point (`scroll-snap-align: start`), and the rest of the page scrolls freely below it. A bottom scroll-hint arrow with bounce animation gives a visual cue.
-
-**Changes to `index.html`:**
-- Wrap the entire `<main>` (or use body) as a `scroll-snap-type: y mandatory` container
-- Give the `<header id="hero">` a class of `hero-snap` so it snaps (`min-height: 100svh`, `scroll-snap-align: start`)
-- Add a scroll-hint arrow div at the bottom of the hero: `<div class="scroll-hint">↓</div>`
-- The `<main>` content after the hero continues as a normal scroll-flow (`scroll-snap-align: none`)
-- On mobile: keep `min-height: 100svh` but reduce padding so content fits
+**Rules to enforce:**
+| Element | Font | Class |
+|---|---|---|
+| `h1`, `h2`, `h3`, `h4`, section headings, nav links, badges, card labels | Sora | `font-display` |
+| All body paragraphs, list items, metadata/dates, link text | Inter | `font-ui` (default body) |
+| Monospaced/label text (skill bullets, gist grid headers) | Already Sora via `font-display` — keep |
 
 **Changes to `src/style.css`:**
-```css
-/* Snap container */
-html, body {
-  scroll-snap-type: y mandatory;
-  overflow-y: scroll;
-  height: 100%;
-}
+- Set `body { font-family: var(--font-ui); }` explicitly (ensures Inter everywhere not overridden)
+- Add `html.light h1, html.light h2, html.light h3, html.light h4 { color: #0f172a; }` for light mode heading fix (part of the outstanding light mode fix)
 
-.hero-snap {
-  min-height: 100svh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;  /* the "resistance" — must fully stop here */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+**Changes to `index.html`:**
+- Audit every `<p>`, `<span class="text-slate-text">`, `<li>` — none should have `font-display`
+- Writing section timeline text → confirm `font-ui`
+- Bento cell descriptions → confirm `font-ui`
+- Footer copyright/timestamp → confirm `font-ui`
 
-/* Scroll hint arrow */
-@keyframes bounce-hint {
-  0%, 100% { transform: translateY(0); opacity: 0.5; }
-  50% { transform: translateY(6px); opacity: 1; }
-}
-.scroll-hint {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  color: var(--color-slate-dim);
-  font-size: 1.25rem;
-  animation: bounce-hint 2s ease-in-out infinite;
-  cursor: pointer;
-}
-```
+---
+
+## 2. Nav Bar — Correct Section Order
+
+**Problem:** Nav links don't match page scroll order.
+
+**Current order:** Home · About · Work · Writing · Projects · Contact
+
+**Correct order** (matches DOM top→bottom):
+Home · Skills · Writing · Projects · Work · Contact
 
 > [!NOTE]
-> `scroll-snap-stop: always` is the key directive that creates the "resistance" — the browser is forced to stop at the hero before continuing, even during a fast fling.
+> `About` is now merged into the Hero section so it is `#about` anchor inside the hero — it's a sub-scroll of Home, not a separate nav entry. Remove it from the nav.
 
----
-
-## 2. Icon Corrections
-
-All 4 icons currently use incorrect/placeholder representations. Fixes:
-
-| Tool | Current | Fix |
-|---|---|---|
-| **Claude Code** | `✦` text glyph | Use `https://cdn.simpleicons.org/anthropic/CC785C` (Anthropic logo, warm clay color) |
-| **R** | Text `"R"` | Use `https://cdn.simpleicons.org/r/276DC3` (official R language logo, blue) |
-| **n8n** | Text `"n8n"` | Use `https://cdn.simpleicons.org/n8n/EA4B71` (official n8n logo, pink-red) |
-| **Pinecone** | 📌 emoji | No simpleicons entry — use a custom inline SVG pine cone shape in `#70B981` (Pinecone brand green), or use a styled badge |
-
-**Pinecone fallback SVG** (inline, minimal pine cone silhouette):
-```html
-<svg viewBox="0 0 24 24" fill="#70B981">
-  <ellipse cx="12" cy="16" rx="5" ry="6"/>
-  <path d="M12 2 C10 6 8 8 8 11 C10 9 12 8 12 8 C12 8 14 9 16 11 C16 8 14 6 12 2Z"/>
-</svg>
+**Change to `index.html` nav:**
+```
+Home → #top
+Skills → #skills
+Writing → #writing
+Projects → #projects
+Work → #work
+Contact → #contact
 ```
 
-**Change:** Update the 4 `data-tech` divs in `index.html` with the correct img/svg sources.
-
 ---
 
-## 3. Globe Visual Fix — Not Cut Off
+## 3. Contact Footer — Icons Instead of Text
 
-**Problem:** The globe container doesn't have a defined `height`, causing the bottom to be clipped.
+**Problem:** Footer links are plain text labels (Email, GitHub, Medium, LinkedIn, Resume).
 
-**Fix in `src/style.css`:**
-- Set `.tech-globe` to `height: 420px` (desktop), `height: 340px` (≤768px), `height: 280px` (≤480px) — explicit heights so the container is never clipped
-- Add `overflow: visible` to the globe container and `overflow: hidden` with appropriate padding to the parent section instead
+**Solution:** Replace each with an SVG icon button — circular icon, tooltip on hover, smooth hover transition. No labels visible by default; label appears as a `title` attribute (native browser tooltip) and optionally as a visually-hidden `<span>` for accessibility.
+
+**Icons (all inline SVG, no CDN dependency):**
+| Link | Icon |
+|---|---|
+| Email (hankssha@gmail.com) | Envelope SVG |
+| GitHub (cubeerea) | GitHub mark SVG |
+| Medium (@cubeerea) | Medium M SVG |
+| LinkedIn (/hank-sha) | LinkedIn `in` SVG |
+| Resume (/resume) | Document/file SVG |
+
+**New HTML structure:**
+```html
+<div class="contact-icons flex gap-4 flex-wrap">
+  <a href="mailto:..." class="contact-icon-btn" title="Email" aria-label="Email">
+    <!-- envelope SVG -->
+  </a>
+  ...
+</div>
+```
+
+**New CSS in `src/style.css`:**
+```css
+.contact-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  color: var(--color-slate-text);
+  transition: color 0.2s, border-color 0.2s, transform 0.15s;
+}
+.contact-icon-btn:hover {
+  color: var(--color-cyan);
+  border-color: var(--color-cyan-dim);
+  transform: translateY(-2px);
+}
+.contact-icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+```
 
 ---
 
@@ -90,12 +102,5 @@ All 4 icons currently use incorrect/placeholder representations. Fixes:
 
 | File | Changes |
 |---|---|
-| `index.html` | `hero-snap` class on header, scroll-hint arrow, 4 icon src updates |
-| `src/style.css` | Snap container rules, `.hero-snap`, `.scroll-hint`, globe height fix |
-
-## Verification
-
-1. Load page → hero fills viewport, no other sections visible
-2. Scroll slowly → resistance before Skill Map section appears
-3. Tech globe: R shows blue R logo, n8n shows chain logo, Claude shows Anthropic mark, Pinecone shows green icon
-4. Globe is not cut off at bottom — full sphere visible
+| `index.html` | Nav reorder (remove About, correct sequence), footer icons |
+| `src/style.css` | `body` font-family explicit, `.contact-icon-btn` styles |

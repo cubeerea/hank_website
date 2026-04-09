@@ -8,44 +8,22 @@
   --font-ui: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink: #0a0f1c;
-  --color-ink-light: #111827;
-  --color-ink-card: #0f1629;
-  --color-surface: #131c35;
-  --color-cyan: #5ce1e6;
-  --color-cyan-dim: rgba(92, 225, 230, 0.4);
-  --color-cyan-glow: rgba(92, 225, 230, 0.25);
-  --color-violet: #a78bfa;
-  --color-violet-dim: rgba(167, 139, 250, 0.4);
-  --color-violet-glow: rgba(167, 139, 250, 0.2);
-  --color-slate-text: #94a3b8;
-  --color-slate-dim: #64748b;
-  --color-border: rgba(255, 255, 255, 0.05);
-  --color-border-hover: rgba(255, 255, 255, 0.12);
+  --color-ink: #08070f;
+  --color-ink-light: #0f0c1a;
+  --color-ink-card: #100d1e;
+  --color-surface: #160f2a;
+  --color-cyan: #a78bfa;
+  --color-cyan-dim: rgba(167, 139, 250, 0.35);
+  --color-cyan-glow: rgba(167, 139, 250, 0.22);
+  --color-violet: #f472b6;
+  --color-violet-dim: rgba(244, 114, 182, 0.35);
+  --color-violet-glow: rgba(244, 114, 182, 0.18);
+  --color-slate-text: #9d94c0;
+  --color-slate-dim: #6b5f9e;
+  --color-border: rgba(167, 139, 250, 0.08);
+  --color-border-hover: rgba(167, 139, 250, 0.22);
   --radius-bento: 1.25rem;
   --radius-card: 0.875rem;
-}
-
-/* ========================================
-   Light Mode Overrides
-   ======================================== */
-
-html.light {
-  --color-ink: #f8fafc;
-  --color-ink-light: #f1f5f9;
-  --color-ink-card: #ffffff;
-  --color-surface: #f0f4ff;
-  --color-cyan: #0891b2;
-  --color-cyan-dim: rgba(8, 145, 178, 0.4);
-  --color-cyan-glow: rgba(8, 145, 178, 0.2);
-  --color-violet: #7c3aed;
-  --color-violet-dim: rgba(124, 58, 237, 0.4);
-  --color-violet-glow: rgba(124, 58, 237, 0.2);
-  --color-slate-text: #475569;
-  --color-slate-dim: #64748b;
-  --color-border: rgba(0, 0, 0, 0.08);
-  --color-border-hover: rgba(0, 0, 0, 0.15);
-  color-scheme: light;
 }
 
 /* ========================================
@@ -64,6 +42,7 @@ html {
 
 body {
   height: 100%;
+  font-family: var(--font-ui);
 }
 
 /* Smooth theme transition — prevents FOUC on load */
@@ -87,10 +66,6 @@ body::before {
   z-index: 0;
 }
 
-html.light body::before {
-  background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.06) 100%);
-}
-
 /* Noise texture */
 body::after {
   content: "";
@@ -102,21 +77,13 @@ body::after {
   z-index: 0;
 }
 
-html.light body::after {
-  opacity: 0.015;
-}
-
 /* ========================================
    Cursor Aura
    ======================================== */
 
 .cursor-aura {
-  background: radial-gradient(circle 600px at var(--x, 50%) var(--y, 50%), rgba(92, 225, 230, 0.06), transparent 70%);
+  background: radial-gradient(circle 600px at var(--x, 50%) var(--y, 50%), rgba(167, 139, 250, 0.07), transparent 70%);
   transition: background 0.15s;
-}
-
-html.light .cursor-aura {
-  background: radial-gradient(circle 600px at var(--x, 50%) var(--y, 50%), rgba(8, 145, 178, 0.04), transparent 70%);
 }
 
 /* ========================================
@@ -124,25 +91,10 @@ html.light .cursor-aura {
    ======================================== */
 
 .about-tagline {
-  background: linear-gradient(135deg, var(--color-white, #fff) 0%, var(--color-cyan) 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #a78bfa 60%, #f472b6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
-
-html.light .about-tagline {
-  background: linear-gradient(135deg, #0f172a 0%, #0891b2 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-/* ========================================
-   Nav Pill Light Mode
-   ======================================== */
-
-html.light .nav-pill {
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
 }
 
 /* ========================================
@@ -193,34 +145,6 @@ html.light .nav-pill {
 .fade-in.visible {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* ========================================
-   Theme Toggle Icon Transitions
-   ======================================== */
-
-.theme-icon {
-  transition: opacity 0.3s ease-in-out, transform 0.5s ease-in-out;
-}
-
-.theme-icon--sun {
-  opacity: 0;
-  transform: rotate(-90deg);
-}
-
-html.light .theme-icon--sun {
-  opacity: 1;
-  transform: rotate(0deg);
-}
-
-.theme-icon--moon {
-  opacity: 1;
-  transform: rotate(0deg);
-}
-
-html.light .theme-icon--moon {
-  opacity: 0;
-  transform: rotate(90deg);
 }
 
 /* ========================================
@@ -321,22 +245,30 @@ html.light .theme-icon--moon {
 }
 
 /* ========================================
-   Mobile Footer Links
+   Contact Icon Buttons
    ======================================== */
 
-@media (max-width: 480px) {
-  .footer-link-mobile {
-    display: block;
-    padding: 0.75rem 1rem;
-    background: var(--color-ink-light);
-    border-radius: 0.5rem;
-    text-align: center;
-  }
+.contact-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  color: var(--color-slate-text);
+  transition: color 0.2s, border-color 0.2s, transform 0.15s;
+}
 
-  .footer-link-mobile:hover {
-    background: var(--color-border-hover);
-    text-decoration: none;
-  }
+.contact-icon-btn:hover {
+  color: var(--color-cyan);
+  border-color: var(--color-cyan-dim);
+  transform: translateY(-2px);
+}
+
+.contact-icon-btn svg {
+  width: 18px;
+  height: 18px;
 }
 
 /* ========================================
@@ -344,15 +276,9 @@ html.light .theme-icon--moon {
    ======================================== */
 
 .gradient-text {
-  background: linear-gradient(135deg, var(--color-cyan) 0%, #a78bfa 100%);
+  background: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-html.light .gradient-text {
-  background: linear-gradient(135deg, #0891b2 0%, #7c3aed 100%);
-  -webkit-background-clip: text;
   background-clip: text;
 }
 
@@ -400,12 +326,6 @@ html.light .gradient-text {
   font-family: var(--font-display);
 }
 
-html.light .badge {
-  border-color: rgba(8, 145, 178, 0.4);
-  color: #0891b2;
-  background: rgba(8, 145, 178, 0.04);
-}
-
 /* ========================================
    Hero Decoration
    ======================================== */
@@ -424,7 +344,7 @@ html.light .badge {
 .hero-glow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, var(--color-cyan-glow) 0%, rgba(167, 139, 250, 0.1) 45%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(167, 139, 250, 0.18) 0%, rgba(244, 114, 182, 0.08) 45%, transparent 70%);
   border-radius: 50%;
   filter: blur(28px);
   animation: hero-float 6s ease-in-out infinite;
@@ -434,8 +354,8 @@ html.light .badge {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(92, 225, 230, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(92, 225, 230, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(167, 139, 250, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167, 139, 250, 0.08) 1px, transparent 1px);
   background-size: 30px 30px;
   -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 65%);
   mask-image: radial-gradient(ellipse at center, black 20%, transparent 65%);
@@ -541,36 +461,13 @@ html.light .badge {
    Timeline List (Writing Section)
    ======================================== */
 
+/* Clean minimal list — no line, no indent */
 .timeline-list {
-  position: relative;
-  padding-left: 1.5rem;
-}
-
-.timeline-list::before {
-  content: "";
-  position: absolute;
-  left: 0.25rem;
-  top: 0.5rem;
-  bottom: 0.75rem;
-  width: 1px;
-  background: linear-gradient(to bottom, var(--color-cyan-dim), transparent);
+  list-style: none;
 }
 
 .timeline-item {
-  position: relative;
   padding-bottom: 1.25rem;
-}
-
-.timeline-item::before {
-  content: "";
-  position: absolute;
-  left: -1.5rem;
-  top: 0.45rem;
-  width: 6px;
-  height: 6px;
-  background: var(--color-cyan);
-  border-radius: 50%;
-  box-shadow: 0 0 6px var(--color-cyan-glow);
 }
 
 /* ========================================
@@ -637,12 +534,6 @@ html.light .badge {
   font-family: var(--font-display);
 }
 
-html.light .tech-text-icon {
-  color: #0891b2;
-  background: rgba(8, 145, 178, 0.08);
-  border-color: rgba(8, 145, 178, 0.4);
-}
-
 @media (max-width: 480px) {
   .tech-globe {
     height: auto;
@@ -657,43 +548,6 @@ html.light .tech-text-icon {
     transform: none !important;
     opacity: 1 !important;
   }
-}
-
-/* ========================================
-   Light Mode Text Overrides
-   ======================================== */
-
-html.light body {
-  color: #0f172a;
-}
-
-html.light h1,
-html.light h2,
-html.light h3,
-html.light h4,
-html.light strong {
-  color: #0f172a !important;
-}
-
-html.light .text-white {
-  color: #0f172a !important;
-}
-
-html.light .nav-link {
-  color: #334155 !important;
-}
-
-html.light .nav-link:hover {
-  color: #0f172a !important;
-}
-
-html.light .writing-link {
-  color: #0f172a;
-  text-decoration-color: rgba(0, 0, 0, 0.2);
-}
-
-html.light .card-header {
-  color: #0f172a;
 }
 
 /* ========================================
