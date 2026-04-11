@@ -295,17 +295,20 @@ function initTechGlobe(): void {
   }
 
   let rotY = 0;
-  let rotX = 0.15; // slight tilt
   let paused = false;
   let rafId: number;
+  const startTime = Date.now();
 
   globe.addEventListener('mouseenter', () => { paused = true; });
   globe.addEventListener('mouseleave', () => { paused = false; });
 
   function animate() {
     if (!paused) {
-      rotY += 0.005;
+      rotY += 0.003; // slower, more premium
     }
+
+    // Gentle oscillating X-tilt instead of fixed angle
+    const rotX = 0.15 + Math.sin((Date.now() - startTime) * 0.0003) * 0.12;
 
     const cosY = Math.cos(rotY);
     const sinY = Math.sin(rotY);
@@ -323,10 +326,10 @@ function initTechGlobe(): void {
       const y2 = p.y * cosX - z1 * sinX;
       const z2 = p.y * sinX + z1 * cosX;
 
-      // Project: z2 in [-radius, +radius], depth factor
+      // Stronger depth contrast: back icons fade further
       const depth = (z2 + radius) / (2 * radius); // 0 = back, 1 = front
-      const scale = 0.6 + depth * 0.7;
-      const opacity = 0.2 + depth * 0.8;
+      const scale = 0.5 + depth * 0.8;
+      const opacity = 0.15 + depth * 0.85;
 
       icon.style.transform = `translate(${x1}px, ${y2}px) scale(${scale})`;
       icon.style.opacity = String(opacity.toFixed(3));
@@ -349,6 +352,53 @@ function initTechGlobe(): void {
 }
 
 // ========================================
+// Typewriter Effect
+// ========================================
+
+function initTypewriter(): void {
+  const raw = document.getElementById('typewriter');
+  if (!raw) return;
+  const el = raw as HTMLElement;
+
+  const phrases = [
+    'Graduating senior @ UC Santa Barbara',
+    'Applied ML & AI Engineering',
+    'Mechanistic Interpretability',
+    'Forward Deployed Engineering',
+  ];
+
+  let phraseIdx = 0;
+  let charIdx = 0;
+  let deleting = false;
+  const TYPING_SPEED = 55;
+  const DELETE_SPEED = 28;
+  const PAUSE_END = 2200;
+  const PAUSE_START = 400;
+
+  function tick() {
+    const current = phrases[phraseIdx];
+    if (!deleting) {
+      el.textContent = current.slice(0, ++charIdx);
+      if (charIdx === current.length) {
+        deleting = true;
+        setTimeout(tick, PAUSE_END);
+        return;
+      }
+    } else {
+      el.textContent = current.slice(0, --charIdx);
+      if (charIdx === 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        setTimeout(tick, PAUSE_START);
+        return;
+      }
+    }
+    setTimeout(tick, deleting ? DELETE_SPEED : TYPING_SPEED);
+  }
+  tick();
+}
+
+// ========================================
 // Initialize
 // ========================================
 
@@ -362,6 +412,7 @@ function init(): void {
   initSectionTracking();
   initTimeTracking();
   initTechGlobe();
+  initTypewriter();
 
   trackEvent('page_view', {
     referrer: document.referrer || 'direct',

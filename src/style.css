@@ -272,6 +272,22 @@ body::after {
 }
 
 /* ========================================
+   Typewriter Cursor
+   ======================================== */
+
+.typewriter-cursor {
+  display: inline-block;
+  color: var(--color-cyan);
+  font-weight: 300;
+  animation: cursor-blink 0.9s step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ========================================
    Gradient Text
    ======================================== */
 
@@ -487,7 +503,7 @@ body::after {
 
 @media (max-width: 768px) {
   .tech-globe {
-    height: 340px;
+    height: 300px;
   }
 }
 
@@ -503,8 +519,8 @@ body::after {
 }
 
 .tech-icon img {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
   display: block;
   filter: drop-shadow(0 0 4px rgba(92, 225, 230, 0.2));
@@ -532,6 +548,12 @@ body::after {
   color: var(--color-slate-dim);
   white-space: nowrap;
   font-family: var(--font-display);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tech-icon:hover span:last-child {
+  opacity: 1;
 }
 
 @media (max-width: 480px) {
@@ -548,6 +570,25 @@ body::after {
     transform: none !important;
     opacity: 1 !important;
   }
+
+  .tech-icon span:last-child {
+    opacity: 1 !important;
+  }
+}
+
+/* ========================================
+   Typewriter Cursor
+   ======================================== */
+
+.typewriter-cursor {
+  display: inline-block;
+  color: var(--color-cyan);
+  animation: cursor-blink 0.9s step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* ========================================
