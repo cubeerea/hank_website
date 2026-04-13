@@ -4,27 +4,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Primary SEO -->
+    <title>Hank Sha | AI &amp; ML Engineer — Applied ML, Mechanistic Interpretability</title>
     <meta name="description"
-        content="Hank Sha — Bridging ML, engineering & business impact in scalable AI products. Applied ML, AI engineering, and solutions engineering.">
-    <meta property="og:title" content="Hank Sha | AI & ML Engineering">
+        content="Hank Sha — UCSB graduating senior building at the intersection of applied ML, AI engineering, and mechanistic interpretability. Internships in biotech AI and HR-tech LLM systems.">
+    <meta name="keywords"
+        content="applied machine learning, AI engineering, mechanistic interpretability, PyTorch, LLMs, NLP, UCSB, portfolio, Hank Sha">
+    <meta name="author" content="Hank Sha">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#0a0f1c">
+    <link rel="canonical" href="https://hanksha.dev">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Hank Sha | AI &amp; ML Engineer">
     <meta property="og:description"
-        content="Bridging ML, engineering & business impact in scalable AI products. Explore my work in applied ML and AI engineering.">
+        content="UCSB senior building scalable AI products. Applied ML, mechanistic interpretability, and LLM engineering.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hanksha.dev">
     <meta property="og:image" content="https://hanksha.dev/assets/og-preview.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Hank Sha">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Hank Sha | AI & ML Engineering">
-    <meta name="twitter:description" content="Bridging ML, engineering & business impact in scalable AI products.">
+    <meta name="twitter:title" content="Hank Sha | AI &amp; ML Engineer">
+    <meta name="twitter:description"
+        content="UCSB senior building scalable AI products. Applied ML, mechanistic interpretability, and LLM engineering.">
     <meta name="twitter:image" content="https://hanksha.dev/assets/og-preview.png">
-    <title>Hank Sha</title>
-    <!-- Fonts -->
+    <meta name="twitter:creator" content="@cubeerea">
+
+    <!-- JSON-LD: Person Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Hank Sha",
+      "url": "https://hanksha.dev",
+      "jobTitle": "AI & ML Engineer",
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "University of California, Santa Barbara"
+      },
+      "knowsAbout": [
+        "Applied Machine Learning",
+        "LLM Engineering",
+        "Mechanistic Interpretability",
+        "PyTorch",
+        "NLP"
+      ],
+      "sameAs": [
+        "https://github.com/cubeerea",
+        "https://www.linkedin.com/in/hank-sha/",
+        "https://medium.com/@cubeerea"
+      ]
+    }
+    </script>
+
+    <!-- Fonts (preload critical weights) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
         rel="stylesheet">
+
     <script type="module" src="/src/theme.ts"></script>
 </head>
 
@@ -33,7 +80,7 @@
     <div class="cursor-aura fixed top-0 left-0 w-screen h-screen pointer-events-none z-1" id="cursor-aura"></div>
 
     <!-- Floating Nav -->
-    <nav class="fixed top-0 left-0 right-0 z-40 flex justify-center pt-4">
+    <nav class="fixed top-0 left-0 right-0 z-40 flex justify-center pt-4" aria-label="Main navigation" role="navigation">
         <div
             class="nav-pill flex gap-5 px-4 py-2 bg-[rgba(10,15,28,0.8)] backdrop-blur-[12px] rounded-2xl border border-border max-[768px]:gap-3 max-[768px]:px-3 max-[768px]:py-1.5 max-[480px]:gap-2 max-[480px]:px-2 max-[480px]:py-1">
             <a href="#top"
@@ -62,7 +109,7 @@
                 <div class="flex-1" id="about">
                     <h1
                         class="font-display text-[clamp(2.5rem,6vw,4.5rem)] leading-tight font-bold tracking-tight mb-3 max-[768px]:text-[2.5rem] max-[480px]:text-[2rem]">
-                        I'm <span class="gradient-text">Hank</span>.
+                        I'm <span class="gradient-text">Hank Sha</span>.
                     </h1>
                     <p class="text-sm text-slate-dim mb-6">
                         <span id="typewriter"></span><span class="typewriter-cursor">|</span>
@@ -159,13 +206,15 @@
                 <ul class="timeline-list list-none">
                     <li class="timeline-item">
                         <a href="https://medium.com/@cubeerea/ai-prompts-i-use-everyday-37f71a7b3cde"
-                            class="writing-link font-medium text-white">5 AI Prompts That Will Seriously Save You 20+
+                            class="writing-link font-medium text-white"
+                            aria-label="5 AI Prompts That Will Seriously Save You 20+ Hours a Week (Free Guide) on Medium">5 AI Prompts That Will Seriously Save You 20+
                             Hours a Week (Free Guide)</a>
                         <span class="block text-slate-dim text-sm mt-0.5"> Sharing AI prompts in my workflow.</span>
                     </li>
                     <li class="timeline-item">
                         <a href="https://medium.com/@cubeerea/5-steps-to-memorizing-the-autograd-implementation-for-good-9e49b683fe9c"
-                            class="writing-link font-medium text-white">Under the Hood of Neural Networks: Implementing
+                            class="writing-link font-medium text-white"
+                            aria-label="Under the Hood of Neural Networks: Implementing Autograd from Scratch on Medium">Under the Hood of Neural Networks: Implementing
                             Autograd from Scratch</a>
                         <span class="block text-slate-dim text-sm mt-0.5"> Technical notes on Autograd
                             implementation.</span>
@@ -715,7 +764,7 @@
                 </div>
                 <div class="flex flex-col items-end gap-1 max-[768px]:items-start">
                     <p class="text-xs text-slate-dim m-0">Last updated: <time datetime="2026-03-21"
-                            class="text-slate-text">${datetime}</time></p>
+                            class="text-slate-text">March 21, 2026</time></p>
                     <p class="text-xs text-slate-dim m-0">&copy; 2026 Hank Sha</p>
                 </div>
             </div>
