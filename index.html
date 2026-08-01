@@ -8,18 +8,18 @@
     <!-- Primary SEO -->
     <title>Hank Sha | AI &amp; ML Engineer — Applied ML, Mechanistic Interpretability</title>
     <meta name="description"
-        content="Hank Sha — UCSB graduating senior building at the intersection of applied ML, AI engineering, and mechanistic interpretability. Internships in biotech AI and HR-tech LLM systems.">
+        content="Hank Sha — UCSB graduate and AI engineer. Scaled an LLM developer-evaluation pipeline to 1.4M users, researches graph unlearning and mechanistic interpretability. Available for Applied AI / FDE roles.">
     <meta name="keywords"
         content="applied machine learning, AI engineering, mechanistic interpretability, PyTorch, LLMs, NLP, UCSB, portfolio, Hank Sha">
     <meta name="author" content="Hank Sha">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0a0f1c">
+    <meta name="theme-color" content="#08070f">
     <link rel="canonical" href="https://hanksha.dev">
 
     <!-- Open Graph -->
     <meta property="og:title" content="Hank Sha | AI &amp; ML Engineer">
     <meta property="og:description"
-        content="UCSB senior building scalable AI products. Applied ML, mechanistic interpretability, and LLM engineering.">
+        content="UCSB graduate building production LLM systems. Applied ML, mechanistic interpretability, and AI engineering.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://hanksha.dev">
     <meta property="og:image" content="https://hanksha.dev/assets/og-preview.png">
@@ -32,7 +32,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Hank Sha | AI &amp; ML Engineer">
     <meta name="twitter:description"
-        content="UCSB senior building scalable AI products. Applied ML, mechanistic interpretability, and LLM engineering.">
+        content="UCSB graduate building production LLM systems. Applied ML, mechanistic interpretability, and AI engineering.">
     <meta name="twitter:image" content="https://hanksha.dev/assets/og-preview.png">
     <meta name="twitter:creator" content="@cubeerea">
 
@@ -63,16 +63,15 @@
     }
     </script>
 
-    <!-- Fonts (preload critical weights) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap"
-        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
 
-    <script type="module" src="/src/theme.ts"></script>
+    <!-- Fonts are self-hosted via @fontsource and bundled with the stylesheet -->
+
+    <script type="module" src="/src/transitions.ts"></script>
 </head>
 
 <body class="font-ui text-base leading-relaxed text-white bg-ink">
@@ -83,19 +82,13 @@
     <nav class="fixed top-0 left-0 right-0 z-40 flex justify-center pt-4" aria-label="Main navigation"
         role="navigation">
         <div
-            class="nav-pill flex gap-5 px-4 py-2 bg-[rgba(10,15,28,0.8)] backdrop-blur-[12px] rounded-2xl border border-border max-[768px]:gap-3 max-[768px]:px-3 max-[768px]:py-1.5 max-[480px]:gap-2 max-[480px]:px-2 max-[480px]:py-1">
-            <a href="#top"
-                class="nav-link text-sm text-white border-b border-cyan-dim no-underline transition-colors duration-200 hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Home</a>
-            <a href="#skills"
-                class="nav-link text-sm text-white no-underline transition-opacity duration-200 opacity-70 hover:opacity-100 hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Skills</a>
-            <a href="#writing"
-                class="nav-link text-sm text-white no-underline transition-opacity duration-200 opacity-70 hover:opacity-100 hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Writing</a>
-            <a href="#projects"
-                class="nav-link text-sm text-white no-underline transition-opacity duration-200 opacity-70 hover:opacity-100 hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Projects</a>
-            <a href="#work"
-                class="nav-link text-sm text-white no-underline transition-opacity duration-200 opacity-70 hover:opacity-100 hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Work</a>
-            <a href="#contact"
-                class="nav-link text-sm text-white no-underline transition-opacity duration-200 opacity-70 hover:opacity-100 hover:no-underline max-[768px]:text-[0.8rem] max-[480px]:text-xs">Contact</a>
+            class="nav-pill flex gap-5 px-4 py-2 bg-[rgba(8,7,15,0.82)] backdrop-blur-[12px] rounded-2xl border border-border max-[768px]:gap-3 max-[768px]:px-3 max-[768px]:py-1.5 max-[480px]:gap-2 max-[480px]:px-2 max-[480px]:py-1">
+            <a href="#top" class="nav-link text-sm max-[768px]:text-[0.8rem] max-[480px]:text-xs">Home</a>
+            <a href="#projects" class="nav-link text-sm max-[768px]:text-[0.8rem] max-[480px]:text-xs">Projects</a>
+            <a href="#writing" class="nav-link text-sm max-[768px]:text-[0.8rem] max-[480px]:text-xs">Writing</a>
+            <a href="#skills" class="nav-link text-sm max-[768px]:text-[0.8rem] max-[480px]:text-xs">Skills</a>
+            <a href="#work" class="nav-link text-sm max-[768px]:text-[0.8rem] max-[480px]:text-xs">Work</a>
+            <a href="#contact" class="nav-link text-sm max-[768px]:text-[0.8rem] max-[480px]:text-xs">Contact</a>
         </div>
     </nav>
 
@@ -104,10 +97,9 @@
         id="top">
 
         <!-- Hero + About Section -->
-        <header class="hero-snap relative pt-10 pb-8 max-[768px]:pt-8 max-[480px]:pt-4" id="hero">
-            <div class="flex items-start justify-between gap-12 max-[768px]:flex-col max-[768px]:gap-6">
-                <!-- Left block -->
-                <div class="flex-1" id="about">
+        <header class="hero relative pt-10 pb-16 max-[768px]:pt-8 max-[480px]:pt-4" id="hero">
+            <div>
+                <div id="about">
                     <h1
                         class="font-display text-[clamp(2.5rem,6vw,4.5rem)] leading-tight font-bold tracking-tight mb-3 max-[768px]:text-[2.5rem] max-[480px]:text-[2rem]">
                         I'm <span class="gradient-text">Hank Sha</span>.
@@ -118,17 +110,20 @@
                     <!-- Status indicator + CTA -->
                     <div
                         class="inline-flex items-center gap-2 text-sm text-slate-text mb-6 px-3 py-1.5 rounded-full border border-border bg-white/[0.03]">
-                        <span class="status-dot"></span>
-                        <span>Currently seeking <strong class="text-white font-medium">Applied AI / FDE roles</strong>
-                            for Summer 2026.</span>
+                        <span>Recent UCSB grad — <strong class="text-white font-medium">available now</strong> for
+                            Applied AI / FDE roles.</span>
                         <a href="#contact"
-                            class="text-cyan hover:underline underline-offset-2 transition-colors duration-200 font-medium no-underline">Reach
+                            class="text-accent hover:underline underline-offset-2 transition-colors duration-200 font-medium no-underline">Reach
                             out →</a>
                     </div>
+                    <!-- Positioning -->
+                    <p class="about-tagline font-display text-xl font-bold tracking-tight mb-8 max-[480px]:text-lg">
+                        I build production LLM systems.
+                    </p>
                     <!-- CTA buttons -->
                     <div class="inline-flex gap-4 max-[480px]:flex max-[480px]:flex-col max-[480px]:gap-3">
                         <a href="/resume"
-                            class="inline-block px-4 py-2 rounded-xl text-sm font-medium no-underline border border-cyan-dim text-white shadow-[0_10px_40px_-10px_var(--color-cyan-glow)] transition-all duration-200 hover:border-cyan hover:shadow-[0_10px_50px_-10px_var(--color-cyan-glow)] hover:no-underline max-[480px]:text-center">
+                            class="inline-block px-4 py-2 rounded-xl text-sm font-medium no-underline border border-accent-dim text-white shadow-[0_10px_40px_-10px_var(--color-accent-glow)] transition-all duration-200 hover:border-accent hover:shadow-[0_10px_50px_-10px_var(--color-accent-glow)] hover:no-underline max-[480px]:text-center">
                             View Resume
                         </a>
                         <a href="#contact"
@@ -136,93 +131,154 @@
                             Contact
                         </a>
                     </div>
-                    <!-- About blurb -->
-                    <hr class="border-none border-t border-border my-6">
-                    <p class="about-tagline font-display text-xl font-bold tracking-tight mb-3 max-[480px]:text-lg">
-                        AI engineer building production LLM systems at the intersection of technical depth and customer
-                        impact.
-                    </p>
-                </div>
-                <!-- Right block: decorative element, desktop only -->
-                <div class="hidden md:flex items-center justify-center flex-shrink-0 mt-6">
-                    <div class="hero-decoration">
-                        <div class="hero-glow"></div>
-                        <div class="hero-grid"></div>
-                    </div>
                 </div>
             </div>
-            <div class="scroll-hint">↓</div>
         </header>
 
-        <!-- Skill Map Section -->
-        <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="skills">
-            <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">
-                Skill Map</h2>
-            <div class="skills-grid grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                <div class="skill-group">
-                    <h3 class="text-xs uppercase tracking-[0.1em] text-slate-dim mb-3 font-display font-semibold">
-                        Production Systems</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">Python</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">TypeScript</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">Node.js</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">Docker</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">PostgreSQL</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">MongoDB</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">Git</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">Vercel</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">GCP</span>
-                    </div>
-                </div>
-                <div class="skill-group">
-                    <h3 class="text-xs uppercase tracking-[0.1em] text-slate-dim mb-3 font-display font-semibold">ML /
-                        Research</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">PyTorch</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">HuggingFace</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">LangChain</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">Scikit-learn</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">Claude
-                            Code</span>
-                    </div>
-                </div>
-                <div class="skill-group">
-                    <h3 class="text-xs uppercase tracking-[0.1em] text-slate-dim mb-3 font-display font-semibold">Data +
-                        Analysis</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">R</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">pandas</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">NumPy</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">Matplotlib</span>
-                        <span
-                            class="text-xs px-2 py-1 rounded-md border border-border text-slate-text bg-white/[0.03]">XGBoost</span>
-                    </div>
+        <!-- Projects Section -->
+        <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="projects">
+            <div class="flex flex-wrap items-baseline justify-between gap-3 pb-2 border-b border-border mb-3">
+                <h2 class="font-display text-2xl font-semibold tracking-tight text-white">Projects</h2>
+                <span class="text-xs text-slate-dim marquee-hint"></span>
+            </div>
+
+            <!--
+              PROJECT LINKS
+              A card is an <a data-project-card> when it has a destination, and a <div> when it doesn't.
+              To make a placeholder card clickable: swap its <div ...> for
+                <a href="URL" target="_blank" rel="noopener noreferrer" ...>
+              and uncomment that card's .pcard__cta block.
+            -->
+            <div class="marquee full-bleed" data-marquee>
+                <div class="marquee__track" data-marquee-track>
+                    <ul class="marquee__group" data-marquee-group>
+
+                        <!-- 1 · Data4Good Hackathon -->
+                        <li class="marquee__item">
+                            <a class="pcard" style="--accent: 258 90% 74%"
+                                href="https://devpost.com/software/project-nexus" target="_blank"
+                                rel="noopener noreferrer" data-project-card data-project="Data4Good Hackathon">
+                                <span class="pcard__poster">
+                                    <!-- Project Nexus graph UI, from the Devpost gallery.
+                                         Regenerate with: npm run shots -->
+                                    <img src="/assets/projects/project-nexus.jpg" alt="" width="640" height="360"
+                                        loading="lazy" decoding="async">
+                                </span>
+                                <span class="pcard__body">
+                                    <span class="pcard__meta">
+                                        <span class="pcard__tag">1st Place</span>
+                                        <span class="pcard__year">UCSB · 2026</span>
+                                    </span>
+                                    <h3 class="pcard__title">Data4Good Hackathon</h3>
+                                    <p class="pcard__desc">Won the Civic Engagement &amp; Policy track at UCSB's
+                                        Data4Good hackathon.</p>
+                                    <span class="pcard__cta">View on Devpost <span class="pcard__arrow"
+                                            aria-hidden="true">&rarr;</span></span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <!-- 2 · Biotech Intelligence Engine -->
+                        <li class="marquee__item">
+                            <a class="pcard" style="--accent: 330 82% 70%"
+                                href="https://biotech-catalyst-engine-black.vercel.app/" target="_blank"
+                                rel="noopener noreferrer" data-project-card
+                                data-project="Biotech Intelligence Engine">
+                                <span class="pcard__poster">
+                                    <!-- Cropped detail of the live dashboard, captured at 2x.
+                                         Regenerate with: npm run shots -->
+                                    <img src="/assets/projects/biotech-engine.png" alt="" width="640" height="360"
+                                        loading="lazy" decoding="async">
+                                </span>
+                                <span class="pcard__body">
+                                    <span class="pcard__meta">
+                                        <span class="pcard__tag">Personal Project</span>
+                                    </span>
+                                    <h3 class="pcard__title">Biotech Intelligence Engine</h3>
+                                    <p class="pcard__desc">Aggregates SEC filings, clinical trials, FDA calendars and
+                                        news to surface investable signals early.</p>
+                                    <span class="pcard__cta">Open live site <span class="pcard__arrow"
+                                            aria-hidden="true">&rarr;</span></span>
+                                </span>
+                            </a>
+                        </li>
+
+                        <!-- 3 · LLM Graph Quality -->
+                        <li class="marquee__item">
+                            <div class="pcard" style="--accent: 258 90% 74%" data-project-card
+                                data-project="LLM Graph Quality">
+                                <span class="pcard__poster">
+                                    <svg viewBox="0 0 320 180" fill="none" aria-hidden="true" focusable="false">
+                                        <g stroke="hsl(var(--accent) / .3)">
+                                            <path
+                                                d="M70 52 142 34M142 34 214 62M70 52 104 106M104 106 142 34M104 106 178 128M178 128 214 62M178 128 250 108M214 62 250 108M104 106 58 146M58 146 178 128" />
+                                        </g>
+                                        <g fill="var(--color-ink-card)" stroke="hsl(var(--accent) / .55)"
+                                            stroke-width="1.5">
+                                            <circle cx="70" cy="52" r="8" />
+                                            <circle cx="214" cy="62" r="8" />
+                                            <circle cx="178" cy="128" r="8" />
+                                            <circle cx="58" cy="146" r="7" />
+                                            <circle cx="250" cy="108" r="7" />
+                                        </g>
+                                        <circle cx="142" cy="34" r="9.5" fill="hsl(var(--accent))" />
+                                        <circle cx="104" cy="106" r="11" fill="hsl(var(--accent) / .75)" />
+                                        <circle cx="104" cy="106" r="19" stroke="hsl(var(--accent) / .28)" />
+                                    </svg>
+                                </span>
+                                <span class="pcard__body">
+                                    <span class="pcard__meta">
+                                        <span class="pcard__tag">Research</span>
+                                        <span class="pcard__stat">In progress</span>
+                                    </span>
+                                    <h3 class="pcard__title">Exploring How LLMs Improve Graph Quality Using Topological
+                                        Signatures</h3>
+                                    <p class="pcard__desc">Second-author work on node classification and graph
+                                        unlearning. Write-up coming soon.</p>
+                                    <!-- <span class="pcard__cta">Read the paper <span class="pcard__arrow" aria-hidden="true">&rarr;</span></span> -->
+                                </span>
+                            </div>
+                        </li>
+
+                        <!-- 4 · Global PID Controller -->
+                        <li class="marquee__item">
+                            <a class="pcard" style="--accent: 330 82% 70%" href="/pid-steering" data-project-card
+                                data-project="Global PID Steering">
+                                <span class="pcard__poster">
+                                    <!-- Title block of the paper itself, rendered from page 1.
+                                         Regenerate with: npm run shots -->
+                                    <img src="/assets/projects/pid-steering.jpg" alt="" width="640" height="360"
+                                        loading="lazy" decoding="async">
+                                </span>
+                                <span class="pcard__body">
+                                    <span class="pcard__meta">
+                                        <span class="pcard__tag">Research</span>
+                                        <span class="pcard__tag">AI Safety</span>
+                                    </span>
+                                    <h3 class="pcard__title">Global PID Steering</h3>
+                                    <p class="pcard__desc">One averaged refusal vector beats per-layer PID at defending
+                                        Gemma-2 without wrecking it on benign prompts.</p>
+                                    <span class="pcard__cta">Read the paper <span class="pcard__arrow"
+                                            aria-hidden="true">&rarr;</span></span>
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
                 </div>
             </div>
+
+            <p class="mt-6">
+                <a href="https://github.com/cubeerea"
+                    class="text-sm px-3 py-1.5 rounded-full border border-border text-slate-text no-underline hover:text-accent hover:border-accent-dim transition-all duration-200"
+                    target="_blank" rel="noopener noreferrer">More on GitHub &rarr;</a>
+            </p>
         </section>
 
         <!-- Building/Learning in Public Section -->
         <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="writing">
             <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">
-                Building/Learning in Public</h2>
+                Writing</h2>
             <div class="mb-8">
                 <p class="text-slate-text">I write to clarify my own thinking.</p>
             </div>
@@ -269,96 +325,52 @@
                 </ul>
                 <p class="mt-6">
                     <a href="https://medium.com/@cubeerea"
-                        class="text-sm px-3 py-1.5 rounded-full border border-border text-slate-text no-underline hover:text-cyan hover:border-cyan-dim transition-all duration-200">More
+                        class="text-sm px-3 py-1.5 rounded-full border border-border text-slate-text no-underline hover:text-accent hover:border-accent-dim transition-all duration-200">More
                         on Medium &rarr;</a>
                 </p>
             </div>
         </section>
 
-        <!-- Projects Section -->
-        <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="projects">
-            <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">
-                Projects</h2>
-
-            <div class="bento-grid grid grid-cols-12 max-[768px]:grid-cols-1 gap-4">
-
-                <!-- Hackathon Win: 4 cols -->
-                <div class="bento-cell col-span-4 max-[768px]:col-span-full">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="text-xl leading-none" aria-hidden="true">&#127942;</span>
-                        <h3 class="font-display text-base font-semibold text-white">Data4Good Hackathon</h3>
+        <!-- Skill Map Section -->
+        <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="skills">
+            <div class="flex flex-wrap items-baseline justify-between gap-3 pb-2 border-b border-border mb-3">
+                <h2 class="font-display text-2xl font-semibold tracking-tight text-white">Skill Map</h2>
+                <span class="text-xs text-slate-dim">Grouped by how often I actually reach for them</span>
+            </div>
+            <div class="skills-grid grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <div class="skill-group">
+                    <h3 class="skill-tier-label">Daily</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill skill-pill--daily">Python</span>
+                        <span class="skill-pill skill-pill--daily">PyTorch</span>
+                        <span class="skill-pill skill-pill--daily">LLM APIs</span>
+                        <span class="skill-pill skill-pill--daily">pandas</span>
+                        <span class="skill-pill skill-pill--daily">Claude Code</span>
                     </div>
-                    <span
-                        class="text-[0.65rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-cyan-dim text-cyan self-start mb-3">1st
-                        Place</span>
-                    <p class="text-sm text-slate-text flex-1">UCSB 2026. Won the Civic Engagement &amp; Policy track at
-                        the Data4Good hackathon.</p>
-                    <a href="https://devpost.com/software/project-nexus" target="_blank" rel="noopener noreferrer"
-                        class="mt-3 text-xs text-cyan hover:underline underline-offset-2 transition-colors duration-200 self-start no-underline">View
-                        on Devpost &rarr;</a>
                 </div>
-
-                <!-- Biotech Engine: 8 cols (feature) -->
-                <div class="bento-cell bento-cell--feature col-span-8 max-[768px]:col-span-full">
-                    <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
-                        <h3 class="font-display text-base font-semibold text-white">Biotech Intelligence Engine</h3>
-                        <span
-                            class="text-[0.65rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-cyan-dim text-cyan">Personal
-                            Project</span>
+                <div class="skill-group">
+                    <h3 class="skill-tier-label">Working</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill">TypeScript</span>
+                        <span class="skill-pill">Hugging Face</span>
+                        <span class="skill-pill">LangChain</span>
+                        <span class="skill-pill">CUDA</span>
+                        <span class="skill-pill">XGBoost</span>
+                        <span class="skill-pill">scikit-learn</span>
+                        <span class="skill-pill">NumPy</span>
+                        <span class="skill-pill">Docker</span>
                     </div>
-                    <p class="text-sm text-slate-text">Multi-source biotech intelligence platform — aggregates SEC
-                        filings, clinical trials, FDA calendars, and news. Built to surface investable signals before
-                        they hit mainstream feeds.</p>
                 </div>
-
-                <!-- AI Job Applier: 6 cols -->
-                <div class="bento-cell col-span-6 max-[768px]:col-span-full">
-                    <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
-                        <h3 class="font-display text-base font-semibold text-white">AI Job Applier — Chrome Extension
-                        </h3>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="badge">20min → 3min</span>
-                            <span
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-cyan-dim text-cyan">Personal
-                                Project</span>
-                        </div>
+                <div class="skill-group">
+                    <h3 class="skill-tier-label">Familiar</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-pill skill-pill--familiar">R</span>
+                        <span class="skill-pill skill-pill--familiar">Node.js</span>
+                        <span class="skill-pill skill-pill--familiar">PostgreSQL</span>
+                        <span class="skill-pill skill-pill--familiar">MongoDB</span>
+                        <span class="skill-pill skill-pill--familiar">GCP</span>
                     </div>
-                    <p class="text-sm text-slate-text">Built a Chrome extension that scrapes job descriptions and
-                        auto-fills application forms across major ATS platforms (Greenhouse, Lever, Workday). Reduced
-                        per-application time from ~20 min to under 3 min. Handles dynamic DOM injection, content-script
-                        messaging, and multi-step form traversal.</p>
                 </div>
-
-                <!-- LLM Graph Quality Research: 6 cols -->
-                <div class="bento-cell col-span-6 max-[768px]:col-span-full">
-                    <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
-                        <h3 class="font-display text-base font-semibold text-white">Exploring How LLMs Improve Graph
-                            Quality Using Topological Signatures</h3>
-                        <span
-                            class="text-[0.65rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-violet-400/40 text-violet-300">Research</span>
-                    </div>
-                    <p class="text-sm text-slate-text">Research investigating how large language models can enhance
-                        graph quality through topological signature analysis in tasks like node classification and graph
-                        unlearning.</p>
-                </div>
-
-                <!-- Mechanistic Interpretability Research: 6 cols -->
-                <div class="bento-cell col-span-6 max-[768px]:col-span-full">
-                    <div class="flex flex-wrap items-start justify-between gap-2 mb-2">
-                        <h3 class="font-display text-base font-semibold text-white">Global PID Controller</h3>
-                        <div class="flex gap-2 flex-wrap">
-                            <span
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-violet-400/40 text-violet-300">Research</span>
-                            <span
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-violet-400/40 text-violet-300">AI
-                                Safety</span>
-                        </div>
-                    </div>
-                    <p class="text-sm text-slate-text">Activation Steering with a Feedback Controller with Emphasis with
-                        Application in Cross-Layer Behavior and Integral-Windup Tests</p>
-                </div>
-
-
             </div>
         </section>
 
@@ -366,8 +378,6 @@
         <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="work">
             <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">
                 Selected Work</h2>
-            <p class="text-slate-text mb-6">Applications of the above. Each follows: Context &rarr; Action &rarr;
-                Lessons</p>
 
             <!-- Research Role -->
             <article
@@ -396,7 +406,7 @@
                         class="gist-grid bg-white/[0.03] mt-6 mb-6 rounded-lg text-sm border border-border overflow-hidden">
                         <div class="p-4 border-r border-border">
                             <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
+                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-accent mb-1.5 font-display">
                                 The Gist</div>
                             <span class="text-slate-text">Second author on research involving LLMs and Graph Unlearning.
                                 Built experimental pipelines and optimized local model inference under compute
@@ -404,14 +414,14 @@
                         </div>
                         <div class="p-4 border-r border-border">
                             <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
+                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-accent mb-1.5 font-display">
                                 Key Win</div>
                             <span class="text-slate-text">Achieved a 4x speedup in experiment runtimes by optimizing
                                 CUDA configurations and quantization settings.</span>
                         </div>
                         <div class="p-4">
                             <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
+                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-accent mb-1.5 font-display">
                                 Skills</div>
                             <span class="text-slate-text">PyTorch, Hugging Face, CUDA, Graph Neural Networks.</span>
                         </div>
@@ -469,7 +479,7 @@
                             <span class="text-sm text-slate-dim max-[480px]:text-xs">Aug 2025 – Dec 2025 · Pre-IPO
                                 Biotech · Phase II MDD Trial</span>
                             <span
-                                class="text-[0.6rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-cyan-dim/40 text-cyan">Internship</span>
+                                class="text-[0.6rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-accent-dim/40 text-accent">Internship</span>
                             <span class="win-pill">XGBoost · honest result</span>
                         </div>
                     </div>
@@ -482,7 +492,7 @@
                         class="gist-grid bg-white/[0.03] mt-6 mb-6 rounded-lg text-sm border border-border overflow-hidden">
                         <div class="p-4 border-r border-border">
                             <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
+                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-accent mb-1.5 font-display">
                                 The Gist</div>
                             <span class="text-slate-text">Applied ML to Phase II clinical trial data for MDD (Major
                                 Depressive Disorder). Conducted deep exploratory data analysis to find signals in
@@ -490,7 +500,7 @@
                         </div>
                         <div class="p-4 border-r border-border">
                             <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
+                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-accent mb-1.5 font-display">
                                 Key Win</div>
                             <span class="text-slate-text">Provided a high-integrity technical audit that correctly
                                 identified ML as not suitable for the dataset, preventing action on unreliable
@@ -498,7 +508,7 @@
                         </div>
                         <div class="p-4">
                             <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
+                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-accent mb-1.5 font-display">
                                 Skills</div>
                             <span class="text-slate-text">XGBoost, Statistical Modeling, EDA, Biostatistics.</span>
                         </div>
@@ -555,7 +565,7 @@
                             <span class="text-sm text-slate-dim max-[480px]:text-xs">Sep 2024 – Apr 2025 · GitRoll
                                 (HR-Tech, Pre-Seed)</span>
                             <span
-                                class="text-[0.6rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-cyan-dim/40 text-cyan">Internship</span>
+                                class="text-[0.6rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-accent-dim/40 text-accent">Internship</span>
                             <span class="win-pill">1.4M users · -13% cost</span>
                         </div>
                     </div>
@@ -568,7 +578,7 @@
                         class="gist-grid bg-white/[0.03] mt-6 mb-6 rounded-lg text-sm border border-border overflow-hidden">
                         <div class="p-4 border-r border-border">
                             <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
+                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-accent mb-1.5 font-display">
                                 The Gist</div>
                             <span class="text-slate-text">Scaled an LLM-based developer evaluation system to 1.4M+
                                 users. Focused on prompt engineering, cost optimization, and reducing algorithmic
@@ -576,14 +586,14 @@
                         </div>
                         <div class="p-4 border-r border-border">
                             <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
+                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-accent mb-1.5 font-display">
                                 Key Win</div>
                             <span class="text-slate-text">Reduced API costs by 13% and improved model performance by
                                 20% through iterative benchmarking of GPT, Gemini, and Claude.</span>
                         </div>
                         <div class="p-4">
                             <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
+                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-accent mb-1.5 font-display">
                                 Skills</div>
                             <span class="text-slate-text">Python, LLMs, NLP, ast-grep, Supervised Learning.</span>
                         </div>
@@ -621,125 +631,53 @@
                 </div>
             </article>
 
-            <!-- Venture Scout -->
-            <article
-                class="experience-card experience-card--scout border border-border rounded-xl mb-4 bg-ink-card transition-all duration-300 hover:border-border-hover hover:shadow-[0_4px_20px_-4px_rgba(92,225,230,0.08)]"
-                data-expanded="false">
-                <button
-                    class="card-header flex justify-between items-center w-full p-6 bg-transparent border-none cursor-pointer text-left font-inherit text-inherit max-[480px]:p-4"
-                    aria-expanded="false">
-                    <div class="flex-1">
-                        <h3 class="card-title font-display text-base font-semibold mb-1 text-white max-[480px]:text-sm">
-                            Venture Scout</h3>
-                        <div class="flex flex-wrap items-center gap-2 mt-0.5">
-                            <span class="text-sm text-slate-dim max-[480px]:text-xs">Oct 2025 – Present · Bouken
-                                Capital</span>
-                            <span
-                                class="text-[0.6rem] uppercase tracking-widest font-semibold px-2 py-0.5 rounded-full border border-slate-400/20 text-slate-dim">Scout</span>
-                            <span class="win-pill">Founder memos · outreach</span>
-                        </div>
-                    </div>
-                    <span
-                        class="card-toggle text-xl text-slate-dim font-light w-6 text-center transition-all duration-300"
-                        aria-hidden="true">+</span>
-                </button>
-                <div class="card-content hidden px-6 pb-6 border-t border-border max-[480px]:px-4 max-[480px]:pb-4">
-                    <div
-                        class="gist-grid bg-white/[0.03] mt-6 mb-6 rounded-lg text-sm border border-border overflow-hidden">
-                        <div class="p-4 border-r border-border">
-                            <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
-                                The Gist</div>
-                            <span class="text-slate-text">Evaluated AI and deep-tech startups, communicated directly
-                                with founders, and synthesized findings into concise investment memos for
-                                partners.</span>
-                        </div>
-                        <div class="p-4 border-r border-border">
-                            <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
-                                Key Win</div>
-                            <span class="text-slate-text">Developed customer-facing technical communication — distilling
-                                complex startup pitches into clear, decision-ready summaries.</span>
-                        </div>
-                        <div class="p-4">
-                            <div
-                                class="text-[0.65rem] uppercase tracking-widest font-semibold text-cyan mb-1.5 font-display">
-                                Skills</div>
-                            <span class="text-slate-text">Startup Evaluation, Founder Outreach, Technical Synthesis,
-                                Investment Memos.</span>
-                        </div>
-                    </div>
-                    <hr class="border-none border-t border-border my-6">
-                    <div class="mt-6 first:mt-4">
-                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">
-                            Context</h4>
-                        <p class="text-slate-text">Part-time scout role at an early-stage fund (pre-seed, seed, early
-                            Series A) investing across AI, deep tech, energy, cleantech, and web3. Focused on sourcing,
-                            light evaluation, and partner-facing communication at pre-seed and seed stage.</p>
-                    </div>
-                    <div class="mt-6">
-                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">
-                            Action</h4>
-                        <ul class="experience-list list-none pl-4 space-y-2 text-slate-text">
-                            <li><strong class="font-semibold text-white">Synthesized startup pitches into partner-facing
-                                    memos</strong> — translated technical capability into commercial viability.</li>
-                            <li><strong class="font-semibold text-white">Evaluated AI / deep-tech startups</strong>
-                                across value prop, market, team, and traction.</li>
-                            <li><strong class="font-semibold text-white">Sourcing &amp; founder outreach</strong> —
-                                university channels and cold outreach at volume.</li>
-                        </ul>
-                    </div>
-                    <div class="mt-6">
-                        <h4 class="text-sm text-slate-text uppercase tracking-wider font-medium mb-2 font-display">
-                            Lessons</h4>
-                        <ul class="experience-list list-none pl-4 space-y-2 text-slate-text">
-                            <li>Communication is foundational. Clarity, tone, and responsiveness matter more than I
-                                expected.</li>
-                            <li>Distilling complex technical signals into clear, actionable language is a skill — one
-                                that transfers directly to customer-facing engineering.</li>
-                        </ul>
-                    </div>
-                </div>
-            </article>
+            <p class="text-sm text-slate-dim mt-6">
+                Also: part-time <strong class="text-slate-text font-medium">Venture Scout</strong> at Bouken Capital
+                (Oct 2025 &ndash; present) &mdash; sourcing pre-seed AI and deep-tech startups and writing
+                partner-facing memos.
+            </p>
         </section>
 
         <!-- Footer / Contact -->
         <footer class="pt-8 border-t border-border fade-in" id="contact">
             <h2 class="font-display text-2xl font-semibold tracking-tight text-white pb-2 border-b border-border mb-6">
                 Contact</h2>
-            <p class="text-sm text-slate-dim font-display mb-4">Outside work: gym, music, kitchen experiments. Driven by
-                curiosity.</p>
+            <p class="text-sm text-slate-dim font-display mb-4">Outside work: gym, music, kitchen experiments.</p>
             <div class="flex flex-wrap items-center justify-between gap-4 max-[768px]:flex-col max-[768px]:items-start">
-                <div class="contact-icons flex gap-4 flex-wrap">
-                    <a href="mailto:hankssha@gmail.com" class="contact-icon-btn" title="Email" aria-label="Email">
+                <div class="contact-icons flex gap-3 flex-wrap">
+                    <a href="mailto:hankssha@gmail.com" class="contact-link" title="Email" aria-label="Email">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="2" y="4" width="20" height="16" rx="2" />
                             <polyline points="2,4 12,13 22,4" />
                         </svg>
+                        <span>Email</span>
                     </a>
-                    <a href="https://github.com/cubeerea" class="contact-icon-btn" title="GitHub" aria-label="GitHub"
+                    <a href="https://github.com/cubeerea" class="contact-link" title="GitHub" aria-label="GitHub"
                         target="_blank" rel="noopener noreferrer">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path
                                 d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
                         </svg>
+                        <span>GitHub</span>
                     </a>
-                    <a href="https://medium.com/@cubeerea" class="contact-icon-btn" title="Medium" aria-label="Medium"
+                    <a href="https://medium.com/@cubeerea" class="contact-link" title="Medium" aria-label="Medium"
                         target="_blank" rel="noopener noreferrer">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path
                                 d="M13.54 12a6.8 6.8 0 01-6.77 6.82A6.8 6.8 0 010 12a6.8 6.8 0 016.77-6.82A6.8 6.8 0 0113.54 12zm7.42 0c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z" />
                         </svg>
+                        <span>Medium</span>
                     </a>
-                    <a href="https://www.linkedin.com/in/hank-sha/" class="contact-icon-btn" title="LinkedIn"
+                    <a href="https://www.linkedin.com/in/hank-sha/" class="contact-link" title="LinkedIn"
                         aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path
                                 d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                         </svg>
+                        <span>LinkedIn</span>
                     </a>
-                    <a href="/resume" class="contact-icon-btn" title="Resume" aria-label="Resume">
+                    <a href="/resume" class="contact-link" title="Resume" aria-label="Resume">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
@@ -748,11 +686,12 @@
                             <line x1="16" y1="17" x2="8" y2="17" />
                             <polyline points="10,9 9,9 8,9" />
                         </svg>
+                        <span>Resume</span>
                     </a>
                 </div>
                 <div class="flex flex-col items-end gap-1 max-[768px]:items-start">
-                    <p class="text-xs text-slate-dim m-0">Last updated: <time datetime="2026-03-21"
-                            class="text-slate-text">March 21, 2026</time></p>
+                    <p class="text-xs text-slate-dim m-0">Last updated: <time id="last-updated"
+                            class="text-slate-text"></time></p>
                     <p class="text-xs text-slate-dim m-0">&copy; 2026 Hank Sha</p>
                 </div>
             </div>

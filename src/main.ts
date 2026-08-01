@@ -1,87 +1,31 @@
 /**
  * Portfolio Site — Main TypeScript
  * Handles: cursor aura, expand/collapse cards, scroll animations,
- * nav active state, scroll tracking, and template variables.
+ * nav active state, typewriter, and the projects marquee.
  */
 
 import './style.css';
 
-declare global {
-  interface Window {
-    __portfolioAnalytics: Analytics;
-    ANALYTICS_ENDPOINT?: string;
-  }
-}
-
-// Central source for 'Last updated' timestamp
-const DATETIME = 'March 21, 2026';
-
-interface AnalyticsEvent {
-  name: string;
-  timestamp: number;
-  [key: string]: unknown;
-}
-
-interface Analytics {
-  sessionStart: number;
-  maxScrollDepth: number;
-  sectionsViewed: Set<string>;
-  events: AnalyticsEvent[];
-}
-
-const analytics: Analytics = {
-  sessionStart: Date.now(),
-  maxScrollDepth: 0,
-  sectionsViewed: new Set(),
-  events: [],
-};
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // ========================================
-// Analytics
+// Last Updated (injected at build time)
 // ========================================
 
-function trackEvent(eventName: string, data: Record<string, unknown> = {}): void {
-  const event: AnalyticsEvent = {
-    name: eventName,
-    timestamp: Date.now() - analytics.sessionStart,
-    ...data,
-  };
-  analytics.events.push(event);
+function initLastUpdated(): void {
+  const el = document.getElementById('last-updated');
+  if (!(el instanceof HTMLTimeElement)) return;
 
-  if (
-    window.location.hostname === 'localhost' ||
-    window.location.hostname === '127.0.0.1'
-  ) {
-    console.log('[Analytics]', eventName, data);
-  }
-
-  if (window.ANALYTICS_ENDPOINT) {
-    sendAnalytics(event);
-  }
-}
-
-function sendAnalytics(event: AnalyticsEvent): void {
-  if (navigator.sendBeacon && window.ANALYTICS_ENDPOINT) {
-    navigator.sendBeacon(window.ANALYTICS_ENDPOINT, JSON.stringify(event));
-  }
-}
-
-// ========================================
-// Template Variables
-// ========================================
-
-function applyTemplates(): void {
-  const walker = document.createTreeWalker(
-    document.body,
-    NodeFilter.SHOW_TEXT,
-    null,
-  );
-  let node: Node | null;
-  while ((node = walker.nextNode())) {
-    if (node.nodeValue?.includes('${datetime}')) {
-      node.nodeValue = node.nodeValue.replace(/\$\{datetime\}/g, DATETIME);
-    }
-  }
+  const built = new Date(__BUILD_DATE__);
+  // Both must come from the same calendar day. toISOString() is UTC while
+  // toLocaleDateString() is local, which disagreed across the date boundary.
+  const pad = (n: number) => String(n).padStart(2, '0');
+  el.dateTime = `${built.getFullYear()}-${pad(built.getMonth() + 1)}-${pad(built.getDate())}`;
+  el.textContent = built.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 }
 
 // ========================================
@@ -92,10 +36,27 @@ function initCursorAura(): void {
   const aura = document.getElementById('cursor-aura');
   if (!aura) return;
 
-  window.addEventListener('mousemove', (e: MouseEvent) => {
-    aura.style.setProperty('--x', `${e.clientX}px`);
-    aura.style.setProperty('--y', `${e.clientY}px`);
-  });
+  // The aura repaints a full-viewport radial gradient, so coalesce moves
+  // into one write per frame instead of one per mousemove event.
+  let x = 0;
+  let y = 0;
+  let queued = false;
+
+  window.addEventListener(
+    'mousemove',
+    (e: MouseEvent) => {
+      x = e.clientX;
+      y = e.clientY;
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        aura.style.setProperty('--x', `${x}px`);
+        aura.style.setProperty('--y', `${y}px`);
+      });
+    },
+    { passive: true },
+  );
 }
 
 // ========================================
@@ -125,30 +86,69 @@ function initFadeInObserver(): void {
 // Active Nav Link Tracking
 // ========================================
 
+/**
+ * Highlights the section whose top edge is closest above the nav line.
+ *
+ * An IntersectionObserver can't do this reliably: with a fixed threshold, a
+ * section taller than `viewport / threshold` never reaches the required ratio
+ * and so never fires at all. Expanding the work cards made #work 3663px tall,
+ * whose maximum achievable ratio was 0.246 against a 0.3 threshold — the nav
+ * simply stopped updating. Measuring positions directly has no such failure.
+ */
 function initNavTracking(): void {
-  const sections = document.querySelectorAll('section[id], header[id]');
-  const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
-  if (!sections.length) return;
+  const NAV_LINE = 96; // must match --scroll-offset / scroll-padding-top
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          navLinks.forEach((link) => {
-            const isActive = link.getAttribute('href') === `#${id}`;
-            link.classList.toggle('text-white', isActive);
-            link.classList.toggle('border-b', isActive);
-            link.classList.toggle('border-cyan-dim', isActive);
-            link.classList.toggle('text-slate-text', !isActive);
-          });
+  const targets = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>('.nav-link'),
+  )
+    .map((link) => {
+      const id = link.getAttribute('href')?.replace('#', '');
+      const el = id ? document.getElementById(id) : null;
+      return el ? { link, el } : null;
+    })
+    .filter((t): t is { link: HTMLAnchorElement; el: HTMLElement } => t !== null);
+
+  if (!targets.length) return;
+
+  let queued = false;
+
+  function update(): void {
+    queued = false;
+
+    let active = targets[0];
+
+    const atBottom =
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 2;
+
+    if (atBottom) {
+      // Trailing sections can be too short to ever cross the nav line.
+      active = targets[targets.length - 1];
+    } else {
+      let closest = -Infinity;
+      targets.forEach((t) => {
+        const offset = t.el.getBoundingClientRect().top - NAV_LINE;
+        if (offset <= 0 && offset > closest) {
+          closest = offset;
+          active = t;
         }
       });
-    },
-    { threshold: 0.3, rootMargin: '-80px 0px -50% 0px' },
-  );
+    }
 
-  sections.forEach((section) => observer.observe(section));
+    targets.forEach(({ link }) => {
+      link.classList.toggle('is-active', link === active.link);
+    });
+  }
+
+  function schedule(): void {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
+  }
+
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  update();
 }
 
 // ========================================
@@ -163,107 +163,11 @@ function initExperienceCards(): void {
     if (!header) return;
 
     header.addEventListener('click', () => {
-      const isExpanded = card.dataset.expanded === 'true';
-      const newState = !isExpanded;
-
-      card.dataset.expanded = String(newState);
-      header.setAttribute('aria-expanded', String(newState));
-
-      if (newState) {
-        const title =
-          card.querySelector('.card-title')?.textContent || 'Unknown';
-        trackEvent('experience_expanded', { title });
-      }
-    });
-
-    header.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        header.click();
-      }
+      const expanded = card.dataset.expanded !== 'true';
+      card.dataset.expanded = String(expanded);
+      header.setAttribute('aria-expanded', String(expanded));
     });
   });
-}
-
-// ========================================
-// Scroll & Section Tracking
-// ========================================
-
-function initScrollTracking(): void {
-  const handler = throttle(() => {
-    const scrollHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
-    if (scrollHeight <= 0) return;
-
-    const scrollPercent = Math.round((window.scrollY / scrollHeight) * 100);
-    const milestone = Math.floor(scrollPercent / 25) * 25;
-
-    if (milestone > analytics.maxScrollDepth) {
-      analytics.maxScrollDepth = milestone;
-      trackEvent('scroll_depth', { depth: milestone });
-    }
-  }, 250);
-
-  window.addEventListener('scroll', handler, { passive: true });
-}
-
-function initSectionTracking(): void {
-  const sections = document.querySelectorAll('section[id]');
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionId = entry.target.id;
-          if (!analytics.sectionsViewed.has(sectionId)) {
-            analytics.sectionsViewed.add(sectionId);
-            trackEvent('section_viewed', { section: sectionId });
-          }
-        }
-      });
-    },
-    { threshold: 0.5 },
-  );
-
-  sections.forEach((section) => observer.observe(section));
-}
-
-function initTimeTracking(): void {
-  window.addEventListener('beforeunload', () => {
-    const timeSpent = Math.round(
-      (Date.now() - analytics.sessionStart) / 1000,
-    );
-    trackEvent('session_end', {
-      duration: timeSpent,
-      maxScrollDepth: analytics.maxScrollDepth,
-      sectionsViewed: Array.from(analytics.sectionsViewed),
-    });
-  });
-
-  const milestones = [30, 60, 120, 300];
-  milestones.forEach((seconds) => {
-    setTimeout(() => {
-      trackEvent('time_milestone', { seconds });
-    }, seconds * 1000);
-  });
-}
-
-// ========================================
-// Utilities
-// ========================================
-
-function throttle<T extends (...args: unknown[]) => void>(
-  func: T,
-  limit: number,
-): (...args: Parameters<T>) => void {
-  let inThrottle = false;
-  return function (this: unknown, ...args: Parameters<T>) {
-    if (!inThrottle) {
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
-    }
-  };
 }
 
 // ========================================
@@ -271,46 +175,163 @@ function throttle<T extends (...args: unknown[]) => void>(
 // ========================================
 
 function initTypewriter(): void {
-  const raw = document.getElementById('typewriter');
-  if (!raw) return;
-  const el = raw as HTMLElement;
+  const el = document.getElementById('typewriter');
+  if (!el) return;
 
   const phrases = [
-    'Graduating senior @ UC Santa Barbara',
-    'Applied ML & AI Engineering',
+    'UCSB · Applied ML & AI Engineering',
+    'Production LLM Systems',
     'Mechanistic Interpretability',
     'Forward Deployed Engineering',
   ];
 
-  let phraseIdx = 0;
-  let charIdx = 0;
-  let deleting = false;
+  // Nothing should animate under reduced motion, and the line still needs
+  // content so the layout doesn't collapse.
+  if (reducedMotion.matches) {
+    el.textContent = phrases[0];
+    document.querySelector('.typewriter-cursor')?.remove();
+    return;
+  }
+
   const TYPING_SPEED = 55;
   const DELETE_SPEED = 28;
   const PAUSE_END = 2200;
   const PAUSE_START = 400;
 
-  function tick() {
+  let phraseIdx = 0;
+  let charIdx = 0;
+  let deleting = false;
+  let timer: number | undefined;
+
+  function tick(): void {
     const current = phrases[phraseIdx];
+
     if (!deleting) {
-      el.textContent = current.slice(0, ++charIdx);
+      el!.textContent = current.slice(0, ++charIdx);
       if (charIdx === current.length) {
         deleting = true;
-        setTimeout(tick, PAUSE_END);
+        timer = window.setTimeout(tick, PAUSE_END);
         return;
       }
     } else {
-      el.textContent = current.slice(0, --charIdx);
+      el!.textContent = current.slice(0, --charIdx);
       if (charIdx === 0) {
         deleting = false;
         phraseIdx = (phraseIdx + 1) % phrases.length;
-        setTimeout(tick, PAUSE_START);
+        timer = window.setTimeout(tick, PAUSE_START);
         return;
       }
     }
-    setTimeout(tick, deleting ? DELETE_SPEED : TYPING_SPEED);
+
+    timer = window.setTimeout(tick, deleting ? DELETE_SPEED : TYPING_SPEED);
   }
+
+  // Don't keep a timer loop alive in a background tab.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      window.clearTimeout(timer);
+    } else {
+      tick();
+    }
+  });
+
   tick();
+}
+
+// ========================================
+// Projects Marquee
+// ========================================
+
+/**
+ * Continuous right-to-left marquee.
+ *
+ * The group of cards is authored once in HTML and cloned at runtime until the
+ * track is at least twice the viewport width, so the loop is seamless on any
+ * display. The animation shifts the track by exactly one group + one gap.
+ *
+ * Degrades on purpose:
+ *   - no JS            -> native scroll-snap carousel (CSS `:not(.marquee--animated)`)
+ *   - reduced motion   -> same carousel, nothing moves on its own
+ *   - touch / coarse   -> same carousel; swiping beats chasing a moving target
+ *   - off-screen       -> animation paused, no wasted compositing
+ */
+function initProjectsMarquee(): void {
+  const marquee = document.querySelector<HTMLElement>('[data-marquee]');
+  const track = marquee?.querySelector<HTMLElement>('[data-marquee-track]');
+  const group = marquee?.querySelector<HTMLElement>('[data-marquee-group]');
+  if (!marquee || !track || !group) return;
+
+  const PIXELS_PER_SECOND = 53;
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  function measureScrollbar(): void {
+    const width = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--scrollbar-w', `${width}px`);
+  }
+
+  function build(): void {
+    track!.querySelectorAll('[data-marquee-clone]').forEach((n) => n.remove());
+    marquee!.classList.remove('marquee--animated');
+
+    if (reducedMotion.matches || !finePointer.matches) return;
+
+    const gap = parseFloat(getComputedStyle(track!).columnGap) || 0;
+    const groupWidth = group!.getBoundingClientRect().width;
+    const viewportWidth = marquee!.getBoundingClientRect().width;
+    if (!groupWidth || !viewportWidth) return;
+
+    const copies = Math.max(2, Math.ceil((viewportWidth * 2) / (groupWidth + gap)));
+    for (let i = 1; i < copies; i += 1) {
+      const clone = group!.cloneNode(true) as HTMLElement;
+      clone.setAttribute('aria-hidden', 'true');
+      clone.setAttribute('data-marquee-clone', '');
+      clone.removeAttribute('data-marquee-group');
+      // Clones must not be reachable by keyboard — each project is tabbable once.
+      clone
+        .querySelectorAll<HTMLElement>('a')
+        .forEach((a) => a.setAttribute('tabindex', '-1'));
+      track!.appendChild(clone);
+    }
+
+    const shift = groupWidth + gap;
+    track!.style.setProperty('--marquee-shift', `${shift}px`);
+    track!.style.setProperty(
+      '--marquee-duration',
+      `${(shift / PIXELS_PER_SECOND).toFixed(2)}s`,
+    );
+    marquee!.classList.add('marquee--animated');
+  }
+
+  function rebuild(): void {
+    measureScrollbar();
+    build();
+  }
+
+  rebuild();
+
+  // Web fonts land after first paint and change card width — remeasure.
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(rebuild).catch(() => {});
+  }
+
+  let resizeTimer: number | undefined;
+  window.addEventListener('resize', () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(rebuild, 200);
+  });
+
+  reducedMotion.addEventListener('change', rebuild);
+  finePointer.addEventListener('change', rebuild);
+
+  // Don't burn compositing on an off-screen animation.
+  new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        marquee.classList.toggle('marquee--paused', !entry.isIntersecting);
+      });
+    },
+    { threshold: 0 },
+  ).observe(marquee);
 }
 
 // ========================================
@@ -318,20 +339,13 @@ function initTypewriter(): void {
 // ========================================
 
 function init(): void {
-  applyTemplates();
+  initLastUpdated();
   initCursorAura();
   initFadeInObserver();
   initNavTracking();
   initExperienceCards();
-  initScrollTracking();
-  initSectionTracking();
-  initTimeTracking();
   initTypewriter();
-
-  trackEvent('page_view', {
-    referrer: document.referrer || 'direct',
-    path: window.location.pathname,
-  });
+  initProjectsMarquee();
 }
 
 if (document.readyState === 'loading') {
@@ -339,5 +353,3 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
-
-window.__portfolioAnalytics = analytics;

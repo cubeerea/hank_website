@@ -1,3 +1,10 @@
+/* Self-hosted so first paint doesn't wait on a third-party round-trip, and so
+   no visitor data goes to Google. Only the weights actually used are imported. */
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/sora/latin-600.css";
+@import "@fontsource/sora/latin-700.css";
 @import "tailwindcss";
 
 /* ========================================
@@ -12,14 +19,16 @@
   --color-ink-light: #0f0c1a;
   --color-ink-card: #100d1e;
   --color-surface: #160f2a;
-  --color-cyan: #a78bfa;
-  --color-cyan-dim: rgba(167, 139, 250, 0.35);
-  --color-cyan-glow: rgba(167, 139, 250, 0.22);
-  --color-violet: #f472b6;
-  --color-violet-dim: rgba(244, 114, 182, 0.35);
-  --color-violet-glow: rgba(244, 114, 182, 0.18);
+  --color-accent: #a78bfa;
+  --color-accent-dim: rgba(167, 139, 250, 0.35);
+  --color-accent-glow: rgba(167, 139, 250, 0.22);
+  --color-accent2: #f472b6;
+  --color-accent2-dim: rgba(244, 114, 182, 0.35);
+  --color-accent2-glow: rgba(244, 114, 182, 0.18);
   --color-slate-text: #9d94c0;
-  --color-slate-dim: #6b5f9e;
+  /* 5.66:1 on --color-ink. The previous #6b5f9e was 3.59:1 and failed WCAG AA
+     on job meta lines, section eyebrows, and the typewriter. */
+  --color-slate-dim: #8b7fc4;
   --color-border: rgba(167, 139, 250, 0.08);
   --color-border-hover: rgba(167, 139, 250, 0.22);
   --radius-bento: 1.25rem;
@@ -35,9 +44,11 @@ html {
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
   color-scheme: dark;
-  scroll-snap-type: y proximity;
   overflow-y: scroll;
   height: 100%;
+  /* Anchor targets used to land at y=0, directly underneath the fixed nav pill
+     (which occupies y=16–55). Keep in sync with NAV_LINE in main.ts. */
+  scroll-padding-top: 6rem;
 }
 
 body {
@@ -78,6 +89,32 @@ body::after {
 }
 
 /* ========================================
+   Nav Links
+   ======================================== */
+
+/* One mechanism, not two. The markup previously carried `opacity-70` while JS
+   toggled `text-white`/`text-slate-text`, so the two systems fought and the
+   active state read as mush. State now lives entirely in `.is-active`. */
+.nav-link {
+  color: #fff;
+  opacity: 0.62;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  opacity: 1;
+  text-decoration: none;
+}
+
+.nav-link.is-active {
+  opacity: 1;
+  border-bottom-color: var(--color-accent-dim);
+}
+
+/* ========================================
    Cursor Aura
    ======================================== */
 
@@ -110,26 +147,46 @@ body::after {
   content: ">";
   position: absolute;
   left: 0;
-  color: var(--color-cyan-dim);
+  color: var(--color-accent-dim);
   font-weight: bold;
   font-size: 0.875rem;
 }
 
 /* ========================================
-   Skill List Bullets
+   Skill Map
    ======================================== */
 
-.skill-list li {
-  position: relative;
-  padding-left: 1rem;
+.skill-tier-label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
 }
 
-.skill-list li::before {
-  content: ">";
-  position: absolute;
-  left: 0;
-  color: var(--color-cyan-dim);
+/* Tier is carried by weight and border strength, not by a separate legend —
+   19 pills at identical weight told the reader nothing about depth. */
+.skill-pill {
   font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--color-border);
+  color: var(--color-slate-text);
+  background: rgb(255 255 255 / 0.03);
+}
+
+.skill-pill--daily {
+  border-color: var(--color-accent-dim);
+  color: #fff;
+  background: rgb(167 139 250 / 0.08);
+  font-weight: 500;
+}
+
+.skill-pill--familiar {
+  color: var(--color-slate-dim);
+  border-style: dashed;
 }
 
 /* ========================================
@@ -153,7 +210,7 @@ body::after {
 
 .experience-card[data-expanded="true"] .card-toggle {
   transform: rotate(45deg);
-  color: var(--color-cyan);
+  color: var(--color-accent);
 }
 
 .experience-card[data-expanded="true"] .card-content {
@@ -165,7 +222,7 @@ body::after {
    ======================================== */
 
 ::selection {
-  background: var(--color-cyan);
+  background: var(--color-accent);
   color: var(--color-ink);
 }
 
@@ -193,7 +250,7 @@ body::after {
 }
 
 .writing-link:hover {
-  text-decoration-color: var(--color-cyan);
+  text-decoration-color: var(--color-accent);
 }
 
 /* ========================================
@@ -248,27 +305,33 @@ body::after {
    Contact Icon Buttons
    ======================================== */
 
-.contact-icon-btn {
-  display: flex;
+/* Five unlabelled circles were a guessing game, and hover tooltips don't exist
+   on touch. Icon + text, still a 44px touch target. */
+.contact-link {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 0.9rem;
+  border-radius: 9999px;
   border: 1px solid var(--color-border);
   color: var(--color-slate-text);
+  font-size: 0.8125rem;
+  text-decoration: none;
   transition: color 0.2s, border-color 0.2s, transform 0.15s;
 }
 
-.contact-icon-btn:hover {
-  color: var(--color-cyan);
-  border-color: var(--color-cyan-dim);
+.contact-link:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent-dim);
   transform: translateY(-2px);
+  text-decoration: none;
 }
 
-.contact-icon-btn svg {
-  width: 18px;
-  height: 18px;
+.contact-link svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
 /* ========================================
@@ -277,7 +340,7 @@ body::after {
 
 .typewriter-cursor {
   display: inline-block;
-  color: var(--color-cyan);
+  color: var(--color-accent);
   font-weight: 300;
   animation: cursor-blink 0.9s step-end infinite;
 }
@@ -299,159 +362,278 @@ body::after {
 }
 
 /* ========================================
-   Status Dot
-   ======================================== */
-
-@keyframes status-pulse {
-  0%, 100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
-  }
-  50% {
-    opacity: 0.85;
-    box-shadow: 0 0 0 5px rgba(34, 197, 94, 0);
-  }
-}
-
-.status-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background: #22c55e;
-  border-radius: 50%;
-  animation: status-pulse 2s ease-in-out infinite;
-  flex-shrink: 0;
-}
-
-/* ========================================
-   Badge
-   ======================================== */
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.625rem;
-  border-radius: 9999px;
-  border: 1px solid var(--color-cyan-dim);
-  color: var(--color-cyan);
-  background: rgba(92, 225, 230, 0.04);
-  font-family: var(--font-display);
-}
-
-/* ========================================
    Key Win Pill (collapsed card header)
    ======================================== */
 
+/* On a collapsed card this is the only thing carrying information, so it needs
+   to out-weigh the surrounding metadata rather than blend into it. */
 .win-pill {
   display: inline-flex;
   align-items: center;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  padding: 0.2rem 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 0.3rem 0.7rem;
   border-radius: 9999px;
-  border: 1px solid var(--color-cyan-dim);
-  color: var(--color-slate-text);
-  background: rgba(167, 139, 250, 0.04);
+  border: 1px solid hsl(258 90% 74% / 0.45);
+  color: #fff;
+  background: hsl(258 90% 74% / 0.12);
   font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
   margin-left: 0.5rem;
 }
 
 /* ========================================
-   Hero Decoration
+   Projects Marquee
    ======================================== */
 
-@keyframes hero-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+/* Break out of the centered <main> column to the viewport edges.
+   --scrollbar-w is measured in JS so a classic scrollbar can't cause
+   horizontal overflow (html has overflow-y: scroll). */
+.full-bleed {
+  width: calc(100vw - var(--scrollbar-w, 0px));
+  margin-left: calc(50% - (100vw - var(--scrollbar-w, 0px)) / 2);
 }
 
-.hero-decoration {
+/* The hint must describe the mode the visitor is actually in */
+.marquee-hint::after {
+  content: "Hover to pause · click a card to open";
+}
+
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .marquee-hint::after {
+    content: "Swipe to browse · tap a card to open";
+  }
+}
+
+.marquee {
+  --marquee-gap: 1.25rem;
   position: relative;
-  width: 260px;
-  height: 260px;
+  overflow: hidden;
+  /* Vertical room so the hover lift + drop shadow aren't clipped by overflow:hidden.
+     Negative margin pulls the extra space back out of the layout. */
+  padding-block: 1rem 3rem;
+  margin-bottom: -2rem;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
 }
 
-.hero-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, rgba(167, 139, 250, 0.18) 0%, rgba(244, 114, 182, 0.08) 45%, transparent 70%);
-  border-radius: 50%;
-  filter: blur(28px);
-  animation: hero-float 6s ease-in-out infinite;
+.marquee__track {
+  display: flex;
+  gap: var(--marquee-gap);
+  width: max-content;
 }
 
-.hero-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(167, 139, 250, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(167, 139, 250, 0.08) 1px, transparent 1px);
-  background-size: 30px 30px;
-  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 65%);
-  mask-image: radial-gradient(ellipse at center, black 20%, transparent 65%);
+.marquee__group {
+  display: flex;
+  gap: var(--marquee-gap);
+  flex: 0 0 auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* ========================================
-   Hero Snap & Scroll Hint
-   ======================================== */
+.marquee__item {
+  flex: 0 0 auto;
+  display: flex;
+}
 
-.hero-snap {
-  min-height: 100svh;
-  scroll-snap-align: start;
-  /* scroll-snap-stop: normal — lets fast flings pass through */
+/* --- Animated mode (fine pointer + motion allowed) --- */
+.marquee--animated .marquee__track {
+  will-change: transform;
+  animation: marquee-scroll var(--marquee-duration, 48s) linear infinite;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(calc(-1 * var(--marquee-shift, 50%)), 0, 0); }
+}
+
+/* Pause when the user could plausibly want to click, and when off-screen */
+.marquee--animated:hover .marquee__track,
+.marquee--animated:focus-within .marquee__track,
+.marquee--paused .marquee__track {
+  animation-play-state: paused;
+}
+
+/* --- Static mode (touch, reduced motion, or no JS) ---
+   Native horizontal scroll-snap carousel: the correct pattern on touch. */
+.marquee--static,
+.marquee:not(.marquee--animated) {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  /* Align the first card with the main text column on wide screens */
+  padding-inline: max(1.5rem, calc((100% - 53rem) / 2));
+  overscroll-behavior-x: contain;
+}
+
+.marquee--static::-webkit-scrollbar,
+.marquee:not(.marquee--animated)::-webkit-scrollbar {
+  display: none;
+}
+
+.marquee--static .marquee__item,
+.marquee:not(.marquee--animated) .marquee__item {
+  scroll-snap-align: center;
+}
+
+/* --- Project card --- */
+.pcard {
+  --accent: 258 90% 74%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-
-@keyframes bounce-hint {
-  0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.5; }
-  50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
-}
-
-.scroll-hint {
-  position: absolute;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  color: var(--color-slate-dim);
-  font-size: 1.25rem;
-  animation: bounce-hint 2s ease-in-out infinite;
-  cursor: pointer;
-}
-
-/* ========================================
-   Bento Grid
-   ======================================== */
-
-.bento-cell {
-  background: var(--color-ink-card);
+  width: 20rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-bento);
-  padding: 1.25rem 1.5rem;
-  transition: border-color 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  background: var(--color-ink-card);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1), border-color 0.3s ease,
+    box-shadow 0.35s ease;
+}
+
+a.pcard:hover {
+  transform: translateY(-6px);
+  border-color: hsl(var(--accent) / 0.5);
+  box-shadow: 0 20px 50px -22px hsl(var(--accent) / 0.55);
+  text-decoration: none;
+}
+
+.pcard:focus-visible {
+  outline: 2px solid hsl(var(--accent));
+  outline-offset: 3px;
+}
+
+.pcard__poster {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-bottom: 1px solid var(--color-border);
+  background:
+    radial-gradient(120% 100% at 15% 0%, hsl(var(--accent) / 0.16), transparent 62%),
+    var(--color-ink-light);
+}
+
+/* Posters are either drawn (inline SVG) or a cropped screenshot of the live
+   product. Both fill the same slot and share the same hover treatment. */
+.pcard__poster svg,
+.pcard__poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.85;
+  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.pcard__poster img {
+  object-fit: cover;
+  object-position: top left;
+}
+
+a.pcard:hover .pcard__poster svg,
+a.pcard:hover .pcard__poster img {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.pcard__body {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  gap: 0.5rem;
+  padding: 1rem 1.125rem 1.125rem;
 }
 
-.bento-cell:hover {
-  border-color: var(--color-border-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px -8px var(--color-cyan-glow);
+.pcard__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-.bento-cell--feature {
-  background: linear-gradient(140deg, var(--color-ink-card) 0%, rgba(92, 225, 230, 0.025) 100%);
+.pcard__tag {
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid hsl(var(--accent) / 0.4);
+  color: hsl(var(--accent));
+  background: hsl(var(--accent) / 0.07);
+  white-space: nowrap;
 }
 
-.bento-cell--planned {
-  border-style: dashed;
-  opacity: 0.75;
+.pcard__stat {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--color-slate-text);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pcard__year {
+  font-size: 0.65rem;
+  color: var(--color-slate-dim);
+  white-space: nowrap;
+}
+
+.pcard__title {
+  font-family: var(--font-display);
+  font-size: 0.975rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #fff;
+  margin: 0;
+}
+
+.pcard__desc {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-slate-text);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.pcard__cta {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: hsl(var(--accent));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pcard__arrow {
+  transition: transform 0.25s ease;
+}
+
+a.pcard:hover .pcard__arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 480px) {
+  .pcard { width: 17.5rem; }
+  .marquee { --marquee-gap: 0.875rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee--animated .marquee__track { animation: none; }
+  .pcard,
+  .pcard__poster svg,
+  .pcard__arrow { transition: none; }
 }
 
 /* ========================================
@@ -484,12 +666,7 @@ body::after {
 
 .experience-card--startup {
   border-left-width: 2px;
-  border-left-color: var(--color-cyan-dim);
-}
-
-.experience-card--scout {
-  border-left-width: 2px;
-  border-left-color: rgba(100, 116, 139, 0.3);
+  border-left-color: var(--color-accent-dim);
 }
 
 /* ========================================
@@ -507,18 +684,30 @@ body::after {
 
 
 /* ========================================
-   Typewriter Cursor
+   Reduced Motion
    ======================================== */
 
-.typewriter-cursor {
-  display: inline-block;
-  color: var(--color-cyan);
-  animation: cursor-blink 0.9s step-end infinite;
-}
+/* Under reduced motion nothing should loop, and smooth scrolling becomes
+   jarring rather than pleasant. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-@keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  .typewriter-cursor,
+  .spinner {
+    animation: none !important;
+  }
+
+  .fade-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .cursor-aura {
+    display: none;
+  }
 }
 
 /* ========================================
