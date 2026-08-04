@@ -3,13 +3,18 @@ import tailwindcss from '@tailwindcss/vite';
 import { resolve } from 'path';
 
 /**
- * Vercel serves the clean URLs in vercel.json; the dev server otherwise 404s on
- * them, so an in-page link to /pid-steering can't be clicked through locally.
- * Keep this table in sync with the "rewrites" block in vercel.json.
+ * The dev server doesn't understand extensionless URLs on its own, so an
+ * in-page link to /resume or /pid-steering can't be clicked through locally
+ * without this. In production these resolve for free: Vercel's cleanUrls
+ * strips the .html from any file whose name already matches the route
+ * (resume.html -> /resume, pid-steering.html -> /pid-steering) — no rewrite
+ * rule needed, which is exactly why this file is named pid-steering.html and
+ * not paper.html. A rewrite pointing at an .html destination collides with
+ * cleanUrls' own extension-stripping redirect and 404s; see vercel.json.
  */
 const CLEAN_URLS: Record<string, string> = {
   '/resume': '/resume.html',
-  '/pid-steering': '/paper.html',
+  '/pid-steering': '/pid-steering.html',
 };
 
 const cleanUrlsInDev = (): Plugin => ({
@@ -35,7 +40,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         resume: resolve(__dirname, 'resume.html'),
-        paper: resolve(__dirname, 'paper.html'),
+        'pid-steering': resolve(__dirname, 'pid-steering.html'),
       },
     },
   },

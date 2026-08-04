@@ -3,12 +3,7 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
-  "rewrites": [
-    { "source": "/resume", "destination": "/resume.html" },
-    { "source": "/pid-steering", "destination": "/paper.html" }
-  ],
   "redirects": [
-    { "source": "/resume.html", "destination": "/resume", "permanent": true },
     { "source": "/paper.html", "destination": "/pid-steering", "permanent": true },
     { "source": "/paper", "destination": "/pid-steering", "permanent": true },
     { "source": "/index.html", "destination": "/", "permanent": true }
