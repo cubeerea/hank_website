@@ -25,9 +25,21 @@ fi
 mkdir -p "$OUT"
 
 # --- Live sites we can point a browser at -----------------------------------
-# name | url | clip (x,y,w,h in CSS px) | settle seconds
+# The NBA dashboard needs a 1680px viewport (it clips the surplus column at
+# 1280) and needs driving to the Leaderboard tab: its default view is a WebGL
+# scatter, which headless Chromium renders as an empty "WebGL disabled" box.
+#
+# PNG for the dark terminal UI, where JPEG rings around the crisp green text;
+# JPEG for the light photo-heavy table, where PNG is nearly 3x the bytes.
+#
+# "prep" runs before a settle pause, "post" after it — the table only exists
+# once the Leaderboard tab has rendered, so the scroll can't be in the same step
+# as the click.
+#
+# name | url | viewport | clip (x,y,w,h in CSS px) | settle s | ext | prep | post
 SHOTS=(
-  "biotech-engine|https://biotech-catalyst-engine-black.vercel.app/|72,45,640,360|4"
+  "biotech-engine|https://biotech-catalyst-engine-black.vercel.app/|1280x800|72,45,640,360|4|png||"
+  "nba-contract-value|https://nba-contract-analytics.vercel.app/|1680x900|101,60,1134,638|5|jpg|[...document.querySelectorAll('button,[role=tab],a')].find(e=>e.textContent.trim()==='Leaderboard').click()|scrollTo(0,document.querySelector('table').getBoundingClientRect().top+scrollY-60)"
 )
 
 # --- Projects with no reachable live URL ------------------------------------
@@ -51,18 +63,37 @@ PAPERS=(
   "pid-steering|assets/global-pid-steering.pdf|260,290,1200,675"
 )
 
-if [ ${#SHOTS[@]} -gt 0 ]; then
-  "$BROWSE" viewport 1280x800 --scale 2 >/dev/null
-fi
-
 for entry in "${SHOTS[@]}"; do
-  IFS='|' read -r name url clip settle <<< "$entry"
+  IFS='|' read -r name url vp clip settle ext prep post <<< "$entry"
   echo "capturing $name ..."
+  "$BROWSE" viewport "$vp" --scale 2 >/dev/null
   "$BROWSE" goto "$url" >/dev/null
   sleep "$settle"                       # let client-side data land before capture
-  "$BROWSE" screenshot --clip "$clip" "$OUT/$name.png" >/dev/null
-  sips -z 360 640 "$OUT/$name.png" >/dev/null
-  echo "  -> $OUT/$name.png"
+  if [ -n "$prep" ]; then
+    "$BROWSE" js "(()=>{ $prep })()" >/dev/null
+    sleep 3                             # let the view we switched to render
+  fi
+  if [ -n "$post" ]; then
+    "$BROWSE" js "(()=>{ $post })()" >/dev/null
+    sleep 1
+  fi
+  # Stage inside the output dir: browse refuses to write outside the project,
+  # and mktemp lands in /var/folders on macOS.
+  tmp="$OUT/.shot-tmp.png"
+  "$BROWSE" screenshot --clip "$clip" "$tmp" >/dev/null
+  OUT="$OUT" NAME="$name" SRC="$tmp" EXT="$ext" python3 - <<'PY'
+import os
+from PIL import Image
+
+img = Image.open(os.environ["SRC"]).convert("RGB").resize((640, 360), Image.LANCZOS)
+dest = os.path.join(os.environ["OUT"], os.environ["NAME"] + "." + os.environ["EXT"])
+if os.environ["EXT"] == "jpg":
+    img.save(dest, quality=82, optimize=True, progressive=True)
+else:
+    img.save(dest, optimize=True)
+PY
+  rm -f "$tmp"
+  echo "  -> $OUT/$name.$ext"
 done
 
 for entry in "${FETCHES[@]}"; do
