@@ -114,6 +114,22 @@ body::after {
   border-bottom-color: var(--color-accent-dim);
 }
 
+/* The labels are ~17px tall, well under the ~44px a finger needs. Grow the hit
+   area with a pseudo-element rather than padding so the active underline stays
+   tight against the text. The horizontal inset is half the flex gap, so
+   neighbouring targets meet without overlapping and stealing each other's taps. */
+@media (pointer: coarse), (max-width: 768px) {
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::before {
+    content: "";
+    position: absolute;
+    inset: -0.85rem -0.25rem;
+  }
+}
+
 /* ========================================
    Cursor Aura
    ======================================== */
@@ -395,17 +411,6 @@ body::after {
   margin-left: calc(50% - (100vw - var(--scrollbar-w, 0px)) / 2);
 }
 
-/* The hint must describe the mode the visitor is actually in */
-.marquee-hint::after {
-  content: "Hover to pause · click a card to open";
-}
-
-@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
-  .marquee-hint::after {
-    content: "Swipe to browse · tap a card to open";
-  }
-}
-
 .marquee {
   --marquee-gap: 1.25rem;
   position: relative;
@@ -484,7 +489,9 @@ body::after {
   --accent: 258 90% 74%;
   display: flex;
   flex-direction: column;
-  width: 20rem;
+  /* Narrower than the viewport on phones so the neighbouring cards peek in.
+     That peek is the only thing telling a touch visitor the row scrolls. */
+  width: min(20rem, 78vw);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-bento);
   background: var(--color-ink-card);
@@ -610,7 +617,6 @@ a.pcard:hover .pcard__arrow {
 }
 
 @media (max-width: 480px) {
-  .pcard { width: 17.5rem; }
   .marquee { --marquee-gap: 0.875rem; }
 }
 

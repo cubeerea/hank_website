@@ -66,7 +66,11 @@
 
         <!-- PDF Viewport -->
         <main class="flex-1 overflow-auto pt-16">
-            <div class="min-h-full flex flex-col items-center justify-start p-6 pt-6 max-[480px]:p-2 max-[480px]:pt-4">
+            <!-- min-w-fit matters: a centred flex column whose content is wider than
+                 the scroll container clips its own left edge, so a zoomed-in page
+                 could never be scrolled back to. -->
+            <div
+                class="min-h-full min-w-fit flex flex-col items-center justify-start p-6 pt-6 max-[480px]:p-2 max-[480px]:pt-4">
                 <!-- Loading State -->
                 <div id="loadingState" class="flex flex-col items-center justify-center py-20">
                     <div class="spinner w-10 h-10 border-2 border-border border-t-accent rounded-full mb-4"></div>

@@ -108,8 +108,10 @@
                         <span id="typewriter"></span><span class="typewriter-cursor">|</span>
                     </p>
                     <!-- Status indicator + CTA -->
+                    <!-- Below ~560px the pill can't fit its text and the CTA on one line,
+                         so it stacks instead of leaving "Reach out" stranded mid-wrap. -->
                     <div
-                        class="inline-flex items-center gap-2 text-sm text-slate-text mb-6 px-3 py-1.5 rounded-full border border-border bg-white/[0.03]">
+                        class="inline-flex items-center gap-2 text-sm text-slate-text mb-6 px-3 py-1.5 rounded-full border border-border bg-white/[0.03] max-[560px]:flex-col max-[560px]:items-start max-[560px]:gap-1.5 max-[560px]:rounded-2xl max-[560px]:px-3.5 max-[560px]:py-2.5">
                         <span>Recent UCSB grad — <strong class="text-white font-medium">available now</strong> for
                             Applied AI / FDE roles.</span>
                         <a href="#contact"
@@ -137,9 +139,8 @@
 
         <!-- Projects Section -->
         <section class="mb-20 fade-in max-[768px]:mb-14 max-[480px]:mb-10" id="projects">
-            <div class="flex flex-wrap items-baseline justify-between gap-3 pb-2 border-b border-border mb-3">
+            <div class="pb-2 border-b border-border mb-3">
                 <h2 class="font-display text-2xl font-semibold tracking-tight text-white">Projects</h2>
-                <span class="text-xs text-slate-dim marquee-hint"></span>
             </div>
 
             <!--

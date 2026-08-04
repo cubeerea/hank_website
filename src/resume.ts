@@ -38,10 +38,15 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 // State
 let pdfDoc: PDFDocument | null = null;
-let scale = 2.0;
-const MIN_SCALE = 0.5;
-const MAX_SCALE = 3.0;
-const SCALE_STEP = 0.25;
+/** CSS-pixel scale at which the page exactly fills the column. */
+let fitScale = 1;
+/** User zoom on top of the fit. 1.0 = fits the width. */
+let zoom = 1;
+const MIN_ZOOM = 0.5;
+const MAX_ZOOM = 3.0;
+const ZOOM_STEP = 0.25;
+/** Don't blow the resume up past this on a wide monitor. */
+const MAX_FIT_SCALE = 2.0;
 
 // DOM Elements
 const canvas = document.getElementById('pdfCanvas') as HTMLCanvasElement;
@@ -56,7 +61,7 @@ async function loadPDF(): Promise<void> {
     pdfDoc = await pdfjsLib.getDocument('/assets/hank_sha_resume.pdf').promise;
     loadingState.style.display = 'none';
     canvasContainer.classList.add('is-visible');
-    await renderPage();
+    await renderPage(true);
   } catch (error) {
     console.error('Error loading PDF:', error);
     loadingState.style.display = 'none';
@@ -64,35 +69,52 @@ async function loadPDF(): Promise<void> {
   }
 }
 
-async function renderPage(): Promise<void> {
+/**
+ * Width the page has to fill, minus the column padding in resume.html. Without
+ * this the viewer opened at a fixed 200%, which on a phone meant landing on a
+ * resume where not one full line was on screen.
+ */
+function computeFitScale(page: PDFPage): void {
+  const gutter = window.innerWidth <= 480 ? 16 : 48;
+  // 1224px is what the old fixed 200% produced for a letter page, so desktop
+  // renders exactly as it did before; only narrow screens actually refit.
+  const available = Math.min(canvasContainer.parentElement!.clientWidth - gutter, 1224);
+  const natural = page.getViewport({ scale: 1 });
+  fitScale = Math.min(available / natural.width, MAX_FIT_SCALE);
+}
+
+async function renderPage(refit = false): Promise<void> {
   if (!pdfDoc) return;
 
   const page = await pdfDoc.getPage(1);
-  const viewport = page.getViewport({ scale: scale * window.devicePixelRatio });
+  if (refit) computeFitScale(page);
+
+  const dpr = window.devicePixelRatio || 1;
+  const viewport = page.getViewport({ scale: fitScale * zoom * dpr });
 
   canvas.width = viewport.width;
   canvas.height = viewport.height;
-  canvas.style.width = `${viewport.width / window.devicePixelRatio}px`;
-  canvas.style.height = `${viewport.height / window.devicePixelRatio}px`;
+  canvas.style.width = `${viewport.width / dpr}px`;
+  canvas.style.height = `${viewport.height / dpr}px`;
 
   await page.render({ canvasContext: ctx, viewport }).promise;
   updateZoomDisplay();
 }
 
 function updateZoomDisplay(): void {
-  zoomLevelDisplay.textContent = `${Math.round(scale * 100)}%`;
+  zoomLevelDisplay.textContent = `${Math.round(zoom * 100)}%`;
 }
 
 function zoomIn(): void {
-  if (scale < MAX_SCALE) {
-    scale = Math.min(scale + SCALE_STEP, MAX_SCALE);
+  if (zoom < MAX_ZOOM) {
+    zoom = Math.min(zoom + ZOOM_STEP, MAX_ZOOM);
     renderPage();
   }
 }
 
 function zoomOut(): void {
-  if (scale > MIN_SCALE) {
-    scale = Math.max(scale - SCALE_STEP, MIN_SCALE);
+  if (zoom > MIN_ZOOM) {
+    zoom = Math.max(zoom - ZOOM_STEP, MIN_ZOOM);
     renderPage();
   }
 }
@@ -106,7 +128,8 @@ let resizeTimeout: ReturnType<typeof setTimeout>;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
-    if (pdfDoc) renderPage();
+    // Refit on rotate/resize so the page keeps filling the new width.
+    if (pdfDoc) renderPage(true);
   }, 150);
 });
 
