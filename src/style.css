@@ -18,13 +18,9 @@
   --color-ink: #08070f;
   --color-ink-light: #0f0c1a;
   --color-ink-card: #100d1e;
-  --color-surface: #160f2a;
   --color-accent: #a78bfa;
   --color-accent-dim: rgba(167, 139, 250, 0.35);
   --color-accent-glow: rgba(167, 139, 250, 0.22);
-  --color-accent2: #f472b6;
-  --color-accent2-dim: rgba(244, 114, 182, 0.35);
-  --color-accent2-glow: rgba(244, 114, 182, 0.18);
   --color-slate-text: #9d94c0;
   /* 5.66:1 on --color-ink. The previous #6b5f9e was 3.59:1 and failed WCAG AA
      on job meta lines, section eyebrows, and the typewriter. */
@@ -32,7 +28,6 @@
   --color-border: rgba(167, 139, 250, 0.08);
   --color-border-hover: rgba(167, 139, 250, 0.22);
   --radius-bento: 1.25rem;
-  --radius-card: 0.875rem;
 }
 
 /* ========================================
@@ -144,7 +139,13 @@ body::after {
    ======================================== */
 
 .about-tagline {
-  background: linear-gradient(135deg, #ffffff 0%, #a78bfa 60%, #f472b6 100%);
+  /* 90deg (strictly left-to-right), not the diagonal 135deg used elsewhere:
+     this line is long enough to wrap on narrow screens, and a diagonal
+     gradient restarts at a different offset on every wrapped line, reading
+     as a near-random per-word color instead of one smooth transition. A
+     horizontal gradient depends only on x-position, so every line — same
+     0%-100% width — renders the identical transition. */
+  background: linear-gradient(90deg, #ffffff 0%, #a78bfa 60%, #f472b6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -303,6 +304,8 @@ body::after {
   .cursor-aura {
     display: none;
   }
+
+  .marquee { --marquee-gap: 0.875rem; }
 }
 
 @media (hover: none) and (pointer: coarse) {
@@ -463,7 +466,6 @@ body::after {
 
 /* --- Static mode (touch, reduced motion, or no JS) ---
    Native horizontal scroll-snap carousel: the correct pattern on touch. */
-.marquee--static,
 .marquee:not(.marquee--animated) {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
@@ -474,12 +476,10 @@ body::after {
   overscroll-behavior-x: contain;
 }
 
-.marquee--static::-webkit-scrollbar,
 .marquee:not(.marquee--animated)::-webkit-scrollbar {
   display: none;
 }
 
-.marquee--static .marquee__item,
 .marquee:not(.marquee--animated) .marquee__item {
   scroll-snap-align: center;
 }
@@ -616,17 +616,6 @@ a.pcard:hover .pcard__arrow {
   transform: translateX(3px);
 }
 
-@media (max-width: 480px) {
-  .marquee { --marquee-gap: 0.875rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee--animated .marquee__track { animation: none; }
-  .pcard,
-  .pcard__poster svg,
-  .pcard__arrow { transition: none; }
-}
-
 /* ========================================
    Gist Grid (3-column strip)
    ======================================== */
@@ -699,6 +688,11 @@ a.pcard:hover .pcard__arrow {
   .cursor-aura {
     display: none;
   }
+
+  .marquee--animated .marquee__track { animation: none; }
+  .pcard,
+  .pcard__poster svg,
+  .pcard__arrow { transition: none; }
 }
 
 /* ========================================

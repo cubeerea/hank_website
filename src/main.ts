@@ -5,6 +5,8 @@
  */
 
 import './style.css';
+import { initCursorAura } from './cursor-aura';
+import { debounce } from './debounce';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -26,37 +28,6 @@ function initLastUpdated(): void {
     month: 'long',
     day: 'numeric',
   });
-}
-
-// ========================================
-// Cursor Aura
-// ========================================
-
-function initCursorAura(): void {
-  const aura = document.getElementById('cursor-aura');
-  if (!aura) return;
-
-  // The aura repaints a full-viewport radial gradient, so coalesce moves
-  // into one write per frame instead of one per mousemove event.
-  let x = 0;
-  let y = 0;
-  let queued = false;
-
-  window.addEventListener(
-    'mousemove',
-    (e: MouseEvent) => {
-      x = e.clientX;
-      y = e.clientY;
-      if (queued) return;
-      queued = true;
-      requestAnimationFrame(() => {
-        queued = false;
-        aura.style.setProperty('--x', `${x}px`);
-        aura.style.setProperty('--y', `${y}px`);
-      });
-    },
-    { passive: true },
-  );
 }
 
 // ========================================
@@ -314,11 +285,7 @@ function initProjectsMarquee(): void {
     document.fonts.ready.then(rebuild).catch(() => {});
   }
 
-  let resizeTimer: number | undefined;
-  window.addEventListener('resize', () => {
-    window.clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(rebuild, 200);
-  });
+  window.addEventListener('resize', debounce(rebuild, 200));
 
   reducedMotion.addEventListener('change', rebuild);
   finePointer.addEventListener('change', rebuild);

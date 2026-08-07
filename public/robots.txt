@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /assets/hank_sha_resume.pdf
 
-Sitemap: https://hanksha.dev/sitemap.xml
+Sitemap: https://www.hanksha.com/sitemap.xml

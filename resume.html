@@ -7,7 +7,7 @@
     <meta name="description"
         content="Download or view Hank Sha's resume — AI & ML engineer, applied ML research, LLM engineering internships.">
     <meta name="robots" content="noindex">
-    <link rel="canonical" href="https://hanksha.dev/resume">
+    <link rel="canonical" href="https://www.hanksha.com/resume">
     <title>Resume | Hank Sha</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <!-- Icons -->
@@ -43,8 +43,8 @@
                 </div>
                 <!-- Zoom Controls -->
                 <div class="flex items-center gap-2">
-                    <button onclick="zoomOut()"
-                        class="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-border text-slate-text cursor-pointer transition-all duration-200 hover:text-white hover:border-border-hover hover:bg-white/[0.08] font-inherit"
+                    <button id="zoomOutBtn"
+                        class="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-border text-slate-text cursor-pointer transition-all duration-200 hover:text-white hover:border-border-hover hover:bg-white/[0.08] disabled:opacity-40 disabled:cursor-not-allowed"
                         aria-label="Zoom out">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
@@ -52,8 +52,8 @@
                         </svg>
                     </button>
                     <span id="zoomLevel" class="text-[0.8rem] font-medium text-slate-text min-w-12 text-center font-ui">200%</span>
-                    <button onclick="zoomIn()"
-                        class="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-border text-slate-text cursor-pointer transition-all duration-200 hover:text-white hover:border-border-hover hover:bg-white/[0.08] font-inherit"
+                    <button id="zoomInBtn"
+                        class="flex items-center justify-center w-9 h-9 rounded-lg bg-white/5 border border-border text-slate-text cursor-pointer transition-all duration-200 hover:text-white hover:border-border-hover hover:bg-white/[0.08] disabled:opacity-40 disabled:cursor-not-allowed"
                         aria-label="Zoom in">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">

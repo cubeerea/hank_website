@@ -19,6 +19,9 @@ import './style.css';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
 import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from 'pdfjs-dist';
 import PdfWorker from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?worker';
+import { initCursorAura } from './cursor-aura';
+import { debounce } from './debounce';
+import { MIN_ZOOM, MAX_ZOOM, ZOOM_STEP, computeAvailableWidth, updateZoomDisplay, bindZoomKeys } from './pdf-viewer';
 
 pdfjsLib.GlobalWorkerOptions.workerPort = new PdfWorker();
 
@@ -29,18 +32,7 @@ const RENDER_MARGIN = 1;
 /** Cap the backing store so a zoomed-in page on a 3x display stays sane. */
 const MAX_DPR = 2;
 
-const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 3.0;
-const ZOOM_STEP = 0.25;
-
-// Cursor Aura
-const aura = document.getElementById('cursor-aura');
-if (aura) {
-  window.addEventListener('mousemove', (e: MouseEvent) => {
-    aura.style.setProperty('--x', `${e.clientX}px`);
-    aura.style.setProperty('--y', `${e.clientY}px`);
-  });
-}
+initCursorAura();
 
 const viewport = document.getElementById('viewport') as HTMLElement;
 const pageList = document.getElementById('pageList') as HTMLElement;
@@ -79,7 +71,7 @@ async function init(): Promise<void> {
 
     loadingState.style.display = 'none';
     pageList.classList.add('is-visible');
-    updateZoomDisplay();
+    updateZoomDisplay(zoomLevelDisplay, zoom, zoomInBtn, zoomOutBtn);
     updatePageCounter();
     syncRenderWindow();
   } catch (error) {
@@ -89,10 +81,9 @@ async function init(): Promise<void> {
   }
 }
 
-/** Width available to a page, minus the column padding in paper.html. */
+/** Width available to a page, minus the column padding in pid-steering.html. */
 function availableWidth(): number {
-  const gutter = window.innerWidth <= 480 ? 16 : 48;
-  return Math.min(viewport.clientWidth - gutter, 1100);
+  return computeAvailableWidth(viewport.clientWidth, 1100);
 }
 
 function computeFitScale(page: PDFPageProxy): void {
@@ -215,12 +206,6 @@ function updatePageCounter(): void {
   pageCounter.textContent = `${currentPageIndex() + 1} / ${pdfDoc.numPages}`;
 }
 
-function updateZoomDisplay(): void {
-  zoomLevelDisplay.textContent = `${Math.round(zoom * 100)}%`;
-  zoomInBtn.disabled = zoom >= MAX_ZOOM;
-  zoomOutBtn.disabled = zoom <= MIN_ZOOM;
-}
-
 function setZoom(next: number): void {
   const clamped = Math.min(Math.max(next, MIN_ZOOM), MAX_ZOOM);
   if (clamped === zoom) return;
@@ -235,7 +220,7 @@ function setZoom(next: number): void {
   slots.forEach((slot) => {
     slot.renderedAt = 0;
   });
-  updateZoomDisplay();
+  updateZoomDisplay(zoomLevelDisplay, zoom, zoomInBtn, zoomOutBtn);
   syncRenderWindow();
 
   requestAnimationFrame(() => {
@@ -262,21 +247,14 @@ viewport.addEventListener(
 zoomInBtn.addEventListener('click', () => setZoom(zoom + ZOOM_STEP));
 zoomOutBtn.addEventListener('click', () => setZoom(zoom - ZOOM_STEP));
 
-document.addEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.metaKey || e.ctrlKey || e.altKey) return;
-  if (e.key === '+' || e.key === '=') {
-    e.preventDefault();
-    setZoom(zoom + ZOOM_STEP);
-  } else if (e.key === '-') {
-    e.preventDefault();
-    setZoom(zoom - ZOOM_STEP);
-  }
-});
+bindZoomKeys(
+  () => setZoom(zoom + ZOOM_STEP),
+  () => setZoom(zoom - ZOOM_STEP),
+);
 
-let resizeTimeout: ReturnType<typeof setTimeout>;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimeout);
-  resizeTimeout = setTimeout(async () => {
+window.addEventListener(
+  'resize',
+  debounce(async () => {
     if (!pdfDoc) return;
     const first = slots[0].page ?? (await pdfDoc.getPage(1));
     computeFitScale(first);
@@ -284,7 +262,7 @@ window.addEventListener('resize', () => {
       slot.renderedAt = 0;
     });
     syncRenderWindow();
-  }, 150);
-});
+  }, 150),
+);
 
 init();
