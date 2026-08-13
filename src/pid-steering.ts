@@ -19,7 +19,6 @@ import './style.css';
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
 import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from 'pdfjs-dist';
 import PdfWorker from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?worker';
-import { initCursorAura } from './cursor-aura';
 import { debounce } from './debounce';
 import { MIN_ZOOM, MAX_ZOOM, ZOOM_STEP, computeAvailableWidth, updateZoomDisplay, bindZoomKeys } from './pdf-viewer';
 
@@ -31,8 +30,6 @@ const PDF_URL = '/assets/global-pid-steering.pdf';
 const RENDER_MARGIN = 1;
 /** Cap the backing store so a zoomed-in page on a 3x display stays sane. */
 const MAX_DPR = 2;
-
-initCursorAura();
 
 const viewport = document.getElementById('viewport') as HTMLElement;
 const pageList = document.getElementById('pageList') as HTMLElement;
@@ -98,8 +95,8 @@ function buildSlots(numPages: number, first: PDFPageProxy): void {
   for (let num = 1; num <= numPages; num++) {
     const el = document.createElement('div');
     el.className =
-      'pdf-page relative bg-white rounded border border-border ' +
-      'shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden';
+      'pdf-page relative bg-white rounded border border-rule ' +
+      'shadow-[0_20px_60px_-15px_rgba(33,26,20,0.28)] overflow-hidden';
     el.dataset.page = String(num);
 
     const canvas = document.createElement('canvas');

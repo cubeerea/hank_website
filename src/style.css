@@ -1,10 +1,13 @@
 /* Self-hosted so first paint doesn't wait on a third-party round-trip, and so
    no visitor data goes to Google. Only the weights actually used are imported. */
-@import "@fontsource/inter/latin-400.css";
-@import "@fontsource/inter/latin-500.css";
-@import "@fontsource/inter/latin-600.css";
-@import "@fontsource/sora/latin-600.css";
-@import "@fontsource/sora/latin-700.css";
+@import "@fontsource/ibm-plex-sans/latin-400.css";
+@import "@fontsource/ibm-plex-sans/latin-500.css";
+@import "@fontsource/ibm-plex-sans/latin-600.css";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
+@import "@fontsource/ibm-plex-serif/latin-500.css";
+@import "@fontsource/ibm-plex-serif/latin-600.css";
+@import "@fontsource/ibm-plex-serif/latin-400-italic.css";
 @import "tailwindcss";
 
 /* ========================================
@@ -12,22 +15,25 @@
    ======================================== */
 
 @theme {
-  --font-ui: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-ui: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  /* Used only for the small UI headers on the resume/paper viewer pages —
+     the homepage hero sets --font-serif directly, it doesn't go through Tailwind. */
+  --font-display: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
 
-  --color-ink: #08070f;
-  --color-ink-light: #0f0c1a;
-  --color-ink-card: #100d1e;
-  --color-accent: #a78bfa;
-  --color-accent-dim: rgba(167, 139, 250, 0.35);
-  --color-accent-glow: rgba(167, 139, 250, 0.22);
-  --color-slate-text: #9d94c0;
-  /* 5.66:1 on --color-ink. The previous #6b5f9e was 3.59:1 and failed WCAG AA
-     on job meta lines, section eyebrows, and the typewriter. */
-  --color-slate-dim: #8b7fc4;
-  --color-border: rgba(167, 139, 250, 0.08);
-  --color-border-hover: rgba(167, 139, 250, 0.22);
-  --radius-bento: 1.25rem;
+  --color-paper: #F6F1E8;
+  --color-card: #FBF8F2;
+  --color-ink: #211A14;
+  --color-ink-2: #5A4C40;
+  --color-ink-3: #77675A;
+  --color-accent: #B0442A;
+  --color-accent-dim: rgba(176, 68, 42, 0.35);
+  --color-accent-glow: rgba(176, 68, 42, 0.16);
+  --color-rule: rgba(33, 26, 20, 0.14);
+  --color-rule-soft: rgba(33, 26, 20, 0.085);
+  --color-rule-hover: rgba(176, 68, 42, 0.35);
+  --color-tint: rgba(176, 68, 42, 0.045);
 }
 
 /* ========================================
@@ -38,17 +44,21 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
-  color-scheme: dark;
+  color-scheme: light;
   overflow-y: scroll;
   height: 100%;
-  /* Anchor targets used to land at y=0, directly underneath the fixed nav pill
-     (which occupies y=16–55). Keep in sync with NAV_LINE in main.ts. */
-  scroll-padding-top: 6rem;
+  /* Nav bar is a fixed 3.25rem (52px) tall at every breakpoint, so this and
+     NAV_LINE in main.ts don't need a separate mobile override. */
+  scroll-padding-top: 4rem;
 }
 
 body {
   height: 100%;
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-ui);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Smooth theme transition — prevents FOUC on load */
@@ -56,68 +66,85 @@ html.theme-ready,
 html.theme-ready *,
 html.theme-ready *::before,
 html.theme-ready *::after {
-  transition: background-color 0.4s ease-in-out,
-    color 0.4s ease-in-out,
-    border-color 0.4s ease-in-out,
-    box-shadow 0.4s ease-in-out;
-}
-
-/* Vignette overlay */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Noise texture */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
+  transition: background-color 0.3s ease-in-out,
+    color 0.3s ease-in-out,
+    border-color 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
 }
 
 /* ========================================
-   Nav Links
+   Nav
    ======================================== */
 
-/* One mechanism, not two. The markup previously carried `opacity-70` while JS
-   toggled `text-white`/`text-slate-text`, so the two systems fought and the
-   active state read as mush. State now lives entirely in `.is-active`. */
-.nav-link {
-  color: #fff;
-  opacity: 0.62;
-  text-decoration: none;
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--color-paper);
   border-bottom: 1px solid transparent;
-  transition: opacity 0.2s ease, border-color 0.2s ease;
+  transition: border-color 0.2s ease;
+}
+
+.nav.is-stuck {
+  border-bottom-color: var(--color-rule);
+}
+
+.nav-inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding-inline: clamp(1.15rem, 5vw, 3rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 3.25rem;
+}
+
+.nav-mark {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  color: var(--color-ink);
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-3);
+  text-decoration: none;
+  padding-block: 0.35rem;
+  white-space: nowrap;
+  border-bottom: 1px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  position: relative;
 }
 
 .nav-link:hover,
 .nav-link:focus-visible {
-  opacity: 1;
-  text-decoration: none;
+  color: var(--color-accent);
 }
 
 .nav-link.is-active {
-  opacity: 1;
-  border-bottom-color: var(--color-accent-dim);
+  color: var(--color-ink);
+  border-bottom-color: var(--color-accent);
 }
 
-/* The labels are ~17px tall, well under the ~44px a finger needs. Grow the hit
-   area with a pseudo-element rather than padding so the active underline stays
-   tight against the text. The horizontal inset is half the flex gap, so
-   neighbouring targets meet without overlapping and stealing each other's taps. */
+/* Grow the hit area with a pseudo-element rather than padding so the active
+   underline stays tight against the text. */
 @media (pointer: coarse), (max-width: 768px) {
-  .nav-link {
-    position: relative;
-  }
-
   .nav-link::before {
     content: "";
     position: absolute;
@@ -126,112 +153,579 @@ body::after {
 }
 
 /* ========================================
-   Cursor Aura
+   Hero + Spec Block
    ======================================== */
 
-.cursor-aura {
-  background: radial-gradient(circle 600px at var(--x, 50%) var(--y, 50%), rgba(167, 139, 250, 0.07), transparent 70%);
-  transition: background 0.15s;
+.hero {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding-inline: clamp(1.15rem, 5vw, 3rem);
+  padding-top: clamp(3.25rem, 8vw, 5.75rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4rem);
 }
 
-/* ========================================
-   About Tagline Gradient
-   ======================================== */
-
-.about-tagline {
-  /* 90deg (strictly left-to-right), not the diagonal 135deg used elsewhere:
-     this line is long enough to wrap on narrow screens, and a diagonal
-     gradient restarts at a different offset on every wrapped line, reading
-     as a near-random per-word color instead of one smooth transition. A
-     horizontal gradient depends only on x-position, so every line — same
-     0%-100% width — renders the identical transition. */
-  background: linear-gradient(90deg, #ffffff 0%, #a78bfa 60%, #f472b6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ========================================
-   Experience Card List Bullets
-   ======================================== */
-
-.experience-list li {
-  position: relative;
-  padding-left: 1.5rem;
-}
-
-.experience-list li::before {
-  content: ">";
-  position: absolute;
-  left: 0;
-  color: var(--color-accent-dim);
-  font-weight: bold;
-  font-size: 0.875rem;
-}
-
-/* ========================================
-   Skill Map
-   ======================================== */
-
-.skill-tier-label {
-  font-family: var(--font-display);
-  font-size: 0.7rem;
+.hero h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(3.25rem, 11vw, 6.25rem);
+  line-height: 0.94;
+  letter-spacing: -0.032em;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  margin: 0;
+  color: var(--color-ink);
+}
+
+.hero .positioning {
+  margin: 1.25rem 0 0;
+  font-size: clamp(1.0625rem, 2.2vw, 1.375rem);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  max-width: 34ch;
+  text-wrap: balance;
+  color: var(--color-ink);
+}
+
+.hero .positioning em {
+  font-family: var(--font-serif);
+  font-style: italic;
   color: var(--color-accent);
-  margin-bottom: 0.75rem;
 }
 
-/* Tier is carried by weight and border strength, not by a separate legend —
-   19 pills at identical weight told the reader nothing about depth. */
-.skill-pill {
+.spec {
+  margin: clamp(2rem, 4.5vw, 3rem) 0 0;
+  border-top: 1px solid var(--color-accent-dim);
+  max-width: 46rem;
+}
+
+.spec div {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0 1.25rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-rule-soft);
+}
+
+.spec dt {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  padding-top: 0.2rem;
+  margin: 0;
+}
+
+.spec dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: var(--color-ink-2);
+}
+
+.spec dd b {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+.spec .cta {
+  color: var(--color-accent);
+  border-bottom: 1px solid var(--color-rule);
+  padding-bottom: 1px;
+  transition: border-color 0.15s ease;
+}
+
+.spec .cta:hover {
+  border-bottom-color: var(--color-accent);
+}
+
+.spec .links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+}
+
+.spec .links a {
+  color: var(--color-ink-2);
+  border-bottom: 1px solid var(--color-rule);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.spec .links a:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+/* ========================================
+   Sections
+   ======================================== */
+
+.section {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding-inline: clamp(1.15rem, 5vw, 3rem);
+  padding-top: clamp(3rem, 7vw, 4.75rem);
+}
+
+.sec-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.85rem;
+}
+
+.sec-head h2 {
+  font-family: var(--font-mono);
   font-size: 0.75rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  border: 1px solid var(--color-border);
-  color: var(--color-slate-text);
-  background: rgb(255 255 255 / 0.03);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0;
 }
 
-.skill-pill--daily {
-  border-color: var(--color-accent-dim);
-  color: #fff;
-  background: rgb(167 139 250 / 0.08);
+.sec-head h2 span {
+  margin-right: 0.6rem;
+}
+
+.sec-note {
+  font-size: 0.875rem;
+  color: var(--color-ink-2);
+  max-width: 52ch;
+  margin: 0;
+}
+
+/* ========================================
+   Ledger Rows
+   ======================================== */
+
+.ledger {
+  border-top: 1px solid var(--color-accent-dim);
+}
+
+.row {
+  position: relative;
+  display: grid;
+  align-items: start;
+  grid-template-columns: 3.25rem minmax(0, 1fr) 15rem 1.5rem;
+  grid-template-areas: "idx main meta arrow";
+  column-gap: 1.5rem;
+  padding: 1.35rem 0.85rem;
+  margin-inline: -0.85rem;
+  border-bottom: 1px solid var(--color-rule-soft);
+  transition: background-color 0.18s ease;
+}
+
+.row:last-child {
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.row:hover {
+  background: var(--color-tint);
+}
+
+.row-idx {
+  grid-area: idx;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+  letter-spacing: 0.05em;
+  padding-top: 0.28rem;
+}
+
+.row-main {
+  grid-area: main;
+  min-width: 0;
+}
+
+.row-title {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  line-height: 1.35;
+  margin: 0;
+  transition: color 0.15s ease;
+}
+
+.row-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.row-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.row:hover .row-title {
+  color: var(--color-accent);
+}
+
+.row.row-static:hover {
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.row.row-static:hover .row-title {
+  color: var(--color-ink);
+}
+
+.row-desc {
+  margin: 0.3rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--color-ink-2);
+  max-width: 56ch;
+}
+
+.row-desc + .row-desc {
+  margin-top: 0.5rem;
+}
+
+.row-meta {
+  grid-area: meta;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.22rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--color-ink-3);
+  text-align: right;
+  padding-top: 0.15rem;
+}
+
+.row-meta .stack {
+  max-width: 100%;
+}
+
+.row-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.25rem 0.85rem;
+  position: relative;
+  z-index: 2;
+}
+
+.row-links a {
+  color: var(--color-ink-2);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.row-links a:hover {
+  color: var(--color-accent);
+}
+
+.row-arrow {
+  grid-area: arrow;
+  justify-self: end;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: rgba(33, 26, 20, 0.22);
+  padding-top: 0.2rem;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.row:hover .row-arrow {
+  transform: translateX(4px);
+  color: var(--color-accent);
+}
+
+/* skills rows */
+.row.row-plain {
+  grid-template-columns: 3.25rem minmax(0, 1fr);
+  grid-template-areas: "idx main";
+}
+
+.row.row-plain:hover {
+  background: transparent;
+}
+
+.row-plain .row-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 0.4rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chips li {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-ink-2);
+  border: 1px solid var(--color-rule);
+  padding: 0.12rem 0.5rem;
+}
+
+.more-link {
+  margin: 1.1rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.more-link a {
+  color: var(--color-ink-2);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-rule);
+  padding-bottom: 1px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.more-link a:hover {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
+}
+
+/* ========================================
+   Work Rows (expand/collapse)
+   ======================================== */
+
+/* The article is just a wrapper for the button + detail panel — all grid
+   layout lives on .work-header itself (see below), not here. Earlier this
+   used `display: contents` on the button so its children could join the
+   article's grid, but a `display: contents` box paints nothing at all: no
+   outline, and in Chromium it drops out of the tab order entirely, making
+   the whole Work section unreachable by keyboard. A real `<button>` box
+   fixes both. */
+.row.row-work {
+  display: block;
+  grid-template-columns: none;
+  padding: 0;
+  margin-inline: 0;
+  border-bottom: none;
+  cursor: default;
+}
+
+.row.row-work:hover {
+  background: transparent;
+}
+
+.work-header {
+  display: grid;
+  width: 100%;
+  align-items: start;
+  grid-template-columns: 3.25rem minmax(0, 1fr) 12.5rem;
+  grid-template-areas: "idx main meta";
+  column-gap: 1.5rem;
+  padding: 1.35rem 0.85rem;
+  margin-inline: -0.85rem;
+  border: none;
+  border-bottom: 1px solid var(--color-rule-soft);
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.18s ease;
+}
+
+.row.row-work:last-child .work-header {
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.work-header:hover {
+  background: var(--color-tint);
+}
+
+.work-header:hover .row-title {
+  color: var(--color-accent);
+}
+
+.work-header:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+.work-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+}
+
+.work-toggle .sym {
+  display: inline-block;
+  width: 0.85rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.row-work[data-expanded="true"] .work-toggle .sym {
+  transform: rotate(45deg);
+}
+
+.win {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+}
+
+.work-detail {
+  grid-column: 1 / -1;
+  display: none;
+  padding: 0 0.85rem 1.6rem 4.6rem;
+}
+
+.row-work[data-expanded="true"] .work-detail {
+  display: block;
+}
+
+.gist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--color-rule);
+  margin-bottom: 1.25rem;
+}
+
+.gist-grid > div {
+  padding: 0.85rem 1rem;
+  border-right: 1px solid var(--color-rule);
+}
+
+.gist-grid > div:last-child {
+  border-right: none;
+}
+
+@media (max-width: 640px) {
+  .gist-grid {
+    grid-template-columns: 1fr;
+  }
+  .gist-grid > div {
+    border-right: none;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .gist-grid > div:last-child {
+    border-bottom: none;
+  }
+}
+
+.gist-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 0.4rem;
+}
+
+.gist-grid p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-ink-2);
+}
+
+.work-block {
+  margin-top: 1.1rem;
+}
+
+.work-block h4 {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  margin: 0 0 0.5rem;
   font-weight: 500;
 }
 
-.skill-pill--familiar {
-  color: var(--color-slate-dim);
-  border-style: dashed;
+.work-block p {
+  margin: 0 0 0.6rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+.work-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.work-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  margin-bottom: 0.55rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+}
+
+.work-list li::before {
+  content: ">";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.work-list strong {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.work-footnote {
+  padding: 1.1rem 0.85rem 0;
+  font-size: 0.875rem;
+  color: var(--color-ink-2);
+}
+
+.work-footnote strong {
+  font-weight: 600;
+  color: var(--color-ink);
 }
 
 /* ========================================
-   Fade-in Animations
+   Footer
+   ======================================== */
+
+.foot {
+  max-width: 68rem;
+  margin: clamp(3rem, 7vw, 4.5rem) auto 0;
+  padding: 1.4rem clamp(1.15rem, 5vw, 3rem) 3rem;
+  border-top: 1px solid var(--color-rule);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+}
+
+/* ========================================
+   Fade-in on Scroll
    ======================================== */
 
 .fade-in {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
 }
 
 .fade-in.visible {
   opacity: 1;
-  transform: translateY(0);
-}
-
-/* ========================================
-   Experience Card Toggle Rotation
-   ======================================== */
-
-.experience-card[data-expanded="true"] .card-toggle {
-  transform: rotate(45deg);
-  color: var(--color-accent);
-}
-
-.experience-card[data-expanded="true"] .card-content {
-  display: block;
+  transform: none;
 }
 
 /* ========================================
@@ -240,15 +734,17 @@ body::after {
 
 ::selection {
   background: var(--color-accent);
-  color: var(--color-ink);
+  color: var(--color-paper);
 }
 
 /* ========================================
-   Resume Page Spinner
+   Resume / Paper Viewer Spinner
    ======================================== */
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spinner {
@@ -256,37 +752,17 @@ body::after {
 }
 
 /* ========================================
-   Writing Link Underline
-   ======================================== */
-
-.writing-link {
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.1);
-  text-underline-offset: 4px;
-  transition: text-decoration-color 0.2s ease;
-}
-
-.writing-link:hover {
-  text-decoration-color: var(--color-accent);
-}
-
-/* ========================================
    Print Styles
    ======================================== */
 
 @media print {
-  .card-content {
+  .card-content,
+  .work-detail {
     display: block !important;
   }
 
-  .card-toggle,
-  .nav-pill,
-  .cursor-aura {
-    display: none;
-  }
-
-  body::before,
-  body::after {
+  .nav,
+  .work-toggle {
     display: none;
   }
 
@@ -297,22 +773,10 @@ body::after {
 }
 
 /* ========================================
-   Mobile: Hide Cursor Aura
+   Touch Targets
    ======================================== */
 
-@media (max-width: 480px) {
-  .cursor-aura {
-    display: none;
-  }
-
-  .marquee { --marquee-gap: 0.875rem; }
-}
-
 @media (hover: none) and (pointer: coarse) {
-  .cursor-aura {
-    display: none;
-  }
-
   a,
   button {
     min-height: 44px;
@@ -321,11 +785,9 @@ body::after {
 }
 
 /* ========================================
-   Contact Icon Buttons
+   Contact Icon Buttons (resume/pid-steering utility pages)
    ======================================== */
 
-/* Five unlabelled circles were a guessing game, and hover tooltips don't exist
-   on touch. Icon + text, still a 44px touch target. */
 .contact-link {
   display: inline-flex;
   align-items: center;
@@ -333,8 +795,8 @@ body::after {
   min-height: 44px;
   padding: 0.5rem 0.9rem;
   border-radius: 9999px;
-  border: 1px solid var(--color-border);
-  color: var(--color-slate-text);
+  border: 1px solid var(--color-rule);
+  color: var(--color-ink-2);
   font-size: 0.8125rem;
   text-decoration: none;
   transition: color 0.2s, border-color 0.2s, transform 0.15s;
@@ -344,7 +806,6 @@ body::after {
   color: var(--color-accent);
   border-color: var(--color-accent-dim);
   transform: translateY(-2px);
-  text-decoration: none;
 }
 
 .contact-link svg {
@@ -354,327 +815,14 @@ body::after {
 }
 
 /* ========================================
-   Typewriter Cursor
-   ======================================== */
-
-.typewriter-cursor {
-  display: inline-block;
-  color: var(--color-accent);
-  font-weight: 300;
-  animation: cursor-blink 0.9s step-end infinite;
-}
-
-@keyframes cursor-blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* ========================================
-   Gradient Text
-   ======================================== */
-
-.gradient-text {
-  background: linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ========================================
-   Key Win Pill (collapsed card header)
-   ======================================== */
-
-/* On a collapsed card this is the only thing carrying information, so it needs
-   to out-weigh the surrounding metadata rather than blend into it. */
-.win-pill {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  padding: 0.3rem 0.7rem;
-  border-radius: 9999px;
-  border: 1px solid hsl(258 90% 74% / 0.45);
-  color: #fff;
-  background: hsl(258 90% 74% / 0.12);
-  font-family: var(--font-display);
-  font-variant-numeric: tabular-nums;
-  margin-left: 0.5rem;
-}
-
-/* ========================================
-   Projects Marquee
-   ======================================== */
-
-/* Break out of the centered <main> column to the viewport edges.
-   --scrollbar-w is measured in JS so a classic scrollbar can't cause
-   horizontal overflow (html has overflow-y: scroll). */
-.full-bleed {
-  width: calc(100vw - var(--scrollbar-w, 0px));
-  margin-left: calc(50% - (100vw - var(--scrollbar-w, 0px)) / 2);
-}
-
-.marquee {
-  --marquee-gap: 1.25rem;
-  position: relative;
-  overflow: hidden;
-  /* Vertical room so the hover lift + drop shadow aren't clipped by overflow:hidden.
-     Negative margin pulls the extra space back out of the layout. */
-  padding-block: 1rem 3rem;
-  margin-bottom: -2rem;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-}
-
-.marquee__track {
-  display: flex;
-  gap: var(--marquee-gap);
-  width: max-content;
-}
-
-.marquee__group {
-  display: flex;
-  gap: var(--marquee-gap);
-  flex: 0 0 auto;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.marquee__item {
-  flex: 0 0 auto;
-  display: flex;
-}
-
-/* --- Animated mode (fine pointer + motion allowed) --- */
-.marquee--animated .marquee__track {
-  will-change: transform;
-  animation: marquee-scroll var(--marquee-duration, 48s) linear infinite;
-}
-
-@keyframes marquee-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(calc(-1 * var(--marquee-shift, 50%)), 0, 0); }
-}
-
-/* Pause when the user could plausibly want to click, and when off-screen */
-.marquee--animated:hover .marquee__track,
-.marquee--animated:focus-within .marquee__track,
-.marquee--paused .marquee__track {
-  animation-play-state: paused;
-}
-
-/* --- Static mode (touch, reduced motion, or no JS) ---
-   Native horizontal scroll-snap carousel: the correct pattern on touch. */
-.marquee:not(.marquee--animated) {
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  /* Align the first card with the main text column on wide screens */
-  padding-inline: max(1.5rem, calc((100% - 53rem) / 2));
-  overscroll-behavior-x: contain;
-}
-
-.marquee:not(.marquee--animated)::-webkit-scrollbar {
-  display: none;
-}
-
-.marquee:not(.marquee--animated) .marquee__item {
-  scroll-snap-align: center;
-}
-
-/* --- Project card --- */
-.pcard {
-  --accent: 258 90% 74%;
-  display: flex;
-  flex-direction: column;
-  /* Narrower than the viewport on phones so the neighbouring cards peek in.
-     That peek is the only thing telling a touch visitor the row scrolls. */
-  width: min(20rem, 78vw);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-bento);
-  background: var(--color-ink-card);
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1), border-color 0.3s ease,
-    box-shadow 0.35s ease;
-}
-
-a.pcard:hover {
-  transform: translateY(-6px);
-  border-color: hsl(var(--accent) / 0.5);
-  box-shadow: 0 20px 50px -22px hsl(var(--accent) / 0.55);
-  text-decoration: none;
-}
-
-.pcard:focus-visible {
-  outline: 2px solid hsl(var(--accent));
-  outline-offset: 3px;
-}
-
-.pcard__poster {
-  position: relative;
-  display: block;
-  aspect-ratio: 16 / 9;
-  border-bottom: 1px solid var(--color-border);
-  background:
-    radial-gradient(120% 100% at 15% 0%, hsl(var(--accent) / 0.16), transparent 62%),
-    var(--color-ink-light);
-}
-
-/* Posters are either drawn (inline SVG) or a cropped screenshot of the live
-   product. Both fill the same slot and share the same hover treatment. */
-.pcard__poster svg,
-.pcard__poster img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.85;
-  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.3, 1);
-}
-
-.pcard__poster img {
-  object-fit: cover;
-  object-position: top left;
-}
-
-a.pcard:hover .pcard__poster svg,
-a.pcard:hover .pcard__poster img {
-  opacity: 1;
-  transform: scale(1.04);
-}
-
-.pcard__body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: 0.5rem;
-  padding: 1rem 1.125rem 1.125rem;
-}
-
-.pcard__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.pcard__tag {
-  font-family: var(--font-display);
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  padding: 0.2rem 0.5rem;
-  border-radius: 9999px;
-  border: 1px solid hsl(var(--accent) / 0.4);
-  color: hsl(var(--accent));
-  background: hsl(var(--accent) / 0.07);
-  white-space: nowrap;
-}
-
-.pcard__title {
-  font-family: var(--font-display);
-  font-size: 0.975rem;
-  font-weight: 600;
-  line-height: 1.3;
-  color: #fff;
-  margin: 0;
-}
-
-.pcard__desc {
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--color-slate-text);
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.pcard__cta {
-  margin-top: auto;
-  padding-top: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: hsl(var(--accent));
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.pcard__arrow {
-  transition: transform 0.25s ease;
-}
-
-a.pcard:hover .pcard__arrow {
-  transform: translateX(3px);
-}
-
-/* ========================================
-   Gist Grid (3-column strip)
-   ======================================== */
-
-.gist-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-
-@media (max-width: 640px) {
-  .gist-grid {
-    grid-template-columns: 1fr;
-  }
-  .gist-grid > *:not(:last-child) {
-    border-right: none !important;
-    border-bottom: 1px solid var(--color-border);
-  }
-}
-
-/* ========================================
-   Experience Card Type Accents
-   ======================================== */
-
-.experience-card--research {
-  border-left-width: 2px;
-  border-left-color: rgba(167, 139, 250, 0.45);
-}
-
-.experience-card--startup {
-  border-left-width: 2px;
-  border-left-color: var(--color-accent-dim);
-}
-
-/* ========================================
-   Timeline List (Writing Section)
-   ======================================== */
-
-/* Clean minimal list — no line, no indent */
-.timeline-list {
-  list-style: none;
-}
-
-.timeline-item {
-  padding-bottom: 1.25rem;
-}
-
-
-/* ========================================
    Reduced Motion
    ======================================== */
 
-/* Under reduced motion nothing should loop, and smooth scrolling becomes
-   jarring rather than pleasant. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
-  .typewriter-cursor,
   .spinner {
     animation: none !important;
   }
@@ -685,23 +833,99 @@ a.pcard:hover .pcard__arrow {
     transition: none;
   }
 
-  .cursor-aura {
-    display: none;
+  .row,
+  .row-arrow,
+  .row-title,
+  .work-toggle .sym {
+    transition: none;
   }
-
-  .marquee--animated .marquee__track { animation: none; }
-  .pcard,
-  .pcard__poster svg,
-  .pcard__arrow { transition: none; }
 }
 
 /* ========================================
-   Fade-in Stagger
+   Responsive
    ======================================== */
 
-section.fade-in:nth-child(2) { transition-delay: 0.05s; }
-section.fade-in:nth-child(3) { transition-delay: 0.10s; }
-section.fade-in:nth-child(4) { transition-delay: 0.15s; }
-section.fade-in:nth-child(5) { transition-delay: 0.20s; }
-section.fade-in:nth-child(6) { transition-delay: 0.25s; }
-footer.fade-in { transition-delay: 0.30s; }
+@media (max-width: 900px) {
+  .row {
+    grid-template-columns: 3rem minmax(0, 1fr) 11rem 1.25rem;
+    column-gap: 1rem;
+  }
+  .work-header {
+    grid-template-columns: 3rem minmax(0, 1fr) 9rem;
+    column-gap: 1rem;
+  }
+  .row-desc {
+    max-width: 48ch;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero h1 {
+    font-size: clamp(2.9rem, 13vw, 4rem);
+    letter-spacing: -0.028em;
+  }
+  .row,
+  .row.row-plain {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "idx meta" "main main";
+    column-gap: 0.6rem;
+    row-gap: 0.45rem;
+    padding-block: 1.15rem;
+  }
+  .row-idx {
+    padding-top: 0;
+  }
+  .row-meta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: flex-start;
+    text-align: left;
+    padding-top: 0;
+    gap: 0.1rem 0.95rem;
+    font-size: 0.6875rem;
+  }
+  .row-links {
+    justify-content: flex-start;
+    gap: 0.1rem 0.95rem;
+  }
+  .row-arrow {
+    display: none;
+  }
+  .row-desc {
+    max-width: none;
+  }
+  .work-header {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "idx meta" "main main";
+    column-gap: 0.6rem;
+    row-gap: 0.45rem;
+    padding-block: 1.15rem;
+  }
+  .work-detail {
+    padding-left: 0.85rem;
+  }
+  .spec div {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+  .spec dt {
+    padding-top: 0;
+  }
+  .nav-mark {
+    display: none;
+  }
+  .nav-list {
+    gap: 0.85rem;
+  }
+  .nav-link {
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+  }
+  .nav-inner {
+    justify-content: flex-start;
+  }
+  .nav-list li.nav-home {
+    display: none;
+  }
+}

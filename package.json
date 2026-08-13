@@ -14,8 +14,9 @@
     "url": "git+https://github.com/cubeerea/hank_website.git"
   },
   "devDependencies": {
-    "@fontsource/inter": "^5.3.0",
-    "@fontsource/sora": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/ibm-plex-serif": "^5.3.0",
     "@tailwindcss/vite": "^4.2.2",
     "pdfjs-dist": "^5.7.284",
     "tailwindcss": "^4.2.2",

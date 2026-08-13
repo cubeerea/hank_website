@@ -1,14 +1,10 @@
 /**
  * Portfolio Site — Main TypeScript
- * Handles: cursor aura, expand/collapse cards, scroll animations,
- * nav active state, typewriter, and the projects marquee.
+ * Handles: expand/collapse work rows, scroll reveal, nav active state,
+ * and the "last updated" footer stamp.
  */
 
 import './style.css';
-import { initCursorAura } from './cursor-aura';
-import { debounce } from './debounce';
-
-const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 // ========================================
 // Last Updated (injected at build time)
@@ -47,7 +43,7 @@ function initFadeInObserver(): void {
         }
       });
     },
-    { threshold: 0.15 },
+    { threshold: 0.1 },
   );
 
   elements.forEach((el) => observer.observe(el));
@@ -62,12 +58,11 @@ function initFadeInObserver(): void {
  *
  * An IntersectionObserver can't do this reliably: with a fixed threshold, a
  * section taller than `viewport / threshold` never reaches the required ratio
- * and so never fires at all. Expanding the work cards made #work 3663px tall,
- * whose maximum achievable ratio was 0.246 against a 0.3 threshold — the nav
- * simply stopped updating. Measuring positions directly has no such failure.
+ * and so never fires at all. #work can run past 3000px with a couple of rows
+ * expanded. Measuring positions directly has no such failure.
  */
 function initNavTracking(): void {
-  const NAV_LINE = 96; // must match --scroll-offset / scroll-padding-top
+  const NAV_LINE = 64; // must match scroll-padding-top in style.css
 
   const targets = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('.nav-link'),
@@ -123,7 +118,19 @@ function initNavTracking(): void {
 }
 
 // ========================================
-// Expand/Collapse Experience Cards
+// Nav Sticky Border
+// ========================================
+
+function initNavStuck(): void {
+  const nav = document.getElementById('nav');
+  if (!nav) return;
+  const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 0);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+// ========================================
+// Expand/Collapse Work Rows
 // ========================================
 
 function initExperienceCards(): void {
@@ -142,177 +149,15 @@ function initExperienceCards(): void {
 }
 
 // ========================================
-// Typewriter Effect
-// ========================================
-
-function initTypewriter(): void {
-  const el = document.getElementById('typewriter');
-  if (!el) return;
-
-  const phrases = [
-    'UCSB · Applied ML & AI Engineering',
-    'Production LLM Systems',
-    'Mechanistic Interpretability',
-    'Forward Deployed Engineering',
-  ];
-
-  // Nothing should animate under reduced motion, and the line still needs
-  // content so the layout doesn't collapse.
-  if (reducedMotion.matches) {
-    el.textContent = phrases[0];
-    document.querySelector('.typewriter-cursor')?.remove();
-    return;
-  }
-
-  const TYPING_SPEED = 55;
-  const DELETE_SPEED = 28;
-  const PAUSE_END = 2200;
-  const PAUSE_START = 400;
-
-  let phraseIdx = 0;
-  let charIdx = 0;
-  let deleting = false;
-  let timer: number | undefined;
-
-  function tick(): void {
-    const current = phrases[phraseIdx];
-
-    if (!deleting) {
-      el!.textContent = current.slice(0, ++charIdx);
-      if (charIdx === current.length) {
-        deleting = true;
-        timer = window.setTimeout(tick, PAUSE_END);
-        return;
-      }
-    } else {
-      el!.textContent = current.slice(0, --charIdx);
-      if (charIdx === 0) {
-        deleting = false;
-        phraseIdx = (phraseIdx + 1) % phrases.length;
-        timer = window.setTimeout(tick, PAUSE_START);
-        return;
-      }
-    }
-
-    timer = window.setTimeout(tick, deleting ? DELETE_SPEED : TYPING_SPEED);
-  }
-
-  // Don't keep a timer loop alive in a background tab.
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      window.clearTimeout(timer);
-    } else {
-      tick();
-    }
-  });
-
-  tick();
-}
-
-// ========================================
-// Projects Marquee
-// ========================================
-
-/**
- * Continuous right-to-left marquee.
- *
- * The group of cards is authored once in HTML and cloned at runtime until the
- * track is at least twice the viewport width, so the loop is seamless on any
- * display. The animation shifts the track by exactly one group + one gap.
- *
- * Degrades on purpose:
- *   - no JS            -> native scroll-snap carousel (CSS `:not(.marquee--animated)`)
- *   - reduced motion   -> same carousel, nothing moves on its own
- *   - touch / coarse   -> same carousel; swiping beats chasing a moving target
- *   - off-screen       -> animation paused, no wasted compositing
- */
-function initProjectsMarquee(): void {
-  const marquee = document.querySelector<HTMLElement>('[data-marquee]');
-  const track = marquee?.querySelector<HTMLElement>('[data-marquee-track]');
-  const group = marquee?.querySelector<HTMLElement>('[data-marquee-group]');
-  if (!marquee || !track || !group) return;
-
-  const PIXELS_PER_SECOND = 53;
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-
-  function measureScrollbar(): void {
-    const width = window.innerWidth - document.documentElement.clientWidth;
-    document.documentElement.style.setProperty('--scrollbar-w', `${width}px`);
-  }
-
-  function build(): void {
-    track!.querySelectorAll('[data-marquee-clone]').forEach((n) => n.remove());
-    marquee!.classList.remove('marquee--animated');
-
-    if (reducedMotion.matches || !finePointer.matches) return;
-
-    const gap = parseFloat(getComputedStyle(track!).columnGap) || 0;
-    const groupWidth = group!.getBoundingClientRect().width;
-    const viewportWidth = marquee!.getBoundingClientRect().width;
-    if (!groupWidth || !viewportWidth) return;
-
-    const copies = Math.max(2, Math.ceil((viewportWidth * 2) / (groupWidth + gap)));
-    for (let i = 1; i < copies; i += 1) {
-      const clone = group!.cloneNode(true) as HTMLElement;
-      clone.setAttribute('aria-hidden', 'true');
-      clone.setAttribute('data-marquee-clone', '');
-      clone.removeAttribute('data-marquee-group');
-      // Clones must not be reachable by keyboard — each project is tabbable once.
-      clone
-        .querySelectorAll<HTMLElement>('a')
-        .forEach((a) => a.setAttribute('tabindex', '-1'));
-      track!.appendChild(clone);
-    }
-
-    const shift = groupWidth + gap;
-    track!.style.setProperty('--marquee-shift', `${shift}px`);
-    track!.style.setProperty(
-      '--marquee-duration',
-      `${(shift / PIXELS_PER_SECOND).toFixed(2)}s`,
-    );
-    marquee!.classList.add('marquee--animated');
-  }
-
-  function rebuild(): void {
-    measureScrollbar();
-    build();
-  }
-
-  rebuild();
-
-  // Web fonts land after first paint and change card width — remeasure.
-  if (document.fonts?.ready) {
-    document.fonts.ready.then(rebuild).catch(() => {});
-  }
-
-  window.addEventListener('resize', debounce(rebuild, 200));
-
-  reducedMotion.addEventListener('change', rebuild);
-  finePointer.addEventListener('change', rebuild);
-
-  // Don't burn compositing on an off-screen animation.
-  new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        marquee.classList.toggle('marquee--paused', !entry.isIntersecting);
-      });
-    },
-    { threshold: 0 },
-  ).observe(marquee);
-}
-
-// ========================================
 // Initialize
 // ========================================
 
 function init(): void {
   initLastUpdated();
-  initCursorAura();
   initFadeInObserver();
+  initNavStuck();
   initNavTracking();
   initExperienceCards();
-  initTypewriter();
-  initProjectsMarquee();
 }
 
 if (document.readyState === 'loading') {

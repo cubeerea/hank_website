@@ -3,7 +3,6 @@
  */
 
 import './style.css';
-import { initCursorAura } from './cursor-aura';
 import { debounce } from './debounce';
 import { MIN_ZOOM, MAX_ZOOM, ZOOM_STEP, computeAvailableWidth, updateZoomDisplay, bindZoomKeys } from './pdf-viewer';
 
@@ -30,8 +29,6 @@ interface PDFViewport {
   width: number;
   height: number;
 }
-
-initCursorAura();
 
 // PDF.js Configuration
 pdfjsLib.GlobalWorkerOptions.workerSrc =
