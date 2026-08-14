@@ -34,6 +34,7 @@
   --color-rule-soft: rgba(33, 26, 20, 0.085);
   --color-rule-hover: rgba(176, 68, 42, 0.35);
   --color-tint: rgba(176, 68, 42, 0.045);
+  --color-paper-dim: rgba(246, 241, 232, 0.72);
 }
 
 /* ========================================
@@ -59,6 +60,9 @@ body {
   color: var(--color-ink);
   font-family: var(--font-ui);
   font-variant-numeric: tabular-nums;
+  /* .spotlight's 100vw breakout can overhang by a scrollbar's width in some
+     browsers; clip rather than let it introduce horizontal scroll. */
+  overflow-x: clip;
 }
 
 /* Smooth theme transition — prevents FOUC on load */
@@ -127,19 +131,51 @@ html.theme-ready *::after {
   text-decoration: none;
   padding-block: 0.35rem;
   white-space: nowrap;
-  border-bottom: 1px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
   position: relative;
+  transition: color 0.18s ease;
+}
+
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  color: var(--color-paper);
+  background: var(--color-accent);
+  padding: 0.3rem 0.65rem;
+  border-radius: 9999px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.nav-cta:hover {
+  background: var(--color-ink);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.1rem;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+  z-index: 1;
+}
+
+.nav-link:hover::after,
+.nav-link:focus-visible::after,
+.nav-link.is-active::after {
+  transform: scaleX(1);
 }
 
 .nav-link:hover,
-.nav-link:focus-visible {
-  color: var(--color-accent);
-}
-
+.nav-link:focus-visible,
 .nav-link.is-active {
   color: var(--color-ink);
-  border-bottom-color: var(--color-accent);
 }
 
 /* Grow the hit area with a pseudo-element rather than padding so the active
@@ -164,7 +200,7 @@ html.theme-ready *::after {
   padding-bottom: clamp(2.5rem, 6vw, 4rem);
 }
 
-.hero h1 {
+.hero-headline {
   font-family: var(--font-serif);
   font-size: clamp(3.25rem, 11vw, 6.25rem);
   line-height: 0.94;
@@ -174,19 +210,32 @@ html.theme-ready *::after {
   color: var(--color-ink);
 }
 
-.hero .positioning {
-  margin: 1.25rem 0 0;
-  font-size: clamp(1.0625rem, 2.2vw, 1.375rem);
-  line-height: 1.45;
-  letter-spacing: -0.01em;
-  max-width: 34ch;
+.hero-headline em {
+  display: inline-block;
+  font-style: italic;
+  line-height: 1;
+  color: var(--color-paper);
+  background: var(--color-accent);
+  padding: 0.04em 0.12em;
+  margin: 0.06em -0.06em;
+}
+
+.hero-intro {
+  margin: 1.5rem 0 0;
+  font-size: clamp(1.0625rem, 2.2vw, 1.25rem);
+  line-height: 1.55;
+  letter-spacing: -0.006em;
+  max-width: 52ch;
   text-wrap: balance;
+  color: var(--color-ink-2);
+}
+
+.hero-intro strong {
+  font-weight: 500;
   color: var(--color-ink);
 }
 
-.hero .positioning em {
-  font-family: var(--font-serif);
-  font-style: italic;
+.hero-intro strong.accent {
   color: var(--color-accent);
 }
 
@@ -228,14 +277,35 @@ html.theme-ready *::after {
 }
 
 .spec .cta {
+  display: inline-block;
+  margin: 0.2rem 0.5rem 0.2rem 0;
+  padding: 0.28rem 0.7rem;
+  background: var(--color-accent);
+  color: var(--color-paper);
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  font-weight: 500;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.spec .cta-outline {
+  background: transparent;
+  border-color: var(--color-accent-dim);
   color: var(--color-accent);
-  border-bottom: 1px solid var(--color-rule);
-  padding-bottom: 1px;
-  transition: border-color 0.15s ease;
+}
+
+.spec .cta:not(.cta-outline):hover {
+  background: var(--color-ink);
+}
+
+.spec .cta-outline:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-paper);
 }
 
 .spec .cta:hover {
-  border-bottom-color: var(--color-accent);
+  transform: translateY(-1px);
 }
 
 .spec .links {
@@ -245,14 +315,27 @@ html.theme-ready *::after {
 }
 
 .spec .links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   color: var(--color-ink-2);
   border-bottom: 1px solid var(--color-rule);
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 
+.spec .links a svg {
+  flex-shrink: 0;
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+}
+
 .spec .links a:hover {
   color: var(--color-accent);
   border-bottom-color: var(--color-accent);
+}
+
+.spec .links a:hover svg {
+  opacity: 1;
 }
 
 /* ========================================
@@ -294,6 +377,81 @@ html.theme-ready *::after {
   color: var(--color-ink-2);
   max-width: 52ch;
   margin: 0;
+}
+
+/* ========================================
+   Project Spotlight (the one dark section)
+   ======================================== */
+
+/* Full-bleed breakout, independent of every other section's max-width
+   container — deliberately the one moment the page leaves the warm-paper
+   register, so it has to stay singular (see DESIGN.md "Motion"/color rules). */
+.spotlight {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  background: var(--color-ink);
+}
+
+.spotlight-inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: clamp(2.25rem, 6vw, 3.5rem) clamp(1.15rem, 5vw, 3rem);
+}
+
+.spotlight-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+}
+
+.spotlight-title {
+  font-size: clamp(1.5rem, 3.2vw, 2.125rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--color-paper);
+  margin: 0 0 0.75rem;
+}
+
+.spotlight-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.spotlight-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.spotlight-desc {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--color-paper-dim);
+  max-width: 52ch;
+  margin: 0 0 1.25rem;
+}
+
+.spotlight-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-paper);
+  border-bottom: 1px solid var(--color-accent-dim);
+  padding-bottom: 2px;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.spotlight:hover .spotlight-cta {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
 }
 
 /* ========================================
@@ -349,8 +507,21 @@ html.theme-ready *::after {
 }
 
 .row-title a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   color: inherit;
   text-decoration: none;
+}
+
+.row-title a svg {
+  flex-shrink: 0;
+  color: var(--color-ink-3);
+  transition: color 0.15s ease;
+}
+
+.row:hover .row-title a svg {
+  color: var(--color-accent);
 }
 
 .row-title a::after {
@@ -437,40 +608,69 @@ html.theme-ready *::after {
   color: var(--color-accent);
 }
 
-/* skills rows */
-.row.row-plain {
-  grid-template-columns: 3.25rem minmax(0, 1fr);
-  grid-template-areas: "idx main";
+/* Stack (categorized tool columns) */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1.25rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-accent-dim);
 }
 
-.row.row-plain:hover {
-  background: transparent;
+.stack-col {
+  padding: 1.1rem 1.15rem 1.35rem;
+  border: 1px solid var(--color-rule);
 }
 
-.row-plain .row-label {
+.stack-label {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.13em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-accent);
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-rule);
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.3rem 0.5rem;
+.stack-num {
+  color: var(--color-ink-3);
+  font-weight: 500;
+  margin-right: 0.55rem;
+}
+
+.stack-list {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.chips li {
+.stack-list li {
+  position: relative;
+  padding-left: 0.95rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--color-ink);
+}
+
+.stack-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.4em;
+  width: 0.3rem;
+  height: 0.3rem;
+  background: var(--color-accent);
+}
+
+.stack-note {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  color: var(--color-ink-2);
-  border: 1px solid var(--color-rule);
-  padding: 0.12rem 0.5rem;
+  color: var(--color-ink-3);
 }
 
 .more-link {
@@ -717,16 +917,10 @@ html.theme-ready *::after {
    Fade-in on Scroll
    ======================================== */
 
-.fade-in {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: none;
-}
+/* .fade-in sections are visible by default (no-JS/JS-failure safe). When JS
+   runs, initScrollReveal() in main.ts sets inline opacity/transform on each
+   .row/.row-work directly before animating them in with Motion — see there
+   for the actual hide/reveal logic. */
 
 /* ========================================
    Selection
@@ -827,10 +1021,14 @@ html.theme-ready *::after {
     animation: none !important;
   }
 
-  .fade-in {
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .row,
+  .row-work,
+  .spotlight,
+  .hero-headline,
+  .hero-intro,
+  .spec {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   .row,
@@ -857,6 +1055,9 @@ html.theme-ready *::after {
   .row-desc {
     max-width: 48ch;
   }
+  .stack-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 720px) {
@@ -864,8 +1065,7 @@ html.theme-ready *::after {
     font-size: clamp(2.9rem, 13vw, 4rem);
     letter-spacing: -0.028em;
   }
-  .row,
-  .row.row-plain {
+  .row {
     grid-template-columns: auto minmax(0, 1fr);
     grid-template-areas: "idx meta" "main main";
     column-gap: 0.6rem;
@@ -894,6 +1094,13 @@ html.theme-ready *::after {
   }
   .row-desc {
     max-width: none;
+  }
+  .stack-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .stack-col {
+    padding: 0.95rem 1rem 1.15rem;
   }
   .work-header {
     grid-template-columns: auto minmax(0, 1fr);

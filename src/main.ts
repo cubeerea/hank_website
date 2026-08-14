@@ -1,10 +1,17 @@
 /**
  * Portfolio Site — Main TypeScript
  * Handles: expand/collapse work rows, scroll reveal, nav active state,
- * and the "last updated" footer stamp.
+ * magnetic CTAs, and the "last updated" footer stamp.
  */
 
 import './style.css';
+import { animate, inView, stagger } from 'motion';
+
+const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
 
 // ========================================
 // Last Updated (injected at build time)
@@ -27,26 +34,95 @@ function initLastUpdated(): void {
 }
 
 // ========================================
-// Fade-in on Scroll
+// Hero Entrance
 // ========================================
 
-function initFadeInObserver(): void {
-  const elements = document.querySelectorAll('.fade-in');
-  if (!elements.length) return;
+function initHeroEntrance(): void {
+  if (prefersReducedMotion()) return;
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1 },
+  const targets = Array.from(
+    document.querySelectorAll<HTMLElement>('.hero-headline, .hero-intro, .spec'),
   );
+  if (!targets.length) return;
 
-  elements.forEach((el) => observer.observe(el));
+  targets.forEach((el) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(12px)';
+  });
+
+  animate(
+    targets,
+    { opacity: 1, transform: 'translateY(0px)' },
+    { delay: stagger(0.09), duration: 0.6, ease: EASE_OUT },
+  );
+}
+
+// ========================================
+// Scroll Reveal (staggered per-row, via Motion)
+// ========================================
+
+/**
+ * Sections stay visible by default in CSS (see .fade-in in style.css) so
+ * content never disappears if JS fails to load. Only once we know Motion is
+ * about to run do we hide each row/card, then reveal it staggered as its
+ * section scrolls into view.
+ */
+function initScrollReveal(): void {
+  if (prefersReducedMotion()) return;
+
+  const sections = document.querySelectorAll<HTMLElement>('.fade-in');
+  if (!sections.length) return;
+
+  sections.forEach((section) => {
+    const targets = Array.from(
+      section.querySelectorAll<HTMLElement>('.spotlight, .ledger > article, .stack-grid > .stack-col'),
+    );
+    if (!targets.length) return;
+
+    targets.forEach((el) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(14px)';
+    });
+
+    inView(
+      section,
+      () => {
+        animate(
+          targets,
+          { opacity: 1, transform: 'translateY(0px)' },
+          { delay: stagger(0.06), duration: 0.5, ease: EASE_OUT },
+        );
+      },
+      { amount: 0.1 },
+    );
+  });
+}
+
+// ========================================
+// Magnetic CTA Buttons
+// ========================================
+
+/** Subtle cursor-follow on the two hero pill buttons — fine pointers only. */
+function initMagneticButtons(): void {
+  if (prefersReducedMotion() || !window.matchMedia('(pointer: fine)').matches) return;
+
+  const MAX_OFFSET = 6;
+  const STRENGTH = 0.35;
+
+  document.querySelectorAll<HTMLElement>('.spec .cta').forEach((btn) => {
+    btn.addEventListener('pointermove', (e: PointerEvent) => {
+      const rect = btn.getBoundingClientRect();
+      const relX = e.clientX - (rect.left + rect.width / 2);
+      const relY = e.clientY - (rect.top + rect.height / 2);
+      const x = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, relX * STRENGTH));
+      const y = Math.max(-MAX_OFFSET, Math.min(MAX_OFFSET, relY * STRENGTH));
+      animate(btn, { transform: `translate(${x}px, ${y}px)` }, { duration: 0.25, ease: EASE_OUT });
+    });
+
+    btn.addEventListener('pointerleave', () => {
+      animate(btn, { transform: 'translate(0px, 0px)' }, { type: 'spring', stiffness: 300, damping: 20 });
+    });
+  });
 }
 
 // ========================================
@@ -154,7 +230,9 @@ function initExperienceCards(): void {
 
 function init(): void {
   initLastUpdated();
-  initFadeInObserver();
+  initHeroEntrance();
+  initScrollReveal();
+  initMagneticButtons();
   initNavStuck();
   initNavTracking();
   initExperienceCards();
