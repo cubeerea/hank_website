@@ -98,12 +98,29 @@ for (const check of facts.checks) {
     // catch-all for the same fact ("83% AUC-ROC" and "AUC-ROC"), and reporting
     // one document twice for one disagreement just pads the output.
     const hit = check.conflicts.find((bad) => d.text.includes(bad));
-    if (hit) conflicting.push({ doc: d.name, value: hit });
+    if (!hit) continue;
+    // `satisfiedBy` is the escape hatch for a value that only contradicts the
+    // canonical one in isolation. A résumé may cite a model's score as long as
+    // it also carries the conclusion that the model wasn't fit to ship; the
+    // score alone is what misleads.
+    if (check.satisfiedBy?.some((ok) => d.text.includes(ok))) continue;
+    conflicting.push({ doc: d.name, value: hit });
   }
 
   if (conflicting.length === 0) {
     const where = stating.length ? stating.join(', ') : `${DIM}stated nowhere${RESET}`;
     console.log(`${GREEN}ok${RESET}       ${check.id} ${DIM}— ${where}${RESET}`);
+    continue;
+  }
+
+  // An accepted divergence is a decision that was made, not a bug that was
+  // ignored. It still prints, with its reason, so the next person can see the
+  // documents differ on purpose and why — and can revisit it.
+  if (check.accepted) {
+    console.log(`${DIM}by design${RESET} ${check.id} — ${check.acceptedReason}`);
+    for (const c of conflicting) {
+      console.log(`${DIM}          "${c.value}" in: ${c.doc}${RESET}`);
+    }
     continue;
   }
 

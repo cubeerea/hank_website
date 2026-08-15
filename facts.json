@@ -6,9 +6,13 @@
     "that contradict it. Run `npm run check:facts` after replacing any résumé PDF.",
     "",
     "When you reconcile a fact, edit `canonical` here AND every document that states it.",
-    "A conflict is not always someone being wrong — 'Pre-IPO Biotech' vs 'ABVC BioPharma' is a",
-    "decision about whether the client is named, and it has to be the same decision in both places,",
-    "because the résumé is one click from the homepage."
+    "",
+    "Three fields control how a check behaves:",
+    "  conflicts   — values that contradict the canonical one.",
+    "  satisfiedBy — a document citing a conflicting value is excused if it ALSO carries one of",
+    "                these. Used where a number only misleads when its conclusion is missing.",
+    "  accepted    — the documents differ on purpose. Still printed, with acceptedReason, so the",
+    "                decision stays visible and revisitable, but it does not fail the run."
   ],
   "checks": [
     {
@@ -27,19 +31,24 @@
       "id": "biotech-employer",
       "note": "Whether the biotech client is named or anonymised",
       "canonical": "Pre-IPO Biotech",
-      "conflicts": ["ABVC BioPharma"]
+      "conflicts": ["ABVC BioPharma"],
+      "accepted": true,
+      "acceptedReason": "Deliberate. \"ABVC BioPharma\" means nothing to a reader who doesn't follow small-cap biotech, while \"pre-IPO biotech\" lands as a category. The homepage sells the shape of the work; the résumé carries the name for anyone who wants to verify it."
     },
     {
       "id": "biotech-outcome",
-      "note": "The Phase II MDD result. The homepage reports an honest negative; a résumé claiming a working predictive model on the same engagement contradicts it.",
+      "note": "The Phase II MDD result. The homepage reports an honest negative; a résumé that cites the model's score WITHOUT the conclusion that it wasn't fit to ship tells a different story.",
       "canonical": "not suitable",
-      "conflicts": ["83% AUC-ROC", "AUC-ROC"]
+      "conflicts": ["83% AUC-ROC", "AUC-ROC"],
+      "satisfiedBy": ["Recommended against", "data-leakage"]
     },
     {
       "id": "lab-name",
       "note": "Research assistantship — lab vs institution",
       "canonical": "Yuzhou Chen's Lab",
-      "conflicts": ["UC Riverside"]
+      "conflicts": ["UC Riverside"],
+      "accepted": true,
+      "acceptedReason": "Same position, two names for it — the lab is at UC Riverside, and the role and dates match across both documents. Not a factual disagreement. Open question worth revisiting: the institution is the more recognisable of the two, so the homepage may be naming the less legible one."
     },
     {
       "id": "lab-end-date",
