@@ -13,6 +13,12 @@ colors:
   soft-ink: "#77675A"
   hairline-rule: "rgba(33, 26, 20, 0.14)"
   hairline-rule-soft: "rgba(33, 26, 20, 0.085)"
+  cream: "#EFE7D8"
+  terracotta-light: "#D9724F"
+  terracotta-light-dim: "rgba(217, 114, 79, 0.45)"
+  rule-inverse: "rgba(246, 241, 232, 0.14)"
+  rule-inverse-soft: "rgba(246, 241, 232, 0.08)"
+  ink-dim: "rgba(246, 241, 232, 0.55)"
 typography:
   display:
     fontFamily: "IBM Plex Serif, Georgia, Times New Roman, serif"
@@ -34,6 +40,8 @@ typography:
     letterSpacing: "0.04em"
 rounded:
   sharp: "0px"
+  soft: "7px"
+  soft-lg: "12px"
   pill: "9999px"
 components:
   contact-link:
@@ -63,16 +71,20 @@ components:
 
 **Creative North Star: "The Field Ledger"**
 
-This is a researcher's logbook rendered as a website: numbered entries, terse monospace labels, hairline rules standing in for ruled paper, and a single terracotta ink used sparingly for annotation — never for decoration. Nothing on the page exists to look nice; every mark (an index number, a section rule, an uppercase mono label) carries information about what it's attached to. The system is flat by construction: no shadows, no gradients, no rounded cards. Depth comes from ink weight and rule contrast, not elevation.
+This is a researcher's logbook rendered as a website: numbered entries, terse monospace labels, hairline rules standing in for ruled paper, and a single terracotta ink used sparingly for annotation — never for decoration. Nothing on the page exists to look nice; every mark (an index number, a section rule, an uppercase mono label) carries information about what it's attached to. Outside the Projects grid and the Off the Ledger media the system is flat: no shadows, no gradients, no rounded cards. Depth comes from ink weight and rule contrast, not elevation.
 
-The palette stays warm and paper-like throughout (`#F6F1E8` background, near-black warm ink for text), so the terracotta accent (`#B0442A`) reads as a rubber-stamp or red-pen mark against the page rather than a "brand color" wash. Confirmed rejection: no drop shadows, no card elevation, no saturated multi-color palette — the identity is monochrome-plus-one-accent, and that restraint is load-bearing, not a placeholder.
+The palette stays warm and paper-like on its light bands (`#F6F1E8` and one cream step down), with near-black warm ink for text, so the terracotta accent (`#B0442A`) reads as a rubber-stamp or red-pen mark against the page rather than a "brand color" wash. Confirmed rejection: no saturated multi-color palette — the identity is monochrome-plus-one-accent, and that restraint is load-bearing, not a placeholder.
+
+The page is no longer one uninterrupted field. It runs as a sequence of **full-bleed color bands** — Warm Paper, Cream (one subtle step down), and three Deep Ink bands — so the scroll has a pulse. The ledger identity is unchanged; it now plays out across alternating surfaces instead of a single one. See "Band Rhythm" below for the exact order, which is load-bearing.
 
 **Key Characteristics:**
-- Ledger rows: numbered, hairline-ruled, terracotta-on-hover
-- Warm paper background with near-black ink text (never pure black/white)
-- Serif display type for the name/hero only; monospace for every structural/label element; sans for body prose
-- Zero elevation — flat surfaces, ruled dividers instead of shadows
-- Terracotta used at low frequency and small scale: labels, hover states, one italic word in the hero
+- Alternating full-bleed bands: paper → ink → cream → ink → paper → cream → ink, capped at three ink bands
+- Ledger rows: numbered, hairline-ruled, terracotta-on-hover — the structural unit for Writing, Experience, and Contact
+- Projects renders as an asymmetric bento grid instead, and Off the Ledger as a 12-column spread — the two places the system allows shadow/elevation (see Components)
+- Warm paper and cream both stay paper-like; the cream step is deliberately subtle, so the ink bands carry the contrast
+- Serif display type for the hero only; monospace for every structural/label element; sans for body prose
+- Zero elevation everywhere except the Projects bento grid and the Off the Ledger media — flat surfaces, ruled dividers instead of shadows
+- Terracotta used at low frequency and small scale: labels, hover states, one italic word in the hero. On ink bands it steps up to Terracotta Light for contrast.
 
 ## Colors
 
@@ -87,17 +99,44 @@ Warm and restrained: one ink family for paper and text, one accent used mostly f
 ### Neutral
 - **Warm Paper** (#F6F1E8): Page background, every page. Never pure white.
 - **Warm Paper Card** (#FBF8F2): Slightly lighter paper used for isolated content blocks (e.g. the résumé/paper viewer chrome). Defined but used sparingly — most of the site is single-surface (no card layer).
-- **Deep Ink** (#211A14): Primary text, headings, active nav state, `<strong>`/`<b>` emphasis. Never pure black. Also the background of the Project Spotlight (see Components) — the one section on the page that inverts to dark; everywhere else it's text, never a fill.
+- **Deep Ink** (#211A14): Primary text, headings, active nav state, `<strong>`/`<b>` emphasis. Never pure black. Also the fill of all three ink bands (Flagship, Writing, Contact+footer) — see Band Rhythm.
 - **Mid Ink** (#5A4C40): Secondary text — descriptions, body copy in the ledger, footnotes.
 - **Soft Ink** (#77675A): Tertiary text — index numbers, inactive nav links, timestamps/meta.
-- **Paper Dim** (rgba(246, 241, 232, 0.72)): Warm Paper at reduced opacity, used only inside the dark Spotlight as its secondary/body text color — the dark-mode equivalent of Mid Ink.
+- **Paper Dim** (rgba(246, 241, 232, 0.72)): Warm Paper at reduced opacity — secondary/body text on ink bands, the ink-band twin of Mid Ink (8.4:1 on Deep Ink).
 - **Hairline Rule** (rgba(33, 26, 20, 0.14)): Standard row and section dividers.
 - **Hairline Rule Soft** (rgba(33, 26, 20, 0.085)): Interior dividers between rows within the same list, one step quieter than Hairline Rule.
+- **Cream** (#EFE7D8): Exactly one step down from Warm Paper. The alternating band tone (Projects, Selected Experience). The subtlety is the point — it should register as the page shifting weight, not as a second background color. A more saturated oat was tried and rejected: with three ink bands already carrying the contrast, a loud cream made the page busy rather than warm.
+- **Terracotta Light** (#D9724F): Terracotta lightened for use on ink bands — eyebrow labels, hovers, link underlines. Deep Ink puts base Terracotta at only 3.1:1, which fails body text; this clears 5.3:1. It is a tonal step of the same hue, not a second accent, and it appears **only** on ink bands.
+- **Rule Inverse** (rgba(246, 241, 232, 0.14)) / **Rule Inverse Soft** (rgba(246, 241, 232, 0.08)): The ink-band twins of Hairline Rule and Hairline Rule Soft.
+- **Ink Dim** (rgba(246, 241, 232, 0.55)): Tertiary text on ink bands — index numbers, meta, footer. The ink-band twin of Soft Ink (5.5:1 on Deep Ink).
+
+### Band Rhythm
+
+Every `<section>` is a full-bleed color band (`<main>` is unconstrained, so no `100vw` breakout trick is needed) with a `.section-inner` restoring the 68rem reading column. Three band classes: `.band-paper`, `.band-cream`, `.band-ink`.
+
+The order, top to bottom:
+
+| # | Section | Band |
+|---|---|---|
+| — | Hero | Paper (body default) |
+| 1 | **Flagship** (Biotech Intelligence Engine) | **Ink** |
+| 2 | Projects (bento grid) | Cream |
+| 3 | **Writing** | **Ink** |
+| 4 | Stack | Paper |
+| 5 | Selected Experience | Cream |
+| 6 | Off the Ledger (personal) | Paper |
+| 7 | **Contact** + footer | **Ink** |
+
+**The Three-Band Rule.** Exactly three ink bands, and they are spaced — near the top (right under the hero), in the middle, and at the bottom running into the footer. Two would make the page feel unbalanced; four turns a punctuation mark into wallpaper. The paper/cream sections between them alternate so no two consecutive non-ink bands share a tone.
+
+**Ink bands invert, they don't restyle.** On an ink band every token flips to its paper-side twin — Hairline Rule → Rule Inverse, Soft Ink → Ink Dim, Terracotta → Terracotta Light. Components are not redesigned for dark; a ledger row on ink is the same ledger row with inverted tokens. All inversions live in one `.band-ink .…` block in `style.css`, so adding a section to an ink band requires no new component work.
+
+**Section padding is symmetric.** `.section` uses `padding-block`, not `padding-top` alone. Once sections carry their own background, a top-only rule leaves content jammed against the next band's edge — this was the actual defect behind the Stack section feeling abrupt.
 
 ### Named Rules
-**The One Accent Rule.** Terracotta Ink is the only saturated color anywhere in the system. If a design needs a second "pop" color, that is a sign to reconsider the design, not add a token.
+**The One Accent Rule.** Terracotta Ink is the only saturated color anywhere in the system. Terracotta Light is a tonal step of it for ink bands, not a second hue. If a design needs a genuinely different "pop" color, that is a sign to reconsider the design, not add a token.
 
-**The 60/30/10 Rule.** Warm Paper is the ~60% field (background, dominant everywhere). The ink family (Deep/Mid/Soft) is the ~30% — body copy, structure, hierarchy. Terracotta Ink is the ~10% — and that 10% is allowed to be *seen*, not just implied: eyebrow labels, hovers, underlines, the headline's inverted highlight block, and **two filled CTA pills — the primary CTA pill** (`.spec .cta`, "Get in touch →") **and the nav's Résumé button** (`.nav-cta`). Both are solid terracotta fill, paper-colored text — the same primary-action stamp, used in the two places a visitor actually needs to act (get in touch, get the résumé). These are named exceptions, not an open precedent: they're capped at two, both are primary actions (not decoration/badges), and a third filled element anywhere else would push past what "10%" means. If boldness is needed elsewhere, reach for type scale/weight, icon presence, or the one dark Spotlight section before reaching for another fill.
+**The 60/30/10 Rule.** Warm Paper is the ~60% field (background, dominant everywhere). The ink family (Deep/Mid/Soft) is the ~30% — body copy, structure, hierarchy. Terracotta Ink is the ~10% — and that 10% is allowed to be *seen*, not just implied: eyebrow labels, hovers, underlines, the headline's inverted highlight block, and **two filled CTA pills — the primary CTA pill** (`.spec .cta`, "Get in touch →") **and the nav's Résumé button** (`.nav-cta`). Both are solid terracotta fill, paper-colored text — the same primary-action stamp, used in the two places a visitor actually needs to act (get in touch, get the résumé). These are named exceptions, not an open precedent: they're capped at two, both are primary actions (not decoration/badges), and a third filled element anywhere else would push past what "10%" means. If boldness is needed elsewhere, reach for type scale/weight, icon presence, or the band rhythm before reaching for another fill.
 
 ## Typography
 
@@ -120,47 +159,81 @@ Warm and restrained: one ink family for paper and text, one accent used mostly f
 
 ## Layout
 
-Single centered column, `max-width: 68rem`, consistent `clamp()` inline padding (`1.15rem` mobile → `3rem` desktop) shared by nav, hero, and every section — nothing breaks out to full width. Vertical rhythm is generous and driven by `clamp()` (e.g. section top padding `3rem → 4.75rem`), so spacing compresses gracefully on small screens without a separate mobile spacing scale.
+Sections run full-bleed to carry their band color; content inside is a single centered column, `max-width: 68rem`, with consistent `clamp()` inline padding (`1.15rem` mobile → `3rem` desktop) shared by nav, hero, and every `.section-inner`. Vertical rhythm is generous and symmetric, driven by `clamp()` (`padding-block: 3.25rem → 5rem`), so spacing compresses gracefully on small screens without a separate mobile spacing scale.
 
-Content is structured as **ledger rows**, not cards or a grid of tiles: each row is `grid-template-areas: "idx main meta arrow"` (index number · title+description · right-aligned meta · trailing arrow), full-bleed hairline dividers between rows. Below 720px, rows collapse to two lines (`"idx meta" / "main main"`), the trailing arrow disappears, and meta right-alignment becomes left-alignment — the ledger stays a ledger, it doesn't become a card stack.
+Content is structured as **ledger rows** for Writing, Skills, and Work: each row is `grid-template-areas: "idx main meta arrow"` (index number · title+description · right-aligned meta · trailing arrow), full-bleed hairline dividers between rows. Below 720px, rows collapse to two lines (`"idx meta" / "main main"`), the trailing arrow disappears, and meta right-alignment becomes left-alignment — the ledger stays a ledger, it doesn't become a card stack.
+
+Two sections depart from ledger rows entirely: Projects (an asymmetric bento grid) and Off the Ledger (a 12-column spread with a full-width meta band). See both under Components.
 
 Nav is sticky, fixed 3.25rem tall at every breakpoint, transparent-to-hairline border on scroll (`.is-stuck`). No hamburger menu — the nav-list stays inline and just tightens tracking/gaps on mobile; the wordmark drops out below 720px to make room.
 
 ## Elevation & Depth
 
-Flat, deliberately. There is no `box-shadow` anywhere in the system except the loading spinner's rotation (not a shadow). Depth and separation are conveyed entirely through **rule weight** (Hairline Rule vs. Hairline Rule Soft vs. Terracotta Dim) and **ink contrast**, the way a printed ledger uses line weight instead of drop shadows to separate sections.
+Flat by default, with two scoped exceptions. Depth and separation are conveyed entirely through **rule weight** (Hairline Rule vs. Hairline Rule Soft vs. Terracotta Dim) and **ink contrast**, the way a printed ledger uses line weight instead of drop shadows to separate sections — everywhere except the Projects bento grid and the Off the Ledger media.
 
 ### Named Rules
-**The Flat-By-Default Rule.** No element ever lifts, floats, or casts a shadow. A row's only "hover elevation" is the terracotta tint wash and a 4px arrow nudge — both in-plane, nothing leaves the surface.
+**The Flat-By-Default Rule.** No element outside the two named exceptions ever lifts, floats, or casts a shadow. A ledger row's only "hover elevation" is the terracotta tint wash and a 4px arrow nudge — both in-plane, nothing leaves the surface.
+
+**The Projects Elevation Exception.** The bento grid's tiles (`.bento-tile`) carry a resting `box-shadow` (soft, offset, black-based — never a colored halo) that deepens and lifts the tile 3px on hover. This is a deliberate departure from Flat-By-Default, scoped to a single section, because the bento layout's asymmetric tiles read as a grid of objects rather than ruled rows — shadow separates them the way rule weight separates a ledger.
+
+**The Loose Page Exception.** In Off the Ledger only, and only for the two photographic objects — the portrait and the album sleeves — the system relaxes: soft corners, a warm-ink drop shadow (`--shadow-print`), and a fraction of rotation off the page's axis. They read as prints laid on the page rather than surfaces printed into it, and hovering one straightens it and lifts it clear (`--shadow-print-lift`).
+
+*Why this is allowed here and nowhere else:* the section's whole premise is that it is the material the record doesn't hold. It is the one place the ledger is supposed to loosen, and the objects doing the loosening are physical reproductions, not UI. Everything typographic in the section stays strictly on-grid — the tilt is confined to the media, which is what keeps it reading as deliberate rather than as a broken layout. Extending shadow, rotation, or soft corners to a third element, or to type, ends the exception and starts a habit.
+
+Between them, these two account for every `box-shadow` and every `rotate()` on the page. A third is a design decision, not a detail.
 
 ## Motion
 
 Powered by [Motion](https://motion.dev) (`src/main.ts`), used sparingly and only where it communicates something real — never decoration for its own sake.
 
 - **Hero entrance**: headline, intro paragraph, and spec table fade/rise in on load, staggered ~90ms apart (`initHeroEntrance`).
+- **Typed availability line** (`initTypewriter`): the hero spec's "Open to —" value types through four things Hank is open to, holds each ~2.4s, deletes, and moves on. **This is the page's one authored motion moment.** It sits in the mono spec table because the whole site is a typewritten ledger — the effect is the house voice, not a widget. It starts ~2.2s in so it doesn't compete with the hero entrance and so its shipped value can be read before it erases; it stops when the tab is hidden or the hero scrolls out of view. The element ships with real text in the HTML, so no-JS and reduced-motion both see a true line. The typed span is `aria-hidden` with an `.sr-only` sibling carrying the same content as one static string — a live region stuttering a character at a time is worse than no animation.
+- **Nav underline wipe**: `.nav-link::after` scales in from its left edge on hover and out toward its right (`transform-origin` flips between the two states), so the rule reads as a pen stroke following the cursor rather than a bar switching on. The active link parks the same rule at full width from the left. `.nav-mark` carries the identical wipe in ink rather than terracotta.
 - **Scroll reveal**: ledger rows and stack columns fade/rise in, staggered ~60ms apart, the first time their section crosses 10% into the viewport (`initScrollReveal`). Sections are visible-by-default in CSS — JS only hides a row the instant before it schedules that row's reveal, so a JS failure never leaves content invisible.
 - **Magnetic CTAs**: the two hero pill buttons (`.spec .cta`) nudge up to 6px toward the cursor on `pointermove`, spring back on `pointerleave`. Fine-pointer devices only (`(pointer: fine)`) — never on touch.
+- **Loose Page straightening**: hovering the portrait or an album sleeve rotates it back to level and lifts it (see the Loose Page Exception). The border and shadow half of that hover is unconditional; only the transform sits behind `prefers-reduced-motion: no-preference`, so the state is never invisible — it just doesn't travel.
+
+**One easing curve.** `--ease-out` (`cubic-bezier(0.16, 1, 0.3, 1)`) is the page's only authored curve. Everything arrives on the same clock; a second curve would need a reason a visitor could feel.
+
+**Never write a global `transition` rule.** A leftover `html.theme-ready *, *::before, *::after { transition: background-color, color, border-color, box-shadow }` from the pre-ledger dark design sat in `style.css` for a long time. It switched nothing — there is no theme toggle — but at specificity (0,1,2) it outranked and *replaced* every component's own `transition`, so **nothing on the page could animate `transform` at all**: the nav underline snapped instead of wiping, the row arrow teleported its 4px, the work toggle's `+` jumped to its cross, and the media straightening was instant. All of it looked "fine", which is why it survived so long — a transition that silently doesn't run reads as a design choice. Transitions belong on the component that owns the state. If a global rule ever becomes necessary, scope it to specific properties and elements and keep `transform` out of it.
 
 ### Named Rules
-**The Purposeful Motion Rule.** Every animation maps to something real: reading progress, entrance order, cursor proximity. If a motion effect doesn't encode information the user can read, cut it — the "Flat-By-Default" system does not become an invitation for gratuitous motion just because a library is available.
+**The Purposeful Motion Rule.** Every animation maps to something real: reading progress, entrance order, cursor proximity, a value that genuinely changes. If a motion effect doesn't encode information the user can read, cut it — the "Flat-By-Default" system does not become an invitation for gratuitous motion just because a library is available.
 
-**Reduced Motion Is Off, Not Slow.** `prefersReducedMotion()` is checked before hero entrance, scroll reveal, and magnetic buttons ever hide or bind anything — reduced-motion visitors get the finished, static layout, not a faster version of the same animation.
+**One Authored Moment.** The typed availability line is it. Everything else is feedback (hover, focus) or entrance order (stagger). Adding a second thing that runs on its own timer competes with it rather than adding to it.
+
+**Reduced Motion Is Off, Not Slow.** `prefersReducedMotion()` is checked before hero entrance, the typed line, scroll reveal, and magnetic buttons ever hide, type, or bind anything — reduced-motion visitors get the finished, static layout, not a faster version of the same animation. CSS-side, the caret's blink is switched off and hover transitions collapse to instant; the media's resting tilt stays, because a static rotation is a style, not motion.
 
 ## Shapes
 
-Sharp corners everywhere except one deliberate exception: the small pill-shaped `.contact-link` icon buttons on the résumé/paper-viewer utility pages (`border-radius: 9999px`), which read as stamped tokens rather than page furniture. Every other surface — rows, chips, the gist grid, inputs — is square-cornered with a 1px hairline border where a boundary is needed at all. No clipping, no overflow masking beyond ordinary text truncation.
+Sharp corners by default, with two named exceptions:
+
+1. **Pills** (`border-radius: 9999px`) — the CTA pill, the nav Résumé button, and the `.contact-link` icon buttons on the résumé/paper-viewer utility pages, which read as stamped tokens rather than page furniture.
+2. **Photographic media** (`--radius-soft` 7px, `--radius-soft-lg` 12px) — album covers and the portrait in Off the Ledger, and nothing else. Album art is a reproduction of a physical object with its own conventions, and every platform it comes from renders it rounded; a square-cornered cover reads as a rendering bug rather than as restraint. The portrait is the same class of object — a print, not a UI surface — and matching it to the sleeves is what makes the two read as one media family rather than a photo next to some album art. Both set `overflow: hidden` so the image clips to the rounded frame instead of squaring off the corners the border just rounded.
+
+**Two radius steps, because radius reads optically.** 7px on a ~175px sleeve and 12px on a ~300px print are the same softness to the eye; using one value for both makes the larger surface look sharper than the smaller one sitting right below it. Size the radius to the surface, not to the token count.
+
+Every other surface — rows, chips, bento tiles, the gist grid, inputs — is square-cornered with a 1px hairline border where a boundary is needed at all.
+
+The soft radii exist so the media radius is a token rather than a magic number, but they are **not** general-purpose "soften this" values. Reaching for one on a non-photographic surface means the surface should have been square.
 
 ## Components
 
 ### Ledger Row (signature component)
-The core structural unit of the whole site — Projects, Writing, Skills, and Work all render as ledger rows, not distinct card components.
+The core structural unit of most of the site — Writing, Skills, and Work render as ledger rows, not distinct card components. Projects is the one exception (see Bento Grid below).
 - **Shape:** No radius; full-bleed hairline bottom border (`Hairline Rule Soft`), last row in a list gets the stronger `Hairline Rule`.
 - **Layout:** `idx / main / meta / arrow` grid; index number in Soft Ink mono, title in Deep Ink sans (500), description in Mid Ink sans, meta right-aligned mono in Soft Ink, trailing `→` in a faint ink tint.
 - **Hover:** Background washes to Terracotta Tint; title and arrow shift to Terracotta Ink; arrow nudges 4px right. A `.row-static` variant (no link) explicitly suppresses this — hovering it does nothing, signaling non-interactivity.
 
 ### Navigation
-- Sticky, mono labels in Soft Ink; hover/active state shifts to Terracotta Ink (hover) or Deep Ink with a Terracotta Ink underline (active, current section via scroll-spy).
+- Sticky, mono labels in Soft Ink; hover/active state shifts to Deep Ink with a 1.5px Terracotta underline (active = current section via scroll-spy).
+- **The underline is directional.** It wipes in from the left on hover and out toward the right on leave — one rule with `transform-origin` flipped between the two states. A centre-out scale reads as a bar switching on; the wipe reads as a pen stroke. Same treatment on `.nav-mark`, drawn in ink rather than terracotta since the wordmark is a destination, not a section marker.
 - Mobile: wordmark hides, gaps and tracking tighten, no overlay/hamburger — the same inline list just gets denser.
+- **Six items is the mobile ceiling.** Below 720px, Home and Stack drop out (Home is covered by the wordmark; Stack is reference material rather than a destination), leaving Projects · Writing · Work · About · Contact · CV. Below 360px a final density step tightens gaps and type. Verified to fit without clipping the CV pill at 320/360/390/420px — **re-measure at 320px before adding a seventh nav item**, since the list has no overflow affordance and the pill clips silently.
+
+### Section Header
+- **Structure:** `<h2><span>05</span>Off the Ledger</h2>` in mono, uppercase, `0.15em` tracking.
+- **Two-tone by rule:** the index number takes the accent (Terracotta, or Terracotta Light on ink bands) and the label runs in the primary text ink (Deep Ink, or Warm Paper on ink bands). They are never the same color — the number should read as a red-pen index mark against a written label, not as one uniform terracotta string. Verified: Terracotta on Warm Paper is 5.0:1, on Cream 4.6:1, Terracotta Light on Deep Ink 5.3:1.
 
 ### Chips
 - **Style:** No fill, 1px Hairline Rule border, mono text in Mid Ink, small uppercase-free label. Used for the Skill Map's grouped tool lists.
@@ -176,14 +249,55 @@ The core structural unit of the whole site — Projects, Writing, Skills, and Wo
 - **Instances:** The hero's "Get in touch →" (`.spec .cta`, in the Contact spec row) and the nav's "Résumé ↗" (`.nav-cta`, last item in `.nav-list`, smaller/denser to fit the nav's fixed height). Same visual language, two contexts.
 - **Rule:** Capped at these two (see the 60/30/10 rule above). Don't reuse this fill for a third button or a badge.
 
-### Project Spotlight (the one dark section)
-- **Shape:** Full-bleed `100vw` breakout (ignores every other section's `max-width` container), Deep Ink background, Warm Paper / Paper Dim text. Lives at the top of Projects, ahead of the regular ledger rows, spotlighting the one project with real live usage rather than a numbered row.
-- **Content:** A Terracotta-colored mono eyebrow ("Flagship · Live"), a bold title, one description line reusing the same copy that would otherwise sit in a ledger row's `.row-desc`, and a link. The whole block is one click target (same `::after` overlay trick as `.row-title a`).
-- **Rule:** This is the single sanctioned departure from Warm Paper anywhere on the site. It exists to break the page's monotone rhythm once, deliberately — a second dark section would turn a signature moment into a pattern and undercut it.
+### Flagship Band
+- **Shape:** The first ink band, sitting directly under the hero. No grid, no tile — a single left-aligned block on Deep Ink: Terracotta Light mono eyebrow ("Flagship · Live"), a large title (`clamp(1.875rem, 4.5vw, 3rem)`, capped at 20ch so it wraps to two lines), one description line, and an underlined CTA.
+- **Why it's a band, not a tile:** The one project with real live usage gets the page's first color break to itself. Inside the Projects grid it was one tile among tiles; as a band it's the first thing after the hero and reads as a headline act.
+- **Interaction:** The whole band is one click target (`::after` overlay on the title link, same pattern as `.row-title a`); the CTA underline shifts to Terracotta Light on band hover.
+
+### Projects Bento Grid
+- **Shape:** A 3-column, 3-row CSS grid (`.bento`) of six tiles at desktop, named by `grid-template-areas`: the PID Steering research tile anchors a 2×2, two small tiles stack beside it, three close the bottom row. Collapses to a 2-column grid at 900px, then a single flex column (source order) below 720px.
+- **Surface:** Tiles use Warm Paper Card on the Cream band, so they lift off their background rather than blending into it.
+- **Elevation:** Every `.bento-tile` carries a resting shadow and lifts 3px with a deeper shadow on hover (see "The Projects Elevation Exception" above) — the one place the system uses elevation instead of rule weight to separate content.
+- **Anchor tile** (`.bento-pid`): The 2×2 gets a larger title to match its extra area. No color change — area and type scale carry the emphasis, not a fill.
+- **Static tile** (`.bento-static`): For content with no link yet (the topological-signatures research write-up) — no hover lift or shadow deepening, mirroring `.row-static`'s non-interactive signal.
+
+### Favicon
+- **Artwork:** Warm Paper ground, Terracotta `HS` set in IBM Plex Mono 600, a Terracotta hairline border at 40% and one short Terracotta rule beneath the initials — the ledger's own three ingredients at 64px. Square-cornered, matching the system default. The previous violet-to-pink gradient on near-black belonged to the pre-ledger design and matched nothing on the page.
+- **Sized for 16px.** The initials fill most of the tile because at a browser tab's real size the border and rule read as texture, not detail — the mark has to carry it alone. Check any change at 16px before 192px.
+- **Regeneration:** `bash scripts/favicons.sh` rasterises `public/favicon.svg` into the three PNG fallbacks (32, 180, 192). It drives a headless browser rather than a fontconfig rasteriser on purpose: IBM Plex Mono is self-hosted, not installed, so `rsvg-convert`/ImageMagick silently substitute another mono face and the PNGs stop matching the SVG. The artwork is duplicated in `scripts/favicon-render.html` because an SVG inside an `<img>` can't see the page's webfont — **edit both together.**
+- `site.webmanifest`'s `theme_color`/`background_color` and the `<meta name="theme-color">` all carry Warm Paper. They're part of the mark; a stale value there shows as a dark browser chrome strip on mobile.
 
 ### Contact Pill Button
 - **Shape:** Fully rounded (`9999px`), 1px Hairline Rule border, min 44px touch target.
 - **Hover:** Border shifts to Terracotta Dim, text to Terracotta Ink, lifts 2px on the Y axis — the one component in the system allowed a translate-on-hover, since it's an explicit action button rather than a content row.
+
+### Off the Ledger (personal section)
+- **Name:** The section's own pun — the site is a ledger, so this is the material the record doesn't hold. It's the one section header that isn't a plain noun, and that's deliberate: it's the one section that isn't about the work.
+- **Layout:** A 12-column spread, not two columns. Media in columns **1–4**, prose in **6–12**, and the meta rows running **full width underneath** as a footer band. Column 5 is deliberately empty. Collapses to a single stacked column at 900px, media first.
+- **Why a spread and not two columns:** Two equal-weight columns of equal-weight content is exactly what made this section read as uniform — a rectangle stacked on a rectangle facing a wall of three identically-set paragraphs, both ending flush. The spread breaks that four ways: an uneven column split, an empty gutter, a ruled margin the prose hangs off, and a horizontal band closing the section. **This is the one section on the page laid out as a composition rather than as a list.** Every other section is a ledger or a grid, and should stay one.
+- **The ruled margin:** `.personal-main` carries a `border-left` hairline and hangs its text off it at `--prose-gutter`. That single custom property is shared by the rule, the pull quote's outdent, and the meta band's cell dividers, so all three measure from the same place. Change it once.
+- **Why media is consolidated:** Splitting images across both columns (photo one side, album art the other) reads as two unrelated decorations. Grouped, the left column is a single "who this is" panel and the right column is the voice. It also keeps the section from resembling the common portfolio arrangement of prose-left / headshot-right.
+- **Column balance is automatic:** `.personal-media` is a grid with rows `minmax(0, 1fr) auto`, so the portrait absorbs whatever height the prose column ends up being and the two columns always end flush. No ratio to re-tune when the copy changes.
+- **Photo:** Stretches to the row height (`align-items: stretch` + `height: 100%` + `object-fit: cover`) rather than holding a fixed `aspect-ratio`. A pinned ratio had to be re-tuned every time the left column gained content (square → 4:5 → …) and drifted out of balance again each time; stretching removes that failure mode permanently. The crop is centered, so **the source image should be portrait-orientation with the subject near the middle**. Below 900px the grid is single-column with nothing to stretch against, so it falls back to a fixed 4:5. Softly rounded at `--radius-soft-lg` and tilted −0.9° with a print shadow; hovering the photo itself (not the column) straightens it. Currently a styled placeholder frame pending the real image.
+- **Album covers** (`.albums`): Three sleeves under the portrait, each linking to the album on Spotify, **shingled rather than set in an even row**: they overlap ~13%, lean at hand-set angles (−3.2° / +1.4° / −1.1°), and run a little past the column's right edge into the empty gutter. Records leaning in a crate — which is also what stops the media column from reading as two stacked rectangles. Softly rounded (`--radius-soft`), see Shapes. Hovering one straightens it, lifts it 7px, scales it 1.05, and raises it above its neighbours; the others stay put, so the stack reads as a physical thing being pulled from rather than a row of buttons.
+- **Source order is visual order.** The shingle is built from negative margins and `z-index`, never a reversed `flex-direction`, so tab order still walks the sleeves left to right. Angles are hand-set for the same reason the overlap isn't generated: an even sequence reintroduces the regularity the shingle exists to break.
+- **Covers are self-hosted, never hot-linked.** `scripts/album-covers.sh` takes a Spotify album URL, reads the cover from Spotify's oEmbed endpoint, upgrades it to the larger CDN variant (the size is encoded in the image path), resizes to 400px, converts to WebP into `public/assets/albums/`, and prints the markup. This keeps the page at **zero third-party requests**, the same reason the fonts are self-hosted (see the note atop `style.css`).
+- **400px, not 640px.** Tiles render ~175px wide, so 400px covers a 2x display with headroom. Shipping the full 640px original roughly tripled the weight of detailed artwork (one cover went 84KB → 26KB) for resolution no screen resolves. Re-check this if the grid ever gets wider.
+- **Spotify embeds were considered and rejected:** several hundred KB and third-party cookies per iframe against a ~31KB gzipped page, plus a rounded Spotify-green widget that fights the palette.
+- **Meta rows:** Reuses the hero's `.spec` `dt`/`dd` tokens rather than introducing a second key-value pattern — same Terracotta mono label, same hairline separators — but runs them **across the foot of the spread as three ragged-width cells**, label above value, with vertical hairlines between. Rows: **Outside work · Music Taste · On the desk**. Each is one line to edit, values separated by ` · `, so the list grows without a layout change.
+- **The band's columns size themselves.** `minmax(0, max-content) minmax(0, max-content) minmax(0, 1fr)` — the first two cells take their natural single-line width and the last absorbs the remainder, so longer copy re-balances the band instead of needing a new hand-tuned ratio, and all three shrink and wrap rather than overflow once the row runs out of room. **Don't replace this with even thirds**: three equal cells re-introduce the exact rhythm the section was redesigned to lose.
+- **Hyphens in values break lines.** `Hip‑hop` uses a non-breaking hyphen (U+2011) because a plain one is a break opportunity and split the word across two lines in the narrow middle cell. Any new hyphenated value needs the same treatment.
+- **Prose has three weights, not one.** A lead line (`.personal-lead`, one step up, Deep Ink, ~30ch) opens the section; body paragraphs (`.personal-note`) carry it; and one line is promoted to a pull quote (`.personal-pull`) that outdents clear through the ruled margin into the gutter, marked by a 1px terracotta stub sitting *outside* the spine. The outdent is what makes it read as pulled — the mark alone isn't enough, and a mark sitting on the spine just doubles the rule. This is the only place on the page where a line of type steps outside its own column.
+- **The pull quote's paper background is structural.** Outdenting past the spine puts the ruled margin *behind* the quote, where the hairline strikes through the first character of every line — that reads as a rendering fault, not as structure. An opaque `--color-paper` block on the quote interrupts the rule for exactly this passage, so the spine steps aside for the one thing that breaks out of the column. It couples the quote to Off the Ledger sitting on the paper band; move the section to another band and this moves with it. Below 900px the outdent is dropped entirely (the column gap is narrower than the outdent, so the quote would reach into the portrait instead of into empty space) and the terracotta mark carries it alone.
+- **Label voice:** The labels are deliberately not the generic ones ("Hobbies", "On repeat", "Reading"). They should sound like this person keeping a log, not like a template. Any new row should be named in that same register.
+- **Italics are faux here.** IBM Plex Mono ships no italic in the loaded weights, so `<em>` (used for book titles) is browser-synthesized. Checked at render and it holds up at this size — not worth a ~14KB font file for one string. If italics ever spread beyond the odd title, load `ibm-plex-mono/latin-400-italic` rather than letting synthesis carry it.
+- **Unfilled values** carry a `.pending` class (italic, Soft Ink) so a placeholder can never be mistaken for real content — this section is all first-person claims, and a plausible-looking fake would be worse here than an obvious gap. Currently unused; keep it for the next row added before its value is known.
+- **Voice:** First person, and the only reflective prose on the site outside the hero intro. Three short paragraphs; this section earns its place by being brief.
+
+### Stack Columns
+- **Shape:** Five columns, no boxes and no borders. Each column is a mono uppercase label in Terracotta with an index number, a hairline rule directly under the label, and a bulleted list with small square Terracotta markers.
+- **Rule:** No container box. Boxing five short, ragged-length lists made the section read as five cramped containers instead of one grouped index — the label's own underline is the only boundary a column needs. Column gap is `2rem 1.75rem`, roughly a third more than the old boxed layout, since the lists now need their own separation rather than borrowing it from a border.
+- **Responsive:** 5 columns → 3 at 900px → 2 at 720px.
 
 ### Expandable Work Row
 - A `<button>` header (not a generic row) with the same idx/main/meta grid as a ledger row, toggling a `.work-detail` panel via `data-expanded`.
@@ -198,8 +312,12 @@ The core structural unit of the whole site — Projects, Writing, Skills, and Wo
 - **Do** keep row hover feedback in-plane (tint wash, color shift, small arrow nudge) — nothing lifts off the page except the explicit pill-button exceptions.
 
 ### Don't:
-- **Don't** add `box-shadow`, card elevation, or gradients anywhere — the Flat-By-Default Rule has no exceptions.
+- **Don't** add `box-shadow`, `rotate()`, card elevation, or gradients outside the two named exceptions — the Projects bento grid and the Off the Ledger media. Every other section stays flat and square to the page.
+- **Don't** carry the Loose Page treatment into another section, or onto type. It works because it's confined to two photographic objects in the one section that isn't about the work; applied twice it stops being an exception and becomes the system.
 - **Don't** introduce a second saturated accent color; if something needs to "pop," reconsider the layout instead.
 - **Don't** add a third filled/backgrounded terracotta element beyond the two named CTA pills (60/30/10 rule); everywhere else the accent marks, it doesn't fill.
-- **Don't** add a second dark/inverted section — the Project Spotlight is capped at one by design (see Components).
-- **Don't** round corners by default; the CTA pill and contact-link icon buttons are the named exceptions, not a precedent.
+- **Don't** add a fourth ink band, or bunch the existing three together — see the Three-Band Rule. A new section joins the paper/cream alternation.
+- **Don't** restyle components for ink bands. Add the inversion to the existing `.band-ink` block instead; a component that needs bespoke dark styling is a sign the component is wrong, not that dark is hard.
+- **Don't** use base Terracotta (#B0442A) on an ink band — it fails contrast at 3.1:1. Terracotta Light is the ink-band accent.
+- **Don't** give `.section` a top-only padding again; bands need symmetric `padding-block` or content collides with the next band's edge.
+- **Don't** round corners by default; the pills and album covers are the named exceptions (see Shapes), not a precedent.

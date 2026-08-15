@@ -1,7 +1,8 @@
 /**
  * Portfolio Site — Main TypeScript
  * Handles: expand/collapse work rows, scroll reveal, nav active state,
- * magnetic CTAs, and the "last updated" footer stamp.
+ * magnetic CTAs, the typed availability line, and the "last updated" footer
+ * stamp.
  */
 
 import './style.css';
@@ -58,6 +59,111 @@ function initHeroEntrance(): void {
 }
 
 // ========================================
+// Typed Availability Line
+// ========================================
+
+/**
+ * Types the hero spec's "Open to —" value through the things Hank is actually
+ * open to, then deletes and moves on. The line lives in the mono spec table,
+ * so the typewriter reads as the site's own voice rather than a widget.
+ *
+ * Three things keep it honest:
+ *   - the element ships with real text in the HTML, so no-JS sees a true line;
+ *   - reduced-motion returns before any timer is created and leaves that text;
+ *   - the loop only runs while the hero is on screen and the tab is visible —
+ *     an animation nobody is looking at is just a wakeup.
+ */
+function initTypewriter(): void {
+  const el = document.getElementById('typewriter');
+  if (!el || prefersReducedMotion()) return;
+
+  // Keep every phrase under ~26 characters: the row is one mono line at 320px,
+  // and a phrase that wraps makes the whole spec table jump a line-height each
+  // time it comes round. ("Mechanistic interpretability" was exactly that.)
+  const phrases = [
+    'Applied AI / FDE roles',
+    'Production LLM systems',
+    'Interpretability research',
+    'Applied ML research',
+  ];
+
+  const TYPE_MS = 52;
+  const DELETE_MS = 26;
+  const HOLD_MS = 2400;
+  const GAP_MS = 420;
+  // Long enough for the hero entrance to finish *and* for the line's shipped
+  // value to be read before it deletes itself. Two things animating at once
+  // reads as noise, and a phrase that erases before you've read it reads as a
+  // glitch.
+  const START_MS = 2200;
+
+  let phraseIdx = 0;
+  let charIdx = phrases[0].length;
+  let deleting = true;
+  let timer: number | undefined;
+  let onScreen = true;
+  let running = false;
+
+  function tick(): void {
+    running = true;
+    const current = phrases[phraseIdx];
+    let next: number;
+
+    if (deleting) {
+      charIdx -= 1;
+      el!.textContent = current.slice(0, charIdx);
+      if (charIdx === 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        next = GAP_MS;
+      } else {
+        next = DELETE_MS;
+      }
+    } else {
+      charIdx += 1;
+      el!.textContent = current.slice(0, charIdx);
+      if (charIdx === current.length) {
+        deleting = true;
+        next = HOLD_MS;
+      } else {
+        next = TYPE_MS;
+      }
+    }
+
+    timer = window.setTimeout(tick, next);
+  }
+
+  function resume(delay: number): void {
+    if (running || document.hidden || !onScreen) return;
+    timer = window.setTimeout(tick, delay);
+    running = true;
+  }
+
+  function pause(): void {
+    window.clearTimeout(timer);
+    running = false;
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) pause();
+    else resume(GAP_MS);
+  });
+
+  // The hero is the only place this line exists, so scrolling past it should
+  // stop the timer rather than leave it typing into an offscreen node.
+  const hero = document.getElementById('top');
+  if (hero && 'IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      onScreen = entries[0].isIntersecting;
+      if (onScreen) resume(GAP_MS);
+      else pause();
+    }).observe(hero);
+  }
+
+  resume(START_MS);
+}
+
+// ========================================
 // Scroll Reveal (staggered per-row, via Motion)
 // ========================================
 
@@ -75,7 +181,9 @@ function initScrollReveal(): void {
 
   sections.forEach((section) => {
     const targets = Array.from(
-      section.querySelectorAll<HTMLElement>('.spotlight, .ledger > article, .stack-grid > .stack-col'),
+      section.querySelectorAll<HTMLElement>(
+        '.flagship-inner, .bento > .bento-tile, .ledger > article, .stack-grid > .stack-col, .personal > *',
+      ),
     );
     if (!targets.length) return;
 
@@ -231,6 +339,7 @@ function initExperienceCards(): void {
 function init(): void {
   initLastUpdated();
   initHeroEntrance();
+  initTypewriter();
   initScrollReveal();
   initMagneticButtons();
   initNavStuck();

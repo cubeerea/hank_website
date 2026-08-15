@@ -35,6 +35,33 @@
   --color-rule-hover: rgba(176, 68, 42, 0.35);
   --color-tint: rgba(176, 68, 42, 0.045);
   --color-paper-dim: rgba(246, 241, 232, 0.72);
+  /* One step down from Warm Paper — the alternating band tone. Deliberately
+     subtle: it should register as the page shifting weight, not as a
+     different color. See DESIGN.md "Band Rhythm". */
+  --color-cream: #EFE7D8;
+  /* Terracotta lightened for ink bands. #B0442A only clears 3.1:1 on Deep Ink,
+     which fails body text; this clears 5.3:1. Same hue, tonal step — not a
+     second accent. */
+  --color-accent-light: #D9724F;
+  --color-accent-light-dim: rgba(217, 114, 79, 0.45);
+  /* The system is square-cornered by default; these are the only soft radii,
+     and they belong to media objects only — album art and the portrait (see
+     DESIGN.md "Shapes"). Two steps because radius reads optically, not
+     absolutely: 7px on a ~175px sleeve and 12px on a ~300px print are the same
+     softness to the eye. Not general-purpose "soften this" values. */
+  --radius-soft: 7px;
+  --radius-soft-lg: 12px;
+  /* Warm-ink drop shadow for the two exceptions that carry one: the Projects
+     bento tiles and the Off the Ledger media (see "The Loose Page Exception").
+     Offset + blur, never a zero-offset colored halo. */
+  --shadow-print: 0 1px 2px rgba(33, 26, 20, 0.05), 0 14px 30px -18px rgba(33, 26, 20, 0.38);
+  --shadow-print-lift: 0 2px 5px rgba(33, 26, 20, 0.07), 0 26px 48px -22px rgba(33, 26, 20, 0.45);
+  /* Confident deceleration. One curve for every authored transition on the
+     page so nothing arrives on a different clock. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --color-rule-inverse: rgba(246, 241, 232, 0.14);
+  --color-rule-inverse-soft: rgba(246, 241, 232, 0.08);
+  --color-ink-dim: rgba(246, 241, 232, 0.55);
 }
 
 /* ========================================
@@ -60,21 +87,23 @@ body {
   color: var(--color-ink);
   font-family: var(--font-ui);
   font-variant-numeric: tabular-nums;
-  /* .spotlight's 100vw breakout can overhang by a scrollbar's width in some
-     browsers; clip rather than let it introduce horizontal scroll. */
+  /* Backstop against any child overhanging the viewport width; color bands
+     run edge-to-edge so a stray overflow would show as a horizontal scroll. */
   overflow-x: clip;
 }
 
-/* Smooth theme transition — prevents FOUC on load */
-html.theme-ready,
-html.theme-ready *,
-html.theme-ready *::before,
-html.theme-ready *::after {
-  transition: background-color 0.3s ease-in-out,
-    color 0.3s ease-in-out,
-    border-color 0.3s ease-in-out,
-    box-shadow 0.3s ease-in-out;
-}
+/* REMOVED: a blanket `html.theme-ready *, *::before, *::after { transition: … }`
+   used to live here, left over from the pre-ledger dark design's theme
+   switcher. This site has no theme toggle (`color-scheme: light`, one palette),
+   so it switched nothing — but at specificity (0,1,2) it outranked every
+   component's own `transition` declaration and *replaced* it. The practical
+   effect: nothing on the page could animate `transform` at all. The nav
+   underline snapped instead of wiping, the row arrow teleported 4px, the work
+   toggle's `+` jumped to its cross, and the album/portrait straightening was
+   instant. Every interactive element here declares the transition it wants;
+   they now actually run. Don't reintroduce a global transition rule — if a
+   future theme switch needs one, scope it to the properties and elements that
+   change, and keep `transform` out of it. */
 
 /* ========================================
    Nav
@@ -105,6 +134,7 @@ html.theme-ready *::after {
 }
 
 .nav-mark {
+  position: relative;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
   letter-spacing: 0.02em;
@@ -112,6 +142,27 @@ html.theme-ready *::after {
   color: var(--color-ink);
   white-space: nowrap;
   text-decoration: none;
+}
+
+/* Same wipe as the nav links, drawn in ink rather than terracotta — the
+   wordmark is a destination, not a section marker. */
+.nav-mark::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.25rem;
+  height: 1.5px;
+  background: var(--color-ink);
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform 0.34s var(--ease-out);
+}
+
+.nav-mark:hover::after,
+.nav-mark:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: 0 50%;
 }
 
 .nav-list {
@@ -146,23 +197,29 @@ html.theme-ready *::after {
   border-radius: 9999px;
   text-decoration: none;
   white-space: nowrap;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.2s var(--ease-out);
 }
 
 .nav-cta:hover {
   background: var(--color-ink);
+  transform: translateY(-1px);
 }
 
+/* Directional wipe: the rule enters from the left edge on hover and leaves
+   toward the right, so the underline reads as a pen stroke following the
+   cursor rather than a bar switching on. The active state parks it at full
+   width from the left, which is where a hover would have left it. */
 .nav-link::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
   bottom: -0.1rem;
-  height: 2px;
+  height: 1.5px;
   background: var(--color-accent);
   transform: scaleX(0);
-  transition: transform 0.2s ease;
+  transform-origin: 100% 50%;
+  transition: transform 0.34s var(--ease-out);
   z-index: 1;
 }
 
@@ -170,6 +227,7 @@ html.theme-ready *::after {
 .nav-link:focus-visible::after,
 .nav-link.is-active::after {
   transform: scaleX(1);
+  transform-origin: 0 50%;
 }
 
 .nav-link:hover,
@@ -339,14 +397,234 @@ html.theme-ready *::after {
 }
 
 /* ========================================
+   Typed Availability Line
+   ======================================== */
+
+/* The site's whole voice is typewritten — mono labels, ruled rows, numbered
+   entries — so the one line that is genuinely in flux (what he's open to)
+   types itself out instead of sitting still. Lives in the spec table's mono
+   column, where the effect is native rather than costume.
+   Nothing follows the caret on its line, so no width needs reserving — but
+   every phrase must fit one line at 320px, or the row grows and shrinks a
+   line-height on each cycle. See the phrase list in main.ts. */
+.typeline {
+  display: inline-block;
+}
+
+.typeline-caret {
+  display: inline-block;
+  width: 0.5ch;
+  height: 1.05em;
+  margin-left: 0.12ch;
+  vertical-align: -0.18em;
+  background: var(--color-accent);
+  animation: caret-blink 1.05s step-end infinite;
+}
+
+@keyframes caret-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Screen-reader-only: the animated line is aria-hidden, so this carries the
+   same content as one static string. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ========================================
    Sections
    ======================================== */
 
+/* Sections are full-bleed color bands (<main> is unconstrained, so no 100vw
+   breakout trick is needed) and restore the reading column via .section-inner.
+   Padding is symmetric top/bottom so every band gets even breathing room —
+   the old padding-top-only rule left content jammed against the next band's
+   edge as soon as sections started carrying their own background. */
 .section {
+  padding-block: clamp(3.25rem, 7vw, 5rem);
+}
+
+.section-inner {
   max-width: 68rem;
   margin: 0 auto;
   padding-inline: clamp(1.15rem, 5vw, 3rem);
-  padding-top: clamp(3rem, 7vw, 4.75rem);
+}
+
+/* ========================================
+   Band Rhythm
+   ======================================== */
+
+/* The page alternates three surfaces so the scroll has a pulse instead of one
+   uninterrupted field: Warm Paper, one step down to Cream, and three Deep Ink
+   bands (Flagship, Writing, Contact+footer). See DESIGN.md "Band Rhythm" —
+   the ink count is capped at three and the order is load-bearing. */
+.band-paper {
+  background: var(--color-paper);
+}
+
+.band-cream {
+  background: var(--color-cream);
+}
+
+.band-ink {
+  background: var(--color-ink);
+}
+
+/* Ink-band inversions. Every rule/ink token flips to its paper-side twin;
+   the accent steps up to --color-accent-light so labels and hovers stay
+   above 4.5:1 on Deep Ink. */
+.band-ink .sec-head h2 {
+  color: var(--color-paper);
+}
+
+.band-ink .sec-head h2 span {
+  color: var(--color-accent-light);
+}
+
+.band-ink .sec-note {
+  color: var(--color-paper-dim);
+}
+
+.band-ink .ledger {
+  border-top-color: var(--color-accent-light-dim);
+}
+
+.band-ink .row {
+  border-bottom-color: var(--color-rule-inverse-soft);
+}
+
+.band-ink .row:last-child {
+  border-bottom-color: var(--color-rule-inverse);
+}
+
+.band-ink .row-title {
+  color: var(--color-paper);
+}
+
+.band-ink .row-desc {
+  color: var(--color-paper-dim);
+}
+
+.band-ink .row-idx,
+.band-ink .row-meta {
+  color: var(--color-ink-dim);
+}
+
+.band-ink .row-links a {
+  color: var(--color-paper-dim);
+}
+
+.band-ink .row-arrow {
+  color: rgba(246, 241, 232, 0.28);
+}
+
+.band-ink .row:hover {
+  background: rgba(246, 241, 232, 0.04);
+}
+
+.band-ink .row:hover .row-title,
+.band-ink .row:hover .row-arrow,
+.band-ink .row-links a:hover,
+.band-ink .row:hover .row-title a svg {
+  color: var(--color-accent-light);
+}
+
+.band-ink .row.row-static:hover .row-title {
+  color: var(--color-paper);
+}
+
+.band-ink .more-link a {
+  color: var(--color-paper-dim);
+  border-bottom-color: var(--color-rule-inverse);
+}
+
+.band-ink .more-link a:hover {
+  color: var(--color-accent-light);
+  border-bottom-color: var(--color-accent-light);
+}
+
+/* ========================================
+   Flagship Band (the first ink band)
+   ======================================== */
+
+/* Pulled out of the Projects grid into its own band directly under the hero —
+   the one project with live usage gets the page's first color break rather
+   than a tile among tiles. */
+.flagship-inner {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding-inline: clamp(1.15rem, 5vw, 3rem);
+  position: relative;
+}
+
+.flagship-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-light);
+  margin-bottom: 1rem;
+}
+
+.flagship-title {
+  font-size: clamp(1.875rem, 4.5vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.05;
+  color: var(--color-paper);
+  margin: 0 0 1rem;
+  max-width: 20ch;
+}
+
+.flagship-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.flagship-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.flagship-desc {
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  line-height: 1.6;
+  color: var(--color-paper-dim);
+  max-width: 54ch;
+  margin: 0 0 1.5rem;
+}
+
+.flagship-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-paper);
+  border-bottom: 1px solid var(--color-accent-light-dim);
+  padding-bottom: 3px;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.flagship:hover .flagship-cta {
+  color: var(--color-accent-light);
+  border-bottom-color: var(--color-accent-light);
 }
 
 .sec-head {
@@ -358,18 +636,22 @@ html.theme-ready *::after {
   padding-bottom: 0.85rem;
 }
 
+/* The index number carries the accent and the label runs in ink, so the two
+   read as separate marks — a red-pen index against a written label — instead
+   of one uniform terracotta string. */
 .sec-head h2 {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-ink);
   margin: 0;
 }
 
 .sec-head h2 span {
   margin-right: 0.6rem;
+  color: var(--color-accent);
 }
 
 .sec-note {
@@ -380,78 +662,161 @@ html.theme-ready *::after {
 }
 
 /* ========================================
-   Project Spotlight (the one dark section)
+   Projects Bento Grid
    ======================================== */
 
-/* Full-bleed breakout, independent of every other section's max-width
-   container — deliberately the one moment the page leaves the warm-paper
-   register, so it has to stay singular (see DESIGN.md "Motion"/color rules). */
-.spotlight {
+/* Six tiles on the cream band: the PID Steering research anchors a 2x2, two
+   small tiles stack beside it, three close the bottom row. The flagship lives
+   in its own ink band above, so nothing here competes with it.
+   This is the one section that departs from Flat-By-Default on purpose —
+   see DESIGN.md "Elevation & Depth" for the scoped exception. */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(10.5rem, auto));
+  grid-template-areas:
+    "pid pid d4g"
+    "pid pid nba"
+    "zet xeno topo";
+  gap: 1rem;
+}
+
+.bento-pid  { grid-area: pid; }
+.bento-d4g  { grid-area: d4g; }
+.bento-nba  { grid-area: nba; }
+.bento-zet  { grid-area: zet; }
+.bento-xeno { grid-area: xeno; }
+.bento-topo { grid-area: topo; }
+
+/* The 2x2 anchor gets a larger title, matching its extra area. */
+.bento-pid .bento-title {
+  font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+  letter-spacing: -0.018em;
+}
+
+.bento-pid .bento-desc {
+  font-size: 0.9375rem;
+}
+
+.bento-tile {
   position: relative;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  background: var(--color-ink);
+  display: flex;
+  flex-direction: column;
+  padding: 1.4rem 1.5rem;
+  background: var(--color-card);
+  border: 1px solid var(--color-rule);
+  box-shadow: 0 1px 2px rgba(33, 26, 20, 0.05), 0 10px 26px -16px rgba(33, 26, 20, 0.22);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-.spotlight-inner {
-  max-width: 68rem;
-  margin: 0 auto;
-  padding: clamp(2.25rem, 6vw, 3.5rem) clamp(1.15rem, 5vw, 3rem);
+.bento-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 6px rgba(33, 26, 20, 0.08), 0 22px 44px -20px rgba(33, 26, 20, 0.32);
+  border-color: var(--color-accent-dim);
 }
 
-.spotlight-label {
+.bento-idx {
   display: block;
   font-family: var(--font-mono);
   font-size: 0.6875rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-3);
+  margin-bottom: 0.65rem;
 }
 
-.spotlight-title {
-  font-size: clamp(1.5rem, 3.2vw, 2.125rem);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  color: var(--color-paper);
-  margin: 0 0 0.75rem;
+.bento-title {
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  line-height: 1.3;
+  margin: 0 0 0.5rem;
+  transition: color 0.15s ease;
 }
 
-.spotlight-title a {
+.bento-title a {
   color: inherit;
   text-decoration: none;
 }
 
-.spotlight-title a::after {
+.bento-title a::after {
   content: "";
   position: absolute;
   inset: 0;
 }
 
-.spotlight-desc {
-  font-size: 1rem;
-  line-height: 1.55;
-  color: var(--color-paper-dim);
-  max-width: 52ch;
-  margin: 0 0 1.25rem;
-}
-
-.spotlight-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  color: var(--color-paper);
-  border-bottom: 1px solid var(--color-accent-dim);
-  padding-bottom: 2px;
-  transition: border-color 0.15s ease, color 0.15s ease;
-}
-
-.spotlight:hover .spotlight-cta {
+.bento-tile:hover .bento-title {
   color: var(--color-accent);
-  border-bottom-color: var(--color-accent);
+}
+
+.bento-desc {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-ink-2);
+  flex-grow: 1;
+}
+
+.bento-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--color-rule-soft);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.bento-tag {
+  color: var(--color-ink-3);
+}
+
+.bento-foot a {
+  position: relative;
+  z-index: 2;
+  color: var(--color-ink-2);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.bento-foot a:hover {
+  color: var(--color-accent);
+}
+
+/* Static tile (research write-up pending, no link yet) — no hover lift,
+   mirrors .row-static's non-interactive treatment. */
+.bento-static {
+  cursor: default;
+}
+
+.bento-static:hover {
+  transform: none;
+  box-shadow: 0 1px 2px rgba(33, 26, 20, 0.05), 0 10px 26px -16px rgba(33, 26, 20, 0.22);
+  border-color: var(--color-rule);
+}
+
+@media (max-width: 900px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(9.5rem, auto));
+    grid-template-areas:
+      "pid  pid"
+      "d4g  nba"
+      "zet  xeno"
+      "topo topo";
+  }
+}
+
+@media (max-width: 720px) {
+  .bento {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .bento-tile {
+    padding: 1.2rem 1.3rem;
+  }
 }
 
 /* ========================================
@@ -608,18 +973,22 @@ html.theme-ready *::after {
   color: var(--color-accent);
 }
 
-/* Stack (categorized tool columns) */
+/* Stack — five grouped tool columns. Sits on a paper band between the Writing
+   and Experience bands (see DESIGN.md "Band Rhythm"). */
 .stack-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 1.25rem;
-  padding-top: 1.5rem;
+  gap: 2rem 1.75rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--color-accent-dim);
 }
 
+/* No box, no border — the label's own underline rule is the only boundary a
+   column needs. Boxing five short lists made the section read as five cramped
+   containers instead of one grouped index. */
 .stack-col {
-  padding: 1.1rem 1.15rem 1.35rem;
-  border: 1px solid var(--color-rule);
+  padding: 0;
+  border: none;
 }
 
 .stack-label {
@@ -896,21 +1265,414 @@ html.theme-ready *::after {
 }
 
 /* ========================================
+   Off the Ledger (personal section)
+   ======================================== */
+
+/* The one section that isn't about the work, and the one laid out as a spread
+   instead of a ledger — see DESIGN.md "The Loose Page Exception".
+   A 12-column frame carries three parts: media in columns 1–4, prose in 6–12
+   against a ruled margin, and the meta rows running the full width underneath
+   as a footer band. Column 5 is deliberately empty — that gutter, plus the
+   rule the prose hangs off, is what stops the section reading as two boxes of
+   equal weight side by side. */
+.personal {
+  /* The distance from the prose column's ruled margin to its text. Shared by
+     the rule, the pull quote's outdent, and the meta band's cell dividers, so
+     all three hang off the same measurement. */
+  --prose-gutter: clamp(1.25rem, 2.4vw, 2rem);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1.25rem, 2.6vw, 2.25rem);
+  row-gap: clamp(2.25rem, 4vw, 3.25rem);
+  align-items: stretch;
+  padding-top: 2.25rem;
+  border-top: 1px solid var(--color-accent-dim);
+}
+
+/* Portrait takes the leftover height so the media column always ends flush
+   with the prose column, whatever length the copy runs. */
+.personal-media {
+  grid-column: 1 / span 4;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 1.1rem;
+  min-width: 0;
+}
+
+/* Hangs off a hairline the way a note hangs off a ruled margin. The rule runs
+   the full height of the row, so it also draws the section's spine when the
+   media column runs taller than the copy. */
+.personal-main {
+  grid-column: 6 / span 7;
+  min-width: 0;
+  padding-left: var(--prose-gutter);
+  border-left: 1px solid var(--color-rule-soft);
+}
+
+/* The opening line, pulled out of the first paragraph and set a step up. It
+   states the section's whole premise, so it leads rather than sitting inside a
+   wall of three identically-weighted paragraphs. */
+.personal-lead {
+  margin: 0 0 1.35rem;
+  font-size: clamp(1.125rem, 1.7vw, 1.3125rem);
+  line-height: 1.45;
+  letter-spacing: -0.014em;
+  color: var(--color-ink);
+  max-width: 30ch;
+  text-wrap: balance;
+}
+
+.personal-note {
+  margin: 0 0 1.1rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-ink-2);
+  max-width: 62ch;
+}
+
+.personal-note:last-of-type {
+  margin-bottom: 0;
+}
+
+.personal-note strong {
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* The section's most quotable line, promoted out of its paragraph and hung
+   clear through the ruled margin into the empty gutter beside it — the one
+   place on the page where a line of type steps outside its own column. The
+   outdent is what makes it read as pulled; the terracotta mark is a margin
+   annotation sitting outside the spine, not a quote bar banding the text, so
+   it stays 1px and never touches the type.
+
+   The paper background is load-bearing, not decoration. Outdenting past the
+   spine puts the ruled margin *behind* the quote, where it struck through the
+   first character of every line — a hairline crossing live type, which reads
+   as a rendering fault rather than as structure. The opaque block interrupts
+   the rule for exactly this passage, so the spine steps aside for the one
+   thing that breaks out of the column. Coupled to Off the Ledger sitting on
+   the paper band (see DESIGN.md "Band Rhythm"); if the section ever moves to
+   cream or ink, this has to move with it. */
+.personal-pull {
+  position: relative;
+  margin: 1.9rem 0 1.9rem calc(-1 * var(--prose-gutter) - 1.6rem);
+  padding: 0.5rem 0 0.5rem 1.1rem;
+  background: var(--color-paper);
+  font-size: clamp(1.0625rem, 1.5vw, 1.1875rem);
+  line-height: 1.5;
+  letter-spacing: -0.012em;
+  color: var(--color-ink);
+  max-width: 36ch;
+  text-wrap: balance;
+}
+
+.personal-pull::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.9em;
+  bottom: 0.9em;
+  width: 1px;
+  background: var(--color-accent);
+}
+
+/* Reuses the hero's .spec dt/dd tokens rather than inventing a second
+   key-value pattern, but runs them across the foot of the spread as three
+   ragged-width cells instead of stacked rows — the label sits above its value
+   here, which is what lets the band be short enough to close the section
+   instead of extending it. */
+.personal-spec {
+  grid-column: 1 / -1;
+  margin: 0;
+  max-width: none;
+  display: grid;
+  /* Ragged, not even thirds — the columns size to the length of what's
+     actually in them, which is also what keeps the band from re-introducing
+     the three-equal-cells rhythm the section just got rid of. The first two
+     take their natural single-line width and the last absorbs the remainder,
+     so a longer value re-balances the band instead of needing a new ratio;
+     `minmax(0, …)` lets all three shrink and wrap once the row runs out of
+     room rather than overflowing it. */
+  grid-template-columns: minmax(0, max-content) minmax(0, max-content) minmax(0, 1fr);
+  column-gap: clamp(1.25rem, 2.6vw, 2.25rem);
+  border-top: 1px solid var(--color-accent-dim);
+  padding-top: 1.35rem;
+}
+
+.personal-spec div {
+  display: block;
+  grid-template-columns: none;
+  gap: 0;
+  padding: 0 0 0 var(--prose-gutter);
+  border-bottom: none;
+  border-left: 1px solid var(--color-rule-soft);
+}
+
+.personal-spec div:first-child {
+  padding-left: 0;
+  border-left: none;
+}
+
+.personal-spec dt {
+  padding-top: 0;
+}
+
+.personal-spec dd {
+  margin-top: 0.5rem;
+}
+
+/* Visibly unfilled, so a placeholder can never be mistaken for real content. */
+.personal-spec .pending {
+  color: var(--color-ink-3);
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Album covers, shingled rather than set in an even row of three. Sleeves
+   overlap and lean the way records lean in a crate — which is also what stops
+   this column from reading as one rectangle stacked on a second rectangle.
+   Hovering one straightens it, brings it forward, and lifts it clear of its
+   neighbours; the others stay put, so the stack reads as a physical thing
+   being pulled from rather than a row of buttons.
+   Covers are self-hosted WebP (see scripts/album-covers.sh); nothing loads
+   from Spotify, so the page still makes no third-party requests. */
+/* Source order is visual order — the shingle is built from negative margins
+   and z-index, never a reversed flex direction, so tab order still walks the
+   sleeves left to right. The stack runs a little past its column on purpose;
+   that overhang lands in the empty gutter beside the prose rule, so the media
+   block stops squaring off against the text the way two boxes would. */
+.albums {
+  display: flex;
+  padding-top: 0.4rem;
+}
+
+.album {
+  --album-tilt: 0deg;
+  --album-lift: 0px;
+  --album-pop: 1;
+  display: block;
+  position: relative;
+  flex: 0 0 40%;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-soft);
+  background: var(--color-card);
+  box-shadow: var(--shadow-print);
+  transform: rotate(var(--album-tilt)) translateY(var(--album-lift)) scale(var(--album-pop));
+  /* Clips the cover's own corners to the rounded frame — without this the
+     image squares off the corners the border just rounded. */
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out),
+    border-color 0.25s ease;
+}
+
+/* Rotations are hand-set rather than generated: an even sequence reintroduces
+   exactly the regularity the shingle is here to break. Composed through
+   custom properties so the hover state overrides one value instead of needing
+   to restate each sleeve's angle at higher specificity. */
+.album:nth-child(1) {
+  --album-tilt: -3.2deg;
+  z-index: 3;
+}
+
+.album:nth-child(2) {
+  --album-tilt: 1.4deg;
+  z-index: 2;
+  margin-left: -8%;
+}
+
+.album:nth-child(3) {
+  --album-tilt: -1.1deg;
+  z-index: 1;
+  margin-left: -8%;
+}
+
+.album img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.album:hover,
+.album:focus-visible {
+  border-color: var(--color-accent-dim);
+  box-shadow: var(--shadow-print-lift);
+  z-index: 4;
+}
+
+/* Straightening a sleeve is the motion half of the hover; the border and
+   shadow half above still lands for reduced-motion visitors, so the state is
+   never invisible — it just doesn't travel. */
+@media (prefers-reduced-motion: no-preference) {
+  .album:hover,
+  .album:focus-visible {
+    --album-tilt: 0deg;
+    --album-lift: -7px;
+    --album-pop: 1.05;
+  }
+}
+
+.album-placeholder {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-soft);
+  background: var(--color-card);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.7;
+  text-align: center;
+  color: var(--color-ink-3);
+}
+
+/* Fills the row rather than holding a fixed ratio. A pinned aspect-ratio had to
+   be re-tuned every time the left column gained content (square -> 4:5 -> ...),
+   and it always drifted out of balance again; stretching removes that class of
+   bug entirely. Crop is centered, so the source image wants to be
+   portrait-orientation with the subject near the middle.
+   Corners are softened to match the album sleeves optically (12px against
+   their 7px, because this surface is roughly twice as wide) and the frame sits
+   a fraction off-axis with a print shadow, so the portrait reads as a photo
+   laid on the page rather than a div. */
+.personal-photo {
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius-soft-lg);
+  box-shadow: var(--shadow-print);
+  transform: rotate(-0.9deg);
+  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+}
+
+/* Straightens under the cursor — the same "pick it up off the page" gesture
+   the album sleeves make, so the two media objects behave as one family.
+   Hung off the photo itself rather than the media column: hovering a sleeve,
+   or the empty space beside one, should not move the portrait. */
+.personal-photo:hover {
+  box-shadow: var(--shadow-print-lift);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .personal-photo:hover {
+    transform: rotate(0deg);
+  }
+}
+
+/* Temporary — replaced by a real image element when the portrait lands. Styled
+   as a deliberate empty frame rather than a missing-asset gap. */
+.personal-photo-placeholder {
+  display: grid;
+  place-items: center;
+  background: var(--color-card);
+  border: 1px solid var(--color-rule);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.7;
+  text-align: center;
+  color: var(--color-ink-3);
+}
+
+/* Intermediate step. The spread still works side by side here — what has to go
+   is the empty gutter column, which at this width is spending room the prose
+   needs. Stacking this early left the portrait alone beside half a screen of
+   nothing. */
+@media (max-width: 900px) {
+  .personal-media {
+    grid-column: 1 / span 4;
+  }
+  .personal-main {
+    grid-column: 5 / span 8;
+  }
+  /* Below this the gap between the columns is narrower than the outdent, so a
+     hanging quote reaches into the portrait instead of into empty space. Pull
+     it back inside its column and let the terracotta mark alone carry it. */
+  .personal-pull {
+    margin-left: 0;
+    padding-left: 1.15rem;
+  }
+  /* Three ragged cells need ~1000px to sit on one line each. Below that the
+     widest value gets starved into a five-line sliver while the short ones
+     keep their full width, which reads as broken rather than ragged — so the
+     band stacks instead. */
+  .personal-spec {
+    grid-template-columns: 1fr;
+    row-gap: 1.15rem;
+  }
+  .personal-spec div,
+  .personal-spec div:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .personal {
+    grid-template-columns: 1fr;
+    row-gap: 2.25rem;
+  }
+  .personal-media,
+  .personal-main,
+  .personal-spec {
+    grid-column: 1 / -1;
+  }
+  /* The ruled margin and the pull quote's hang both depend on a gutter that
+     doesn't exist in one column — drop the rule, keep the quote's own mark. */
+  .personal-main {
+    padding-left: 0;
+    border-left: none;
+  }
+  .personal-lead {
+    max-width: 34ch;
+  }
+  /* Single column: nothing to stretch against, so fall back to a fixed ratio.
+     The album strip keeps the portrait's width so the two stay a unit. */
+  .personal-media {
+    max-width: 20rem;
+  }
+  .personal-photo {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+}
+
+/* ========================================
    Footer
    ======================================== */
 
+/* Continuous with the Contact ink band above it — the page ends on one
+   uninterrupted dark block rather than dropping back to paper for a strip. */
 .foot {
+  background: var(--color-ink);
+  padding-bottom: 3rem;
+}
+
+.foot-inner {
   max-width: 68rem;
-  margin: clamp(3rem, 7vw, 4.5rem) auto 0;
-  padding: 1.4rem clamp(1.15rem, 5vw, 3rem) 3rem;
-  border-top: 1px solid var(--color-rule);
+  margin: 0 auto;
+  padding-inline: clamp(1.15rem, 5vw, 3rem);
+}
+
+/* Rule lives on the inner row, not the padded container, so it lines up with
+   the Contact ledger's rules directly above instead of running wider. */
+.foot-row {
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--color-rule-inverse-soft);
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--color-ink-3);
+  color: var(--color-ink-dim);
 }
 
 /* ========================================
@@ -1021,9 +1783,19 @@ html.theme-ready *::after {
     animation: none !important;
   }
 
+  /* A blinking caret is a loop with no off-switch; the line still types under
+     reduced motion is prevented in JS, so the caret has nothing to mark. */
+  .typeline-caret {
+    animation: none;
+    opacity: 0;
+  }
+
   .row,
   .row-work,
-  .spotlight,
+  .bento-tile,
+  .stack-col,
+  .flagship-inner,
+  .personal > *,
   .hero-headline,
   .hero-intro,
   .spec {
@@ -1031,10 +1803,17 @@ html.theme-ready *::after {
     transform: none !important;
   }
 
+  /* The media tilt is a resting style, not motion — it stays, and its hover
+     transform is already gated behind prefers-reduced-motion: no-preference.
+     What goes here is the transition, so state changes land instantly. */
   .row,
   .row-arrow,
   .row-title,
-  .work-toggle .sym {
+  .work-toggle .sym,
+  .nav-link::after,
+  .nav-mark::after,
+  .album,
+  .personal-photo {
     transition: none;
   }
 }
@@ -1097,10 +1876,7 @@ html.theme-ready *::after {
   }
   .stack-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-  .stack-col {
-    padding: 0.95rem 1rem 1.15rem;
+    gap: 1.75rem 1.25rem;
   }
   .work-header {
     grid-template-columns: auto minmax(0, 1fr);
@@ -1132,7 +1908,32 @@ html.theme-ready *::after {
   .nav-inner {
     justify-content: flex-start;
   }
-  .nav-list li.nav-home {
+  /* Six items is what fits at 360px. Home drops because the wordmark and a
+     scroll-to-top both cover it; Stack drops because it's reference material
+     rather than a destination — both stay reachable by scrolling. */
+  .nav-list li.nav-home,
+  .nav-list li.nav-stack {
     display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .nav-list {
+    gap: 0.7rem;
+  }
+}
+
+/* iPhone SE class. Last density step before the list would have to lose
+   another destination. */
+@media (max-width: 360px) {
+  .nav-list {
+    gap: 0.5rem;
+  }
+  .nav-link {
+    font-size: 0.625rem;
+  }
+  .nav-cta {
+    font-size: 0.625rem;
+    padding: 0.3rem 0.5rem;
   }
 }
