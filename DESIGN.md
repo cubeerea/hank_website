@@ -206,16 +206,23 @@ Powered by [Motion](https://motion.dev) (`src/main.ts`), used sparingly and only
 
 ## Shapes
 
-Sharp corners by default, with two named exceptions:
+**Objects are rounded. Structure is not.** This reverses the system's original rule — sharp-cornered by default, with radius reserved for photographic media. The distinction that replaced it is not decorative: an *object* is a thing sitting on the page, and it gets a radius; *structure* is the page itself — full-bleed colour bands, hairline rules, the edges of the viewport — and it stays square. A rounded full-bleed band just leaves paper showing in its corners, and a rounded ledger rule stops reading as a ruled line.
 
-1. **Pills** (`border-radius: 9999px`) — the CTA pill, the nav Résumé button, and the `.contact-link` icon buttons on the résumé/paper-viewer utility pages, which read as stamped tokens rather than page furniture.
-2. **Photographic media** (`--radius-soft` 7px, `--radius-soft-lg` 12px) — album covers and the portrait in Off the Ledger, and nothing else. Album art is a reproduction of a physical object with its own conventions, and every platform it comes from renders it rounded; a square-cornered cover reads as a rendering bug rather than as restraint. The portrait is the same class of object — a print, not a UI surface — and matching it to the sleeves is what makes the two read as one media family rather than a photo next to some album art. Both set `overflow: hidden` so the image clips to the rounded frame instead of squaring off the corners the border just rounded.
+**Radius reads optically, so the scale is sized to the surface**, not chosen from a menu. 3px on a 22px chip and 12px on a 300px tile are the same softness to the eye; one value across both makes the large surface look sharper than the small one sitting beside it.
 
-**Two radius steps, because radius reads optically.** 7px on a ~175px sleeve and 12px on a ~300px print are the same softness to the eye; using one value for both makes the larger surface look sharper than the smaller one sitting right below it. Size the radius to the surface, not to the token count.
+| Token | Value | Surfaces |
+|---|---|---|
+| `--radius-xs` | 3px | Chips and tags (`.chip-preferred`), ~20–24px tall |
+| `--radius-sm` | 5px | Controls: `.copy-email`, `.viewer-btn`, `.viewer-download`, `.skip-link` |
+| `--radius-md` | 7px | Mid surfaces: album sleeves, `.gist-grid`, the PDF canvas, hover panes |
+| `--radius-lg` | 12px | Large surfaces: `.bento-tile`, the Off the Ledger portrait |
+| `--radius-pill` | 9999px | The two filled CTA pills — stamped tokens, not page furniture |
 
-Every other surface — rows, chips, bento tiles, the gist grid, inputs — is square-cornered with a 1px hairline border where a boundary is needed at all.
+**Rounded frames clip their contents.** `.gist-grid`, the album sleeves and the portrait all set `overflow: hidden`, so internal dividers and images clip to the rounded frame instead of squaring off the corners the border just rounded.
 
-The soft radii exist so the media radius is a token rather than a magic number, but they are **not** general-purpose "soften this" values. Reaching for one on a non-photographic surface means the surface should have been square.
+**The ledger rows are the one place the two rules meet.** A row's hover tint is an object; the hairline beneath it is structure. So the tint is a rounded `::before` pane inset `0 0 1px` — it stops a pixel short of the rule — rather than a background on the row itself, which would have bent the rule with it. `.row` and `.work-header` carry `isolation: isolate` so that pane's `z-index: -1` stays inside the row and paints under the content but over the band. Same treatment on both, for the same reason.
+
+What stays square: the colour bands, every hairline rule, section boundaries, and the page edge.
 
 ## Components
 

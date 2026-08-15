@@ -49,13 +49,21 @@
      second accent. */
   --color-accent-light: #D9724F;
   --color-accent-light-dim: rgba(217, 114, 79, 0.45);
-  /* The system is square-cornered by default; these are the only soft radii,
-     and they belong to media objects only — album art and the portrait (see
-     DESIGN.md "Shapes"). Two steps because radius reads optically, not
-     absolutely: 7px on a ~175px sleeve and 12px on a ~300px print are the same
-     softness to the eye. Not general-purpose "soften this" values. */
-  --radius-soft: 7px;
-  --radius-soft-lg: 12px;
+  /* Radius scale. The system used to be square-cornered with two media-only
+     radii; it now softens every discrete object. What carried over is the
+     principle behind those two steps: radius reads optically, not absolutely,
+     so 3px on a 22px chip and 12px on a 300px tile are the same softness to
+     the eye. One value across both would make the large surface look sharper
+     than the small one sitting next to it. Size the radius to the surface.
+
+     Bands, hairline rules and the page itself stay square — they are edges of
+     the page, not objects on it, and a rounded full-bleed band just leaves
+     paper showing in the corners. */
+  --radius-xs: 3px;   /* chips and tags, ~20-24px tall */
+  --radius-sm: 5px;   /* controls: buttons, the copy button, viewer chrome */
+  --radius-md: 7px;   /* mid surfaces: album sleeves, the gist grid, canvas */
+  --radius-lg: 12px;  /* large surfaces: bento tiles, the portrait */
+  --radius-pill: 9999px;
   /* Warm-ink drop shadow for the two exceptions that carry one: the Projects
      bento tiles and the Off the Ledger media (see "The Loose Page Exception").
      Offset + blur, never a zero-offset colored halo. */
@@ -119,6 +127,7 @@ body {
    display:none so it stays in the tab order, and it lands as a ledger label
    in the accent, not a browser-default blue box. */
 .skip-link {
+  border-radius: var(--radius-sm);
   position: absolute;
   top: 0;
   left: 0;
@@ -229,7 +238,7 @@ body {
   color: var(--color-paper);
   background: var(--color-accent);
   padding: 0.3rem 0.65rem;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   text-decoration: none;
   white-space: nowrap;
   transition: background 0.15s ease, transform 0.2s var(--ease-out);
@@ -397,7 +406,7 @@ body {
   background: var(--color-accent);
   color: var(--color-paper);
   border: 1px solid transparent;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   font-weight: 500;
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
@@ -592,7 +601,7 @@ body {
   color: rgba(246, 241, 232, 0.4);
 }
 
-.band-ink .row:hover {
+.band-ink .row::before {
   background: rgba(246, 241, 232, 0.04);
 }
 
@@ -766,6 +775,7 @@ body {
   padding: 1.4rem 1.5rem;
   background: var(--color-card);
   border: 1px solid var(--color-rule);
+  border-radius: var(--radius-lg);
   box-shadow: 0 1px 2px rgba(33, 26, 20, 0.05), 0 10px 26px -16px rgba(33, 26, 20, 0.22);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
@@ -799,10 +809,13 @@ body {
   text-decoration: none;
 }
 
+/* Follows the tile so the focus ring traces the rounded edge rather than
+   cutting a square through it. */
 .bento-title a::after {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: var(--radius-lg);
 }
 
 .bento-tile:hover .bento-title {
@@ -898,6 +911,7 @@ body {
 
 .row {
   position: relative;
+  isolation: isolate;
   display: grid;
   align-items: start;
   grid-template-columns: 3.25rem minmax(0, 1fr) 15rem 1.5rem;
@@ -906,15 +920,31 @@ body {
   padding: 1.35rem 0.85rem;
   margin-inline: -0.85rem;
   border-bottom: 1px solid var(--color-rule-soft);
-  transition: background-color 0.18s ease;
 }
 
 .row:last-child {
   border-bottom: 1px solid var(--color-rule);
 }
 
-.row:hover {
+/* The hover tint is a rounded pane behind the row rather than a background on
+   the row itself. A radius on .row would bend the hairline rule underneath it,
+   and those rules are the ledger — they have to stay dead straight. The pane
+   stops 1px short of the bottom so it never sits on the rule.
+   `isolation: isolate` on .row keeps the z-index: -1 inside the row's own
+   stacking context, so the pane paints under the content but over the band. */
+.row::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 1px;
+  z-index: -1;
+  border-radius: var(--radius-md);
   background: var(--color-tint);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.row:hover::before {
+  opacity: 1;
 }
 
 .row-idx {
@@ -973,8 +1003,12 @@ body {
   color: var(--color-accent);
 }
 
+/* Nothing to click, so nothing lights up. */
+.row.row-static:hover::before {
+  opacity: 0;
+}
+
 .row.row-static:hover {
-  background: transparent;
   color: var(--color-ink);
 }
 
@@ -1075,6 +1109,7 @@ body {
 }
 
 .chip-preferred {
+  border-radius: var(--radius-xs);
   align-self: flex-end;
   padding: 0.1rem 0.45rem;
   border: 1px solid var(--color-accent-light-dim);
@@ -1087,6 +1122,7 @@ body {
 /* Sits above .row-title a::after, which otherwise swallows the click and
    fires the mailto: instead of copying. */
 .copy-email {
+  border-radius: var(--radius-sm);
   position: relative;
   z-index: 2;
   display: inline-flex;
@@ -1232,8 +1268,12 @@ body {
   cursor: default;
 }
 
-.row.row-work:hover {
-  background: transparent;
+/* A work card is a .row wrapping a header plus an expandable panel, so it
+   inherits .row::before — which would tint the whole article, expanded detail
+   and all, on any hover. The header carries its own pane; this one has to go
+   entirely, not just on hover, or an expanded card paints its full height. */
+.row.row-work::before {
+  display: none;
 }
 
 /* The job title used to be an <h3> *inside* the toggle button. Most screen
@@ -1249,6 +1289,8 @@ body {
 }
 
 .work-header {
+  position: relative;
+  isolation: isolate;
   display: grid;
   width: 100%;
   align-items: start;
@@ -1264,15 +1306,27 @@ body {
   color: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.18s ease;
 }
 
 .row.row-work:last-child .work-header {
   border-bottom: 1px solid var(--color-rule);
 }
 
-.work-header:hover {
+/* Same rounded pane as .row, for the same reason — a radius on the button
+   would bend the hairline that separates one role from the next. */
+.work-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 1px;
+  z-index: -1;
+  border-radius: var(--radius-md);
   background: var(--color-tint);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.work-header:hover::before {
+  opacity: 1;
 }
 
 .work-header:hover .row-title {
@@ -1321,10 +1375,15 @@ body {
   display: block;
 }
 
+/* overflow: hidden so the internal cell dividers clip to the rounded frame
+   instead of squaring off the corners the border just rounded — the same
+   reason the album and portrait frames carry it. */
 .gist-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  overflow: hidden;
   margin-bottom: 1.25rem;
 }
 
@@ -1618,7 +1677,7 @@ body {
   position: relative;
   flex: 0 0 40%;
   border: 1px solid var(--color-rule);
-  border-radius: var(--radius-soft);
+  border-radius: var(--radius-md);
   background: var(--color-card);
   box-shadow: var(--shadow-print);
   transform: rotate(var(--album-tilt)) translateY(var(--album-lift)) scale(var(--album-pop));
@@ -1681,7 +1740,7 @@ body {
   display: grid;
   place-items: center;
   aspect-ratio: 1 / 1;
-  border-radius: var(--radius-soft);
+  border-radius: var(--radius-md);
   background: var(--color-card);
   font-family: var(--font-mono);
   font-size: 0.625rem;
@@ -1707,7 +1766,7 @@ body {
   min-height: 22rem;
   object-fit: cover;
   display: block;
-  border-radius: var(--radius-soft-lg);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-print);
   transform: rotate(-0.9deg);
   transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
@@ -2011,6 +2070,7 @@ body {
 }
 
 .viewer-btn {
+  border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2052,6 +2112,7 @@ body {
    the only way to the actual file, and unlabelled. It says what it does now
    and sits with the other controls. */
 .viewer-download {
+  border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -2101,6 +2162,7 @@ body {
 }
 
 #pdfCanvas {
+  border-radius: var(--radius-md);
   border: 1px solid var(--color-rule);
   box-shadow: var(--shadow-print);
 }
@@ -2203,6 +2265,8 @@ body {
      transform is already gated behind prefers-reduced-motion: no-preference.
      What goes here is the transition, so state changes land instantly. */
   .row,
+  .row::before,
+  .work-header::before,
   .row-arrow,
   .row-title,
   .work-toggle .sym,
