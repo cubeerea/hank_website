@@ -873,8 +873,13 @@ body {
    page opens and closes in the same voice. See DESIGN.md "One-Serif Rule".
    `em` carries the accent rather than italics — the terracotta lands on `build`,
    which is the claim, not on `pitch`, which is the thing being declined. */
+/* The statement sits down on the ledger's top rule rather than floating
+   between it and the section head — the rule reads as the line the sentence is
+   written on. The bottom gap is in `em` so it scales with the clamped type and
+   the sentence stays the same distance off the rule at every width; the top gap
+   is in `rem` because it answers to the section head, which doesn't scale. */
 .contact-call {
-  margin: 0.4rem 0 2.4rem;
+  margin: 2.6rem 0 0.28em;
   font-family: var(--font-serif);
   font-size: clamp(2rem, 5.4vw, 3.5rem);
   font-weight: 600;

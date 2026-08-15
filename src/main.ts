@@ -88,7 +88,7 @@ function initTypewriter(): void {
   const phrases = [
     'Applied AI',
     'FDE roles',
-    'Agentic systems',
+    'Building agentic systems',
     'ML research',
   ];
 
