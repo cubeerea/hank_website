@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>og render rig</title>
+    <!--
+      Rig for scripts/og.sh. Renders public/assets/og-preview.png at 1200x630.
+
+      Same reasoning as scripts/favicon-render.html: the card is set in IBM
+      Plex Serif and Mono, which the site self-hosts but does not install
+      system-wide, so a fontconfig-based rasterizer would silently substitute
+      another face. Chromium loading the same @fontsource files the site loads
+      is the only rasterizer guaranteed to agree with the page.
+
+      The card that shipped before this was the pre-ledger design — a violet
+      radial gradient on near-black reading "AI & ML Engineering /
+      hanksha.dev". It was the first thing anyone saw of the site, in Slack
+      and LinkedIn, and it matched neither the page nor the domain. The
+      favicon was rebuilt for the ledger identity and this was missed in the
+      same pass.
+
+      Keep the headline in sync with .hero-headline in index.html — this card
+      is the hero, cropped to a share ratio, and the two reading differently
+      is the bug it was built to fix.
+      Not shipped — scripts/ is outside the Vite build's page entries.
+    -->
+    <link rel="stylesheet" href="/node_modules/@fontsource/ibm-plex-serif/latin-600.css">
+    <link rel="stylesheet" href="/node_modules/@fontsource/ibm-plex-serif/latin-600-italic.css">
+    <link rel="stylesheet" href="/node_modules/@fontsource/ibm-plex-mono/latin-400.css">
+    <link rel="stylesheet" href="/node_modules/@fontsource/ibm-plex-mono/latin-500.css">
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff;
+        }
+
+        /* Tokens copied rather than imported: style.css is a Tailwind v4 entry
+           and pulling it in would drag the whole site's cascade into a 1200px
+           rig. These five must match :root in src/style.css. */
+        #card {
+            --paper: #F6F1E8;
+            --ink: #211A14;
+            --ink-3: #6F6052;
+            --accent: #B0442A;
+            --rule: rgba(33, 26, 20, 0.14);
+
+            box-sizing: border-box;
+            width: 1200px;
+            height: 630px;
+            padding: 64px 72px;
+            background: var(--paper);
+            color: var(--ink);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-family: "IBM Plex Sans", sans-serif;
+        }
+
+        /* The ledger's masthead row: name left, domain right, hairline under.
+           Same hierarchy as the site's nav, at share-card scale. */
+        .masthead {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--rule);
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 21px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .masthead .name {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .masthead .domain {
+            color: var(--ink-3);
+            letter-spacing: 0.08em;
+            text-transform: none;
+        }
+
+        .headline {
+            margin: 0;
+            font-family: "IBM Plex Serif", serif;
+            font-size: 92px;
+            font-weight: 600;
+            line-height: 0.98;
+            letter-spacing: -0.032em;
+            max-width: 15ch;
+        }
+
+        /* Matches .hero-headline em in src/style.css — the one word that
+           carries the positioning, knocked out of the accent. */
+        .headline em {
+            display: inline-block;
+            font-style: italic;
+            line-height: 1;
+            color: var(--paper);
+            background: var(--accent);
+            padding: 0.04em 0.12em;
+            margin: 0.06em -0.06em;
+        }
+
+        .spec {
+            display: flex;
+            align-items: baseline;
+            gap: 28px;
+            padding-top: 22px;
+            border-top: 1px solid var(--rule);
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 22px;
+            letter-spacing: 0.02em;
+            color: var(--ink-3);
+        }
+
+        .spec .label {
+            color: var(--accent);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            font-size: 19px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="card">
+        <div class="masthead">
+            <span class="name">Hank Sha</span>
+            <span class="domain">hanksha.com</span>
+        </div>
+
+        <h1 class="headline">Broad by instinct, <em>deep</em> by choice.</h1>
+
+        <div class="spec">
+            <span class="label">Open to</span>
+            <span>Applied AI / FDE roles</span>
+        </div>
+    </div>
+
+    <script>
+        document.fonts.ready.then(() => document.documentElement.setAttribute('data-ready', '1'));
+    </script>
+</body>
+
+</html>

@@ -75,6 +75,8 @@
 
 <body>
 
+    <a class="skip-link" href="#top">Skip to content</a>
+
     <!-- Nav -->
     <nav class="nav" id="nav" aria-label="Main navigation">
         <div class="nav-inner">
@@ -87,7 +89,10 @@
                 <li><a href="#work" class="nav-link">Work</a></li>
                 <li><a href="#personal" class="nav-link">About</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
-                <li><a href="/resume" class="nav-cta">CV ↗</a></li>
+                <!-- "Résumé", not "CV ↗": the Contact row and DESIGN.md both call it
+                     Résumé, and the ↗ is this site's mark for leaving it — /resume
+                     is the same tab. -->
+                <li><a href="/resume" class="nav-cta">Résumé</a></li>
             </ul>
         </div>
     </nav>
@@ -127,12 +132,39 @@
         <!-- Flagship (ink band 1 of 3) -->
         <section class="section band-ink flagship fade-in" aria-labelledby="flagship-h">
             <div class="flagship-inner">
-                <span class="flagship-label">Flagship · Live</span>
-                <h2 class="flagship-title" id="flagship-h"><a href="https://biotech-catalyst-engine-black.vercel.app/"
-                        target="_blank" rel="noopener noreferrer">Biotech Intelligence Engine</a></h2>
-                <p class="flagship-desc">Aggregates SEC filings, clinical trials, FDA calendars and news to
-                    surface investable signals early.</p>
-                <span class="flagship-cta">Try it live <span aria-hidden="true">↗</span></span>
+                <div class="flagship-lead">
+                    <span class="flagship-label">Flagship · Live</span>
+                    <h2 class="flagship-title" id="flagship-h"><a
+                            href="https://biotech-catalyst-engine-black.vercel.app/" target="_blank"
+                            rel="noopener noreferrer">Biotech Intelligence Engine</a></h2>
+                    <p class="flagship-desc">Aggregates SEC filings, clinical trials, FDA calendars and news to
+                        surface investable signals early.</p>
+                    <span class="flagship-cta">Try it live <span aria-hidden="true">↗</span></span>
+                </div>
+                <!-- The band's second column. It holds the spec table today; add an img
+                     with class "flagship-art" ahead of the dl when a screenshot exists
+                     and the column takes it without a layout change — the spec falls
+                     underneath it. (Written out rather than as a tag: a literal img
+                     element inside a comment reads as a broken image to markup scanners.)
+                     The column is also what bounds the title's full-block ::after overlay:
+                     before it existed, that invisible link covered the whole band
+                     including the empty half, so clicking dead space navigated off-site. -->
+                <div class="flagship-aside">
+                    <dl class="spec flagship-spec">
+                        <div>
+                            <dt>Sources</dt>
+                            <dd>SEC filings · ClinicalTrials.gov · FDA calendars · News</dd>
+                        </div>
+                        <div>
+                            <dt>Surfaces</dt>
+                            <dd>Investable signals, early</dd>
+                        </div>
+                        <div>
+                            <dt>Status</dt>
+                            <dd>Live, open to anyone</dd>
+                        </div>
+                    </dl>
+                </div>
             </div>
         </section>
 
@@ -140,75 +172,97 @@
         <section class="section band-cream fade-in" id="projects" aria-labelledby="projects-h">
             <div class="section-inner">
                 <div class="sec-head">
-                    <h2 id="projects-h"><span>01</span>Projects</h2>
+                    <h2 id="projects-h"><span aria-hidden="true">01</span>Projects</h2>
                 </div>
                 <div class="bento">
 
                     <article class="bento-tile bento-pid">
-                        <span class="bento-idx">03</span>
+                        <span class="bento-idx">01</span>
                         <h3 class="bento-title"><a href="/pid-steering">Global PID Steering</a></h3>
                         <p class="bento-desc">One averaged refusal vector beats per-layer PID at defending Gemma-2
                             without
                             wrecking it on benign prompts.</p>
+                        <!-- The 2x2 tile's emphasis mechanism is area, so the area has to
+                             carry something. Every value here is lifted from the paper's
+                             own abstract — including the caveat, which is the row that
+                             makes the other three trustworthy. Verify against
+                             /assets/global-pid-steering.pdf before editing any number.
+                             An img with class "bento-art" above the dl takes the room
+                             instead, and the rows fall underneath it. -->
+                        <dl class="bento-spec">
+                            <div>
+                                <dt>Model</dt>
+                                <dd>Gemma-2-2B-it</dd>
+                            </div>
+                            <div>
+                                <dt>Method</dt>
+                                <dd>One averaged refusal vector, over a verified persistence window</dd>
+                            </div>
+                            <div>
+                                <dt>Benign refusals</dt>
+                                <dd>3.5% vs 96% for full-depth per-layer PID (1.5% unsteered)</dd>
+                            </div>
+                            <div>
+                                <dt>Caveat</dt>
+                                <dd>Both block all 104 GCG attacks, largely the model's existing alignment
+                                    rather than the steering</dd>
+                            </div>
+                        </dl>
                         <div class="bento-foot">
                             <span class="bento-tag">Research · AI Safety</span>
-                            <a href="/pid-steering">Read the paper&nbsp;→</a>
+                            <span class="bento-cue" aria-hidden="true">Read the paper&nbsp;→</span>
                         </div>
                     </article>
 
                     <article class="bento-tile bento-d4g">
-                        <span class="bento-idx">01</span>
+                        <span class="bento-idx">02</span>
                         <h3 class="bento-title"><a href="https://devpost.com/software/project-nexus" target="_blank"
                                 rel="noopener noreferrer">Data4Good Hackathon</a></h3>
                         <p class="bento-desc">Won the Civic Engagement &amp; Policy track at UCSB's Data4Good hackathon.
                         </p>
                         <div class="bento-foot">
                             <span class="bento-tag">Hackathon</span>
-                            <a href="https://devpost.com/software/project-nexus" target="_blank"
-                                rel="noopener noreferrer">Devpost&nbsp;↗</a>
+                            <span class="bento-cue" aria-hidden="true">Devpost&nbsp;↗</span>
                         </div>
                     </article>
 
                     <article class="bento-tile bento-nba">
-                        <span class="bento-idx">04</span>
+                        <span class="bento-idx">03</span>
                         <h3 class="bento-title"><a href="https://nba-contract-analytics.vercel.app/" target="_blank"
                                 rel="noopener noreferrer">NBA Contract Value</a></h3>
                         <p class="bento-desc">Ranks all NBA contracts against performance and other metrics.</p>
                         <div class="bento-foot">
                             <span class="bento-tag">Personal Project</span>
-                            <a href="https://nba-contract-analytics.vercel.app/" target="_blank"
-                                rel="noopener noreferrer">Live&nbsp;↗</a>
+                            <span class="bento-cue" aria-hidden="true">Live&nbsp;↗</span>
                         </div>
                     </article>
 
                     <article class="bento-tile bento-zet">
-                        <span class="bento-idx">05</span>
+                        <span class="bento-idx">04</span>
                         <h3 class="bento-title"><a href="https://github.com/cubeerea/zettel-ai" target="_blank"
                                 rel="noopener noreferrer">Zettel AI</a></h3>
                         <p class="bento-desc">Non-linear note-taking app that surfaces connections between notes and
                             visualizes them as a knowledge graph.</p>
                         <div class="bento-foot">
                             <span class="bento-tag">Personal Project</span>
-                            <a href="https://github.com/cubeerea/zettel-ai" target="_blank"
-                                rel="noopener noreferrer">GitHub&nbsp;↗</a>
+                            <span class="bento-cue" aria-hidden="true">GitHub&nbsp;↗</span>
                         </div>
                     </article>
 
                     <article class="bento-tile bento-xeno">
-                        <span class="bento-idx">06</span>
+                        <span class="bento-idx">05</span>
                         <h3 class="bento-title"><a href="https://github.com/cubeerea/xeno-cli" target="_blank"
                                 rel="noopener noreferrer">Xeno CLI</a></h3>
                         <p class="bento-desc">Six specialist agents plan, code, and review changes autonomously inside
                             sandboxed, network-isolated containers.</p>
                         <div class="bento-foot">
                             <span class="bento-tag">Personal Project</span>
-                            <a href="https://github.com/cubeerea/xeno-cli" target="_blank"
-                                rel="noopener noreferrer">GitHub&nbsp;↗</a>
+                            <span class="bento-cue" aria-hidden="true">GitHub&nbsp;↗</span>
                         </div>
                     </article>
 
                     <article class="bento-tile bento-topo bento-static">
-                        <span class="bento-idx">02</span>
+                        <span class="bento-idx">06</span>
                         <h3 class="bento-title">Exploring How LLMs Improve Graph Quality Using Topological Signatures
                         </h3>
                         <p class="bento-desc">Second-author work on node classification and graph unlearning. Write-up
@@ -229,7 +283,7 @@
         <section class="section band-ink fade-in" id="writing" aria-labelledby="writing-h">
             <div class="section-inner">
                 <div class="sec-head">
-                    <h2 id="writing-h"><span>02</span>Writing</h2>
+                    <h2 id="writing-h"><span aria-hidden="true">02</span>Writing</h2>
                     <p class="sec-note">I write to clarify my own thinking.</p>
                 </div>
                 <div class="ledger">
@@ -245,9 +299,7 @@
                             <p class="row-desc">Sharing AI prompts in my workflow.</p>
                         </div>
                         <div class="row-meta">
-                            <span class="row-links"><a
-                                    href="https://medium.com/@cubeerea/ai-prompts-i-use-everyday-37f71a7b3cde"
-                                    target="_blank" rel="noopener noreferrer">Read&nbsp;↗</a></span>
+                            <span class="row-links"><span class="row-cue" aria-hidden="true">Read&nbsp;↗</span></span>
                         </div>
                         <div class="row-arrow" aria-hidden="true">→</div>
                     </article>
@@ -262,9 +314,7 @@
                             <p class="row-desc">Technical notes on Autograd implementation.</p>
                         </div>
                         <div class="row-meta">
-                            <span class="row-links"><a
-                                    href="https://medium.com/@cubeerea/5-steps-to-memorizing-the-autograd-implementation-for-good-9e49b683fe9c"
-                                    target="_blank" rel="noopener noreferrer">Read&nbsp;↗</a></span>
+                            <span class="row-links"><span class="row-cue" aria-hidden="true">Read&nbsp;↗</span></span>
                         </div>
                         <div class="row-arrow" aria-hidden="true">→</div>
                     </article>
@@ -279,9 +329,7 @@
                             <p class="row-desc">On how AI shifts skill floor expectations, not just ceilings.</p>
                         </div>
                         <div class="row-meta">
-                            <span class="row-links"><a
-                                    href="https://medium.com/@cubeerea/ai-didnt-raise-the-bar-it-removed-the-ladder-f435d9fac198"
-                                    target="_blank" rel="noopener noreferrer">Read&nbsp;↗</a></span>
+                            <span class="row-links"><span class="row-cue" aria-hidden="true">Read&nbsp;↗</span></span>
                         </div>
                         <div class="row-arrow" aria-hidden="true">→</div>
                     </article>
@@ -299,9 +347,7 @@
                             </p>
                         </div>
                         <div class="row-meta">
-                            <span class="row-links"><a
-                                    href="https://blog.gopenai.com/beyond-scalar-autograd-building-and-understanding-the-transformer-skeleton-8179b7f01462"
-                                    target="_blank" rel="noopener noreferrer">Read&nbsp;↗</a></span>
+                            <span class="row-links"><span class="row-cue" aria-hidden="true">Read&nbsp;↗</span></span>
                         </div>
                         <div class="row-arrow" aria-hidden="true">→</div>
                     </article>
@@ -317,7 +363,7 @@
         <section class="section band-paper fade-in" id="stack" aria-labelledby="stack-h">
             <div class="section-inner">
                 <div class="sec-head">
-                    <h2 id="stack-h"><span>03</span>Stack</h2>
+                    <h2 id="stack-h"><span aria-hidden="true">03</span>Stack</h2>
                     <p class="sec-note">Grouped by domain.</p>
                 </div>
                 <div class="stack-grid">
@@ -381,31 +427,32 @@
                     </div>
                 </div>
             </div>
-            </div>
         </section>
 
         <!-- Selected Work -->
         <section class="section band-cream fade-in" id="work" aria-labelledby="work-h">
             <div class="section-inner">
                 <div class="sec-head">
-                    <h2 id="work-h"><span>04</span>Selected Experience</h2>
+                    <h2 id="work-h"><span aria-hidden="true">04</span>Selected Experience</h2>
                 </div>
                 <div class="ledger">
 
                     <article class="row row-work experience-card" data-expanded="false">
-                        <button class="work-header card-header" type="button" aria-expanded="false"
-                            aria-controls="work-1">
-                            <div class="row-idx">01</div>
-                            <div class="row-main">
-                                <h3 class="row-title">Research Assistant</h3>
-                                <p class="row-desc">Jun 2025 – Mar 2026 · Yuzhou Chen's Lab · LLMs, Graph Unlearning</p>
-                                <span class="work-toggle"><span class="sym" aria-hidden="true">+</span> Details</span>
-                            </div>
-                            <div class="row-meta">
-                                <span class="stack">Research</span>
-                                <span class="win">4x inference speedup</span>
-                            </div>
-                        </button>
+                        <h3 class="work-heading">
+                            <button class="work-header card-header" type="button" aria-expanded="false"
+                                aria-controls="work-1" aria-label="Research Assistant, Yuzhou Chen's Lab">
+                                <div class="row-idx">01</div>
+                                <div class="row-main">
+                                    <span class="row-title">Research Assistant</span>
+                                    <p class="row-desc">Jun 2025 – Mar 2026 · Yuzhou Chen's Lab · LLMs, Graph Unlearning</p>
+                                    <span class="work-toggle"><span class="sym" aria-hidden="true">+</span> Details</span>
+                                </div>
+                                <div class="row-meta">
+                                    <span class="stack">Research</span>
+                                    <span class="win">4x inference speedup</span>
+                                </div>
+                            </button>
+                        </h3>
                         <div class="work-detail card-content" id="work-1">
                             <div class="gist-grid">
                                 <div>
@@ -464,19 +511,21 @@
                     </article>
 
                     <article class="row row-work experience-card" data-expanded="false">
-                        <button class="work-header card-header" type="button" aria-expanded="false"
-                            aria-controls="work-2">
-                            <div class="row-idx">02</div>
-                            <div class="row-main">
-                                <h3 class="row-title">Clinical Data Science Internship</h3>
-                                <p class="row-desc">Aug 2025 – Nov 2025 · Pre-IPO Biotech · Phase II MDD Trial</p>
-                                <span class="work-toggle"><span class="sym" aria-hidden="true">+</span> Details</span>
-                            </div>
-                            <div class="row-meta">
-                                <span class="stack">Internship</span>
-                                <span class="win">XGBoost · honest result</span>
-                            </div>
-                        </button>
+                        <h3 class="work-heading">
+                            <button class="work-header card-header" type="button" aria-expanded="false"
+                                aria-controls="work-2" aria-label="Clinical Data Science Internship, Pre-IPO Biotech">
+                                <div class="row-idx">02</div>
+                                <div class="row-main">
+                                    <span class="row-title">Clinical Data Science Internship</span>
+                                    <p class="row-desc">Aug 2025 – Nov 2025 · Pre-IPO Biotech · Phase II MDD Trial</p>
+                                    <span class="work-toggle"><span class="sym" aria-hidden="true">+</span> Details</span>
+                                </div>
+                                <div class="row-meta">
+                                    <span class="stack">Internship</span>
+                                    <span class="win">XGBoost · honest result</span>
+                                </div>
+                            </button>
+                        </h3>
                         <div class="work-detail card-content" id="work-2">
                             <div class="gist-grid">
                                 <div>
@@ -536,19 +585,21 @@
                     </article>
 
                     <article class="row row-work experience-card" data-expanded="false">
-                        <button class="work-header card-header" type="button" aria-expanded="false"
-                            aria-controls="work-3">
-                            <div class="row-idx">03</div>
-                            <div class="row-main">
-                                <h3 class="row-title">AI/ML Engineer Intern</h3>
-                                <p class="row-desc">Sep 2024 – Apr 2025 · GitRoll (HR-Tech, Pre-Seed)</p>
-                                <span class="work-toggle"><span class="sym" aria-hidden="true">+</span> Details</span>
-                            </div>
-                            <div class="row-meta">
-                                <span class="stack">Internship</span>
-                                <span class="win">45K users · -13% cost</span>
-                            </div>
-                        </button>
+                        <h3 class="work-heading">
+                            <button class="work-header card-header" type="button" aria-expanded="false"
+                                aria-controls="work-3" aria-label="AI/ML Engineer Intern, GitRoll">
+                                <div class="row-idx">03</div>
+                                <div class="row-main">
+                                    <span class="row-title">AI/ML Engineer Intern</span>
+                                    <p class="row-desc">Sep 2024 – Apr 2025 · GitRoll (HR-Tech, Pre-Seed)</p>
+                                    <span class="work-toggle"><span class="sym" aria-hidden="true">+</span> Details</span>
+                                </div>
+                                <div class="row-meta">
+                                    <span class="stack">Internship</span>
+                                    <span class="win">45K users · -13% cost</span>
+                                </div>
+                            </button>
+                        </h3>
                         <div class="work-detail card-content" id="work-3">
                             <div class="gist-grid">
                                 <div>
@@ -609,7 +660,7 @@
         <section class="section band-paper fade-in" id="personal" aria-labelledby="personal-h">
             <div class="section-inner">
                 <div class="sec-head">
-                    <h2 id="personal-h"><span>05</span>Off the Ledger</h2>
+                    <h2 id="personal-h"><span aria-hidden="true">05</span>Off the Ledger</h2>
                 </div>
                 <!-- The one section laid out as a spread rather than a ledger: media
                      left, prose right against a ruled margin, and the meta rows running
@@ -617,12 +668,36 @@
                      "The Loose Page Exception". -->
                 <div class="personal">
                     <div class="personal-media">
-                        <!-- PLACEHOLDER: swap this <div> for <img class="personal-photo" src="..."
-                             alt="Hank Sha" width="800" height="1000"> when the portrait is ready. -->
-                        <div class="personal-photo personal-photo-placeholder" role="img"
-                            aria-label="Portrait of Hank Sha — placeholder, photo pending">
-                            <span>Portrait<br>pending</span>
-                        </div>
+                        <!-- Three prints laid on each other rather than one framed photo.
+                             The deck cycles on a timer and on click, so the section shows
+                             three sides of the same person in the space of one — which is
+                             the section's whole argument. Same Loose Page treatment as the
+                             sleeves below (tilt, print shadow, straighten under the
+                             cursor) because they are the same kind of object: something
+                             set down on the page rather than placed in a frame.
+                             DOM order is cycle order. The <button> carries the accessible
+                             name for whichever card is on top, so the images take alt="";
+                             three alts on one stack would read as three photos.
+                             src/portrait-deck.ts owns the state — with JS off, the deck is
+                             still a valid composition showing the first print. -->
+                        <button class="portrait-deck" type="button" data-portrait-deck
+                            aria-label="Portrait of Hank Sha at UC Santa Barbara, Class of 2026">
+                            <img class="portrait-card" src="/assets/portraits/ucsb-2026.webp" alt=""
+                                data-caption="Hank Sha at UC Santa Barbara, Class of 2026" width="840" height="1120"
+                                loading="lazy" decoding="async">
+                            <img class="portrait-card" src="/assets/portraits/channel-islands-dive.webp" alt=""
+                                data-caption="Hank Sha in dive gear off the Channel Islands" width="840" height="1120"
+                                loading="lazy" decoding="async">
+                            <img class="portrait-card" src="/assets/portraits/sunrise-ridge.webp" alt=""
+                                data-caption="Hank Sha on a ridge at sunrise" width="840" height="1120" loading="lazy"
+                                decoding="async">
+                            <!-- Frame number, the way a contact sheet stamps one. It says
+                                 how many prints there are without an icon or a dot row,
+                                 and it is the one place on the page where a number counts
+                                 something the reader can act on. -->
+                            <span class="portrait-idx" aria-hidden="true" data-portrait-idx>01<span
+                                    class="portrait-idx-of">/03</span></span>
+                        </button>
                         <!-- Covers are generated by scripts/album-covers.sh, which takes a
                              Spotify album URL and writes a self-hosted WebP + this markup.
                              They shingle rather than sit in an even row — see .albums. -->
@@ -647,25 +722,22 @@
                         </div>
                     </div>
                     <div class="personal-main">
-                        <p class="personal-lead">Two things hold most of my attention, and it's the same instinct
-                            behind both.</p>
-                        <p class="personal-note">The first is business — small and mid-sized companies and startups
-                            especially: how they actually make money, what breaks as they grow, and which problems
-                            are worth solving with software at all.</p>
-                        <p class="personal-note">The second is mechanistic interpretability.</p>
-                        <p class="personal-pull">Deep learning models are black boxes, and I'd rather open one up
-                            and find out empirically.</p>
-                        <p class="personal-note">It's also why I'm deliberately building toward being
-                            <strong>Pi-shaped</strong>, and eventually comb-shaped — deep in more than one place,
-                            with enough range to connect them. That's what I think it takes to stay useful in a
-                            world of AI.
+                        <p class="personal-lead">I've worked across a few industries, and shipped my own projects
+                            alongside.</p>
+                        <p class="personal-note">Most of that has been close to the business, startups and small
+                            and mid-sized companies especially: how they make money, and what breaks as they grow.
                         </p>
+                        <p class="personal-note">The research I care about is narrower: deep learning architecture,
+                            and AI safety. I work empirically.</p>
+                        <p class="personal-pull">I'd rather open a model up than trust a description of it.</p>
+                        <p class="personal-note">It's why I'm building toward being <strong>Pi-shaped</strong>:
+                            deep in more than one place, with enough breadth to connect them.</p>
                     </div>
                     <!-- Each row is one line to edit; separate multiple values with " · ". -->
                     <dl class="spec personal-spec">
                         <div>
                             <dt>Outside work</dt>
-                            <dd>Gym · Music · Poker · Sandwich Connoisseur</dd>
+                            <dd>Gym · Hiking · Music · Poker · Sandwich Connoisseur</dd>
                         </div>
                         <div>
                             <dt>Music Taste</dt>
@@ -687,11 +759,12 @@
         <section class="section band-ink fade-in" id="contact" aria-labelledby="contact-h">
             <div class="section-inner">
                 <div class="sec-head">
-                    <h2 id="contact-h"><span>06</span>Contact</h2>
+                    <h2 id="contact-h"><span aria-hidden="true">06</span>Contact</h2>
+                    <p class="sec-note">Open to Applied AI / FDE roles. Email is the fastest way to reach me.</p>
                 </div>
                 <div class="ledger">
 
-                    <article class="row">
+                    <article class="row row-primary">
                         <div class="row-idx">01</div>
                         <div class="row-main">
                             <h3 class="row-title"><a href="mailto:hankssha@gmail.com"><svg
@@ -701,8 +774,24 @@
                                         <rect width="20" height="16" x="2" y="4" rx="2" />
                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                                     </svg>Email</a></h3>
+                            <!-- mailto: is dead on a locked-down corporate machine with no mail
+                                 client bound, which is exactly the machine a recruiter is on.
+                                 The button is the escape hatch; it sits above the row's overlay
+                                 link so the click copies instead of firing the mailto. -->
+                            <button class="copy-email" type="button" data-copy="hankssha@gmail.com">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                                    stroke-linejoin="round" aria-hidden="true">
+                                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                                </svg>
+                                <span class="copy-email-label" role="status">Copy address</span>
+                            </button>
                         </div>
-                        <div class="row-meta"><span class="stack">hankssha@gmail.com</span></div>
+                        <div class="row-meta">
+                            <span class="chip-preferred">Preferred</span>
+                            <span class="stack">hankssha@gmail.com</span>
+                        </div>
                         <div class="row-arrow" aria-hidden="true">→</div>
                     </article>
 
@@ -717,7 +806,7 @@
                                         <path
                                             d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5a10.68 10.68 0 0 0-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
                                         <path d="M9 18c-4.51 2-5-2-7-2" />
-                                    </svg>GitHub</a></h3>
+                                    </svg><span>GitHub <span class="ext" aria-hidden="true">↗</span></span></a></h3>
                         </div>
                         <div class="row-meta"><span class="stack">github.com/cubeerea</span></div>
                         <div class="row-arrow" aria-hidden="true">→</div>
@@ -733,7 +822,7 @@
                                         aria-hidden="true">
                                         <path d="M12 20h9" />
                                         <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
-                                    </svg>Medium</a></h3>
+                                    </svg><span>Medium <span class="ext" aria-hidden="true">↗</span></span></a></h3>
                         </div>
                         <div class="row-meta"><span class="stack">medium.com/@cubeerea</span></div>
                         <div class="row-arrow" aria-hidden="true">→</div>
@@ -751,7 +840,7 @@
                                             d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
                                         <rect width="4" height="12" x="2" y="9" />
                                         <circle cx="4" cy="4" r="2" />
-                                    </svg>LinkedIn</a></h3>
+                                    </svg><span>LinkedIn <span class="ext" aria-hidden="true">↗</span></span></a></h3>
                         </div>
                         <div class="row-meta"><span class="stack">linkedin.com/in/hank-sha</span></div>
                         <div class="row-arrow" aria-hidden="true">→</div>

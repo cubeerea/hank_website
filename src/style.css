@@ -26,7 +26,12 @@
   --color-card: #FBF8F2;
   --color-ink: #211A14;
   --color-ink-2: #5A4C40;
-  --color-ink-3: #77675A;
+  /* Tertiary ink. Was #77675A, which cleared 4.5:1 on Warm Paper (4.82) but
+     landed at 4.41 on the Cream band — so the same token passed in one band
+     and failed AA in the next. Darkened one step to hold 4.92 on Cream and
+     5.38 on Paper, which keeps it a tertiary tone (ink-2 is 7.34 on Paper)
+     while making the band it sits on stop mattering. */
+  --color-ink-3: #6F6052;
   --color-accent: #B0442A;
   --color-accent-dim: rgba(176, 68, 42, 0.35);
   --color-accent-glow: rgba(176, 68, 42, 0.16);
@@ -44,13 +49,21 @@
      second accent. */
   --color-accent-light: #D9724F;
   --color-accent-light-dim: rgba(217, 114, 79, 0.45);
-  /* The system is square-cornered by default; these are the only soft radii,
-     and they belong to media objects only — album art and the portrait (see
-     DESIGN.md "Shapes"). Two steps because radius reads optically, not
-     absolutely: 7px on a ~175px sleeve and 12px on a ~300px print are the same
-     softness to the eye. Not general-purpose "soften this" values. */
-  --radius-soft: 7px;
-  --radius-soft-lg: 12px;
+  /* Radius scale. The system used to be square-cornered with two media-only
+     radii; it now softens every discrete object. What carried over is the
+     principle behind those two steps: radius reads optically, not absolutely,
+     so 3px on a 22px chip and 12px on a 300px tile are the same softness to
+     the eye. One value across both would make the large surface look sharper
+     than the small one sitting next to it. Size the radius to the surface.
+
+     Bands, hairline rules and the page itself stay square — they are edges of
+     the page, not objects on it, and a rounded full-bleed band just leaves
+     paper showing in the corners. */
+  --radius-xs: 3px;   /* chips and tags, ~20-24px tall */
+  --radius-sm: 5px;   /* controls: buttons, the copy button, viewer chrome */
+  --radius-md: 7px;   /* mid surfaces: album sleeves, the gist grid, canvas */
+  --radius-lg: 12px;  /* large surfaces: bento tiles, the portrait */
+  --radius-pill: 9999px;
   /* Warm-ink drop shadow for the two exceptions that carry one: the Projects
      bento tiles and the Off the Ledger media (see "The Loose Page Exception").
      Offset + blur, never a zero-offset colored halo. */
@@ -106,6 +119,88 @@ body {
    change, and keep `transform` out of it. */
 
 /* ========================================
+   Skip Link
+   ======================================== */
+
+/* Every load used to start with nine forced tab stops through the nav before
+   a keyboard user reached any content. Parked off-screen rather than
+   display:none so it stays in the tab order, and it lands as a ledger label
+   in the accent, not a browser-default blue box. */
+.skip-link {
+  border-radius: var(--radius-sm);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  transform: translateY(-120%);
+  padding: 0.6rem 1rem;
+  background: var(--color-accent);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   Focus
+   ======================================== */
+
+/* One ring for the whole page. Before this, six controls had an authored
+   terracotta ring and the other twenty-six fell through to the UA default —
+   a saturated blue rectangle, which on a palette holding exactly one accent
+   and no blue anywhere is the loudest off-system color on the site. Worse
+   than the color was the inconsistency: a keyboard visitor met two different
+   focus vocabularies depending on which control they landed on.
+   Terracotta rather than ink because focus is a state, and marks-and-hovers
+   is what the accent is for. Offset 3px so the ring clears the type without
+   touching the hairline rules the ledger is built from. */
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* Base terracotta measures 3.03:1 on ink — below the 3:1 floor for a UI
+   indicator, and the same reason the ink bands take Terracotta Light for
+   everything else. */
+.band-ink :where(a, button, [tabindex]):focus-visible {
+  outline-color: var(--color-accent-light);
+}
+
+/* The bento title's anchor carries a full-tile ::after overlay, so the anchor's
+   own border box is just the few words of the title — a ring there boxed the
+   text inside a 405px tile and left the focused target ambiguous. Move it to
+   the tile, where it traces the 12px radius, and drop the anchor's own. */
+.bento-tile:has(.bento-title a:focus-visible) {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.bento-title a:focus-visible {
+  outline: none;
+}
+
+/* Same reasoning one band over: the flagship title's overlay covers its lead
+   column, so the ring belongs on the column, not on the words. */
+.flagship-lead:has(.flagship-title a:focus-visible) {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 6px;
+  border-radius: var(--radius-xs);
+}
+
+.flagship-title a:focus-visible {
+  outline: none;
+}
+
+/* ========================================
    Nav
    ======================================== */
 
@@ -115,7 +210,7 @@ body {
   z-index: 40;
   background: var(--color-paper);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s var(--ease-out);
 }
 
 .nav.is-stuck {
@@ -183,7 +278,7 @@ body {
   padding-block: 0.35rem;
   white-space: nowrap;
   position: relative;
-  transition: color 0.18s ease;
+  transition: color 0.18s var(--ease-out);
 }
 
 .nav-cta {
@@ -194,10 +289,10 @@ body {
   color: var(--color-paper);
   background: var(--color-accent);
   padding: 0.3rem 0.65rem;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   text-decoration: none;
   white-space: nowrap;
-  transition: background 0.15s ease, transform 0.2s var(--ease-out);
+  transition: background 0.15s var(--ease-out), transform 0.2s var(--ease-out);
 }
 
 .nav-cta:hover {
@@ -238,11 +333,32 @@ body {
 
 /* Grow the hit area with a pseudo-element rather than padding so the active
    underline stays tight against the text. */
+/* The hit area has to be wider than the horizontal inset alone can make it:
+   the expansion has to stay under half the flex gap or adjacent links start
+   stealing each other's taps. So the gap grows with it below — see the 720px
+   and 400px blocks. "Work", the shortest label, ends up ~41x52 rather than
+   27x25: past the 24px AA floor (2.5.8) with real margin, short of the 44px
+   AAA target, which the no-hamburger commitment in DESIGN.md rules out
+   reaching without a second nav row. */
 @media (pointer: coarse), (max-width: 768px) {
   .nav-link::before {
     content: "";
     position: absolute;
-    inset: -0.85rem -0.25rem;
+    inset: -0.85rem -0.45rem;
+  }
+
+  /* The pill measures 63x24 on its own — the padding that gives it its shape
+     can't grow without changing how it looks, so the hit area grows behind
+     it instead. Kept narrower than the links' so the two never overlap at
+     the tightest gap (0.5rem at 360px). */
+  .nav-cta {
+    position: relative;
+  }
+
+  .nav-cta::before {
+    content: "";
+    position: absolute;
+    inset: -0.55rem -0.25rem;
   }
 }
 
@@ -341,9 +457,9 @@ body {
   background: var(--color-accent);
   color: var(--color-paper);
   border: 1px solid transparent;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   font-weight: 500;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  transition: background 0.15s var(--ease-out), border-color 0.15s var(--ease-out), color 0.15s var(--ease-out), transform 0.15s var(--ease-out);
 }
 
 .spec .cta-outline {
@@ -378,13 +494,13 @@ body {
   gap: 0.4rem;
   color: var(--color-ink-2);
   border-bottom: 1px solid var(--color-rule);
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out);
 }
 
 .spec .links a svg {
   flex-shrink: 0;
   opacity: 0.75;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.15s var(--ease-out);
 }
 
 .spec .links a:hover {
@@ -524,21 +640,26 @@ body {
   color: var(--color-ink-dim);
 }
 
-.band-ink .row-links a {
+.band-ink .row-links a,
+.band-ink .row-links .row-cue {
   color: var(--color-paper-dim);
 }
 
+/* 0.28 measured 2.38:1 against Deep Ink — the affordance was invisible on
+   the ink bands specifically. 0.4 clears the 3:1 non-text floor and still
+   sits well behind the row title. */
 .band-ink .row-arrow {
-  color: rgba(246, 241, 232, 0.28);
+  color: rgba(246, 241, 232, 0.4);
 }
 
-.band-ink .row:hover {
+.band-ink .row::before {
   background: rgba(246, 241, 232, 0.04);
 }
 
 .band-ink .row:hover .row-title,
 .band-ink .row:hover .row-arrow,
 .band-ink .row-links a:hover,
+.band-ink .row:hover .row-links .row-cue,
 .band-ink .row:hover .row-title a svg {
   color: var(--color-accent-light);
 }
@@ -564,11 +685,93 @@ body {
 /* Pulled out of the Projects grid into its own band directly under the hero —
    the one project with live usage gets the page's first color break rather
    than a tile among tiles. */
+/* Two columns, uneven. The band used to be a single left column, which left
+   the right ~55% of a full-bleed dark band empty — the flagship asserting it
+   was the flagship rather than showing anything. The second column carries the
+   spec table (and, when one exists, a screenshot above it).
+   The split is 1.35fr / 1fr rather than halves: the title has to stay the
+   widest thing in the band, and an even split let the spec compete with it. */
 .flagship-inner {
   max-width: 68rem;
   margin: 0 auto;
   padding-inline: clamp(1.15rem, 5vw, 3rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  column-gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: end;
+}
+
+/* Positioning context for the title's full-block overlay — see the note on
+   `.flagship-title a::after`. */
+.flagship-lead {
   position: relative;
+}
+
+.flagship-aside {
+  /* Optical, not metric: the spec's first baseline sits a touch above the
+     CTA's rule so the two columns read as ending together. */
+  padding-bottom: 0.2rem;
+}
+
+/* Reserved slot. Nothing renders it yet; it is here so adding a screenshot is
+   a one-line markup change rather than a re-layout, and so the intended size
+   is on the record. */
+.flagship-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-rule-inverse);
+  margin-bottom: 1.35rem;
+}
+
+/* Inherits the hero spec's dt/dd tokens, inverted for the ink band. Rows are
+   stacked label-over-value rather than side by side: the column is narrow, and
+   two-column key/value here wrapped every value onto three lines. */
+.flagship-spec {
+  margin: 0;
+  max-width: none;
+  display: grid;
+  gap: 0.9rem;
+  border-top: 1px solid var(--color-accent-light-dim);
+  padding-top: 1.1rem;
+}
+
+.flagship-spec div {
+  display: block;
+  padding: 0;
+  border: none;
+}
+
+.flagship-spec dt {
+  padding-top: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent-light);
+}
+
+.flagship-spec dd {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-paper-dim);
+}
+
+@media (max-width: 860px) {
+  .flagship-inner {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2rem;
+    align-items: start;
+  }
+
+  .flagship-aside {
+    padding-bottom: 0;
+  }
 }
 
 .flagship-label {
@@ -596,6 +799,9 @@ body {
   text-decoration: none;
 }
 
+/* Bounded by `.flagship-lead`, not by the band. When `.flagship-inner` was the
+   positioning context this overlay measured 1088x258 and covered the empty
+   right half, so clicking apparently-blank dark space navigated off-site. */
 .flagship-title a::after {
   content: "";
   position: absolute;
@@ -619,7 +825,7 @@ body {
   color: var(--color-paper);
   border-bottom: 1px solid var(--color-accent-light-dim);
   padding-bottom: 3px;
-  transition: border-color 0.15s ease, color 0.15s ease;
+  transition: border-color 0.15s var(--ease-out), color 0.15s var(--ease-out);
 }
 
 .flagship:hover .flagship-cta {
@@ -696,6 +902,83 @@ body {
 
 .bento-pid .bento-desc {
   font-size: 0.9375rem;
+  /* The spec below takes the slack instead. Left on the description, `flex-grow`
+     stretched two lines of prose across the whole 2x2 area and opened ~225px of
+     void in the middle of the most-emphasized tile on the page. */
+  flex-grow: 0;
+  margin-bottom: 1.25rem;
+}
+
+/* Key/value rows in the ledger's voice, filling the anchor tile's extra area
+   with the method rather than with padding. Two columns on a real grid so the
+   values align to one edge — a definition list left to itself ragged the
+   values and the block stopped reading as a table. */
+/* `space-between` rather than a fixed gap: the 2x2 tile's height is set by the
+   two tiles stacked beside it, not by anything in here, so a start-aligned list
+   left whatever was left over as a hole above the foot rule. Spreading the rows
+   turns that slack into the table's own spacing. `0.7rem` stays as the floor for
+   the narrow layouts where there is no slack to spread. */
+.bento-spec {
+  margin: 0;
+  display: grid;
+  align-content: space-between;
+  gap: 0.7rem;
+  flex-grow: 1;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--color-rule-soft);
+}
+
+/* One hairline per row, so the spread reads as a ruled spec sheet rather than
+   as four lines that drifted apart. Rule weight is the ledger's separator. */
+.bento-spec div {
+  display: grid;
+  grid-template-columns: minmax(0, 8.5rem) minmax(0, 1fr);
+  column-gap: 1rem;
+  align-items: baseline;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--color-rule-soft);
+}
+
+.bento-spec div:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.bento-spec dt {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.bento-spec dd {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--color-ink-2);
+}
+
+/* Reserved slot — see the markup note. Adding one is a markup change only. */
+.bento-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-rule);
+  margin-bottom: 1.25rem;
+}
+
+/* Below the 2x2 layout the tile is one column among others and the rows would
+   crowd it, so the spec drops to the label-over-value stack the flagship uses. */
+@media (max-width: 720px) {
+  .bento-spec div {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.2rem;
+  }
 }
 
 .bento-tile {
@@ -705,8 +988,9 @@ body {
   padding: 1.4rem 1.5rem;
   background: var(--color-card);
   border: 1px solid var(--color-rule);
+  border-radius: var(--radius-lg);
   box-shadow: 0 1px 2px rgba(33, 26, 20, 0.05), 0 10px 26px -16px rgba(33, 26, 20, 0.22);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
 }
 
 .bento-tile:hover {
@@ -730,7 +1014,7 @@ body {
   letter-spacing: -0.012em;
   line-height: 1.3;
   margin: 0 0 0.5rem;
-  transition: color 0.15s ease;
+  transition: color 0.15s var(--ease-out);
 }
 
 .bento-title a {
@@ -738,10 +1022,13 @@ body {
   text-decoration: none;
 }
 
+/* Follows the tile so the focus ring traces the rounded edge rather than
+   cutting a square through it. */
 .bento-title a::after {
   content: "";
   position: absolute;
   inset: 0;
+  border-radius: var(--radius-lg);
 }
 
 .bento-tile:hover .bento-title {
@@ -772,15 +1059,23 @@ body {
   color: var(--color-ink-3);
 }
 
-.bento-foot a {
+/* The cue is a <span>, not a second <a>. The tile title already carries a
+   full-tile ::after overlay, so a link here pointed at the same URL and
+   bought nothing but a duplicate tab stop and a second announcement of the
+   same destination. It still has to read as the affordance it is, so it
+   keeps the anchor's styling and lights up with the tile instead of on its
+   own hover. */
+.bento-foot a,
+.bento-foot .bento-cue {
   position: relative;
   z-index: 2;
   color: var(--color-ink-2);
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: color 0.15s var(--ease-out);
 }
 
-.bento-foot a:hover {
+.bento-foot a:hover,
+.bento-tile:hover .bento-cue {
   color: var(--color-accent);
 }
 
@@ -829,6 +1124,7 @@ body {
 
 .row {
   position: relative;
+  isolation: isolate;
   display: grid;
   align-items: start;
   grid-template-columns: 3.25rem minmax(0, 1fr) 15rem 1.5rem;
@@ -837,15 +1133,31 @@ body {
   padding: 1.35rem 0.85rem;
   margin-inline: -0.85rem;
   border-bottom: 1px solid var(--color-rule-soft);
-  transition: background-color 0.18s ease;
 }
 
 .row:last-child {
   border-bottom: 1px solid var(--color-rule);
 }
 
-.row:hover {
+/* The hover tint is a rounded pane behind the row rather than a background on
+   the row itself. A radius on .row would bend the hairline rule underneath it,
+   and those rules are the ledger — they have to stay dead straight. The pane
+   stops 1px short of the bottom so it never sits on the rule.
+   `isolation: isolate` on .row keeps the z-index: -1 inside the row's own
+   stacking context, so the pane paints under the content but over the band. */
+.row::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 1px;
+  z-index: -1;
+  border-radius: var(--radius-md);
   background: var(--color-tint);
+  opacity: 0;
+  transition: opacity 0.18s var(--ease-out);
+}
+
+.row:hover::before {
+  opacity: 1;
 }
 
 .row-idx {
@@ -862,13 +1174,17 @@ body {
   min-width: 0;
 }
 
+/* Block because this is an <h3> in the Writing and Contact ledgers but a
+   <span> inside the Work disclosure button, where the heading moved out to
+   wrap the button instead. */
 .row-title {
+  display: block;
   font-size: 1.0625rem;
   font-weight: 500;
   letter-spacing: -0.012em;
   line-height: 1.35;
   margin: 0;
-  transition: color 0.15s ease;
+  transition: color 0.15s var(--ease-out);
 }
 
 .row-title a {
@@ -882,7 +1198,7 @@ body {
 .row-title a svg {
   flex-shrink: 0;
   color: var(--color-ink-3);
-  transition: color 0.15s ease;
+  transition: color 0.15s var(--ease-out);
 }
 
 .row:hover .row-title a svg {
@@ -900,8 +1216,12 @@ body {
   color: var(--color-accent);
 }
 
+/* Nothing to click, so nothing lights up. */
+.row.row-static:hover::before {
+  opacity: 0;
+}
+
 .row.row-static:hover {
-  background: transparent;
   color: var(--color-ink);
 }
 
@@ -948,29 +1268,109 @@ body {
   z-index: 2;
 }
 
-.row-links a {
+/* Same reasoning as .bento-cue: the row title already covers the whole row
+   with its ::after overlay, so a second anchor to the same URL was a
+   duplicate tab stop. Kept as styled text that follows the row's hover. */
+.row-links a,
+.row-links .row-cue {
   color: var(--color-ink-2);
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: color 0.15s var(--ease-out);
 }
 
-.row-links a:hover {
+.row-links a:hover,
+.row:hover .row-links .row-cue {
   color: var(--color-accent);
 }
 
+/* The arrow is the resting-state signal that a row is a link at all. At 0.22
+   alpha it measured 1.58:1 — present in the markup, invisible in practice.
+   0.5 is the lowest alpha that clears the 3:1 floor for non-text indicators
+   (1.4.11) on both Paper and Cream, so it reads without becoming a second
+   piece of type competing with the title. */
 .row-arrow {
   grid-area: arrow;
   justify-self: end;
   font-family: var(--font-mono);
   font-size: 0.875rem;
-  color: rgba(33, 26, 20, 0.22);
+  color: rgba(33, 26, 20, 0.5);
   padding-top: 0.2rem;
-  transition: transform 0.18s ease, color 0.18s ease;
+  transition: transform 0.18s var(--ease-out), color 0.18s var(--ease-out);
 }
 
 .row:hover .row-arrow {
   transform: translateX(4px);
   color: var(--color-accent);
+}
+
+/* ========================================
+   Contact — the primary row
+   ======================================== */
+
+/* Contact was five rows at identical weight, so the section that exists to
+   produce one action offered five doors and pointed at none. The email row
+   steps up a size and parks the accent rule under itself; everything else
+   stays exactly as it was. No new component — the ledger already had the
+   vocabulary, it just wasn't being spent anywhere. */
+.row-primary .row-title {
+  font-size: 1.3125rem;
+  letter-spacing: -0.016em;
+}
+
+.band-ink .row.row-primary {
+  border-bottom-color: var(--color-accent-light-dim);
+}
+
+.chip-preferred {
+  border-radius: var(--radius-xs);
+  align-self: flex-end;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--color-accent-light-dim);
+  color: var(--color-accent-light);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Sits above .row-title a::after, which otherwise swallows the click and
+   fires the mailto: instead of copying. */
+.copy-email {
+  border-radius: var(--radius-sm);
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--color-rule-inverse);
+  background: none;
+  color: var(--color-paper-dim);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out);
+}
+
+.copy-email:hover {
+  color: var(--color-accent-light);
+  border-color: var(--color-accent-light-dim);
+}
+
+.copy-email:focus-visible {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 2px;
+}
+
+.copy-email svg {
+  flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+  .chip-preferred {
+    align-self: flex-start;
+  }
 }
 
 /* Stack — five grouped tool columns. Sits on a paper band between the Writing
@@ -1053,7 +1453,7 @@ body {
   text-decoration: none;
   border-bottom: 1px solid var(--color-rule);
   padding-bottom: 1px;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out);
 }
 
 .more-link a:hover {
@@ -1081,11 +1481,29 @@ body {
   cursor: default;
 }
 
-.row.row-work:hover {
-  background: transparent;
+/* A work card is a .row wrapping a header plus an expandable panel, so it
+   inherits .row::before — which would tint the whole article, expanded detail
+   and all, on any hover. The header carries its own pane; this one has to go
+   entirely, not just on hover, or an expanded card paints its full height. */
+.row.row-work::before {
+  display: none;
+}
+
+/* The job title used to be an <h3> *inside* the toggle button. Most screen
+   readers don't expose headings nested in a button, so all three roles fell
+   out of the heading outline and it jumped straight from "04 Selected
+   Experience" to "05 Off the Ledger". Heading-wraps-button is the APG
+   disclosure shape: the role is a heading again, the button keeps the whole
+   row as its hit area, and the visible type is unchanged. */
+.work-heading {
+  margin: 0;
+  font: inherit;
+  font-weight: inherit;
 }
 
 .work-header {
+  position: relative;
+  isolation: isolate;
   display: grid;
   width: 100%;
   align-items: start;
@@ -1101,15 +1519,27 @@ body {
   color: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.18s ease;
 }
 
 .row.row-work:last-child .work-header {
   border-bottom: 1px solid var(--color-rule);
 }
 
-.work-header:hover {
+/* Same rounded pane as .row, for the same reason — a radius on the button
+   would bend the hairline that separates one role from the next. */
+.work-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 1px;
+  z-index: -1;
+  border-radius: var(--radius-md);
   background: var(--color-tint);
+  opacity: 0;
+  transition: opacity 0.18s var(--ease-out);
+}
+
+.work-header:hover::before {
+  opacity: 1;
 }
 
 .work-header:hover .row-title {
@@ -1135,7 +1565,7 @@ body {
   display: inline-block;
   width: 0.85rem;
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s var(--ease-out);
 }
 
 .row-work[data-expanded="true"] .work-toggle .sym {
@@ -1158,10 +1588,15 @@ body {
   display: block;
 }
 
+/* overflow: hidden so the internal cell dividers clip to the rounded frame
+   instead of squaring off the corners the border just rounded — the same
+   reason the album and portrait frames carry it. */
 .gist-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  overflow: hidden;
   margin-bottom: 1.25rem;
 }
 
@@ -1455,7 +1890,7 @@ body {
   position: relative;
   flex: 0 0 40%;
   border: 1px solid var(--color-rule);
-  border-radius: var(--radius-soft);
+  border-radius: var(--radius-md);
   background: var(--color-card);
   box-shadow: var(--shadow-print);
   transform: rotate(var(--album-tilt)) translateY(var(--album-lift)) scale(var(--album-pop));
@@ -1463,7 +1898,7 @@ body {
      image squares off the corners the border just rounded. */
   overflow: hidden;
   transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out),
-    border-color 0.25s ease;
+    border-color 0.25s var(--ease-out);
 }
 
 /* Rotations are hand-set rather than generated: an even sequence reintroduces
@@ -1518,7 +1953,7 @@ body {
   display: grid;
   place-items: center;
   aspect-ratio: 1 / 1;
-  border-radius: var(--radius-soft);
+  border-radius: var(--radius-md);
   background: var(--color-card);
   font-family: var(--font-mono);
   font-size: 0.625rem;
@@ -1529,55 +1964,149 @@ body {
   color: var(--color-ink-3);
 }
 
-/* Fills the row rather than holding a fixed ratio. A pinned aspect-ratio had to
+/* Portrait deck — three prints stacked, cycling on a timer and on click.
+   Fills the row rather than holding a fixed ratio. A pinned aspect-ratio had to
    be re-tuned every time the left column gained content (square -> 4:5 -> ...),
    and it always drifted out of balance again; stretching removes that class of
-   bug entirely. Crop is centered, so the source image wants to be
-   portrait-orientation with the subject near the middle.
-   Corners are softened to match the album sleeves optically (12px against
-   their 7px, because this surface is roughly twice as wide) and the frame sits
-   a fraction off-axis with a print shadow, so the portrait reads as a photo
-   laid on the page rather than a div. */
-.personal-photo {
+   bug entirely. Crop is centered, so source images want to be
+   portrait-orientation with the subject near the middle — all three are
+   pre-cropped to 3:4 at 840x1120, so cover-cropping only ever trims the edges.
+   It is a <button> because the deck is operable: the timer is an offer, and
+   click or Enter/Space advances it. `isolation` keeps the cards' z-index inside
+   the deck instead of racing the albums below. */
+.portrait-deck {
+  position: relative;
+  isolation: isolate;
+  display: block;
   width: 100%;
   height: 100%;
-  min-height: 22rem;
+  /* A floor, not a target. The `minmax(0, 1fr)` row lets the deck absorb
+     whatever height the prose column ends up being, which is what keeps the
+     two columns ending flush. The floor only guards the other end: below about
+     20rem the frame goes squat and near-landscape, and a portrait-orientation
+     source cover-cropped into it loses the subject, so the print stops reading
+     as a print. Set the floor too high and it wins over the 1fr and pushes the
+     media past the prose instead. Measure both columns after changing this, and
+     after any edit to the Off the Ledger copy. */
+  min-height: 20rem;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Corners are softened to match the album sleeves optically (12px against
+   their 7px, because this surface is roughly twice as wide) and each print sits
+   a fraction off-axis with a print shadow, so they read as photos laid on the
+   page rather than divs.
+   All three stack in the same box; only `--card-*` differs by position, so
+   advancing the deck is one attribute rewrite and the transition does the rest. */
+.portrait-card {
+  --card-tilt: 0deg;
+  --card-x: 0;
+  --card-y: 0;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: var(--radius-soft-lg);
+  /* A print's paper edge, and the one detail that makes the stack legible.
+     Without it the cards behind show as thin slices of whatever they happen to
+     contain — a cyan sky here, a sandstone wall there — which reads as a
+     rendering fault rather than as photographs underneath. What peeks out has
+     to be paper. `box-sizing` is already border-box, so the border eats into
+     the frame instead of growing it. */
+  border: 0.6rem solid var(--color-card);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-print);
-  transform: rotate(-0.9deg);
-  transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+  transform: rotate(var(--card-tilt)) translate(var(--card-x), var(--card-y));
+  transition: transform 0.62s var(--ease-out), box-shadow 0.62s var(--ease-out);
+}
+
+/* Hand-set like the album sleeves' rotations, and for the same reason: an even
+   sequence (-3/0/+3) reintroduces exactly the regularity the lean is here to
+   break. The top card keeps the -0.9deg the single portrait had, so nothing
+   about the section's resting composition moved when the deck replaced it.
+   The two beneath lean further and sit slightly lower, which is what makes the
+   stack read as depth rather than as one photo with a border. */
+.portrait-card[data-pos="0"] {
+  --card-tilt: -0.9deg;
+  z-index: 3;
+}
+
+/* Tilt deltas stay under ~3deg from the top card. Past that the corner of the
+   card beneath swings further than the paper edge is wide and its photo shows
+   through as a colored sliver, which reads as a rendering fault rather than as
+   a print underneath. The offsets do the rest of the work of separating them. */
+.portrait-card[data-pos="1"] {
+  --card-tilt: 1.5deg;
+  --card-x: 1.5%;
+  --card-y: 1.2%;
+  z-index: 2;
+}
+
+.portrait-card[data-pos="2"] {
+  --card-tilt: -2.4deg;
+  --card-x: -1.7%;
+  --card-y: 2.2%;
+  z-index: 1;
 }
 
 /* Straightens under the cursor — the same "pick it up off the page" gesture
-   the album sleeves make, so the two media objects behave as one family.
-   Hung off the photo itself rather than the media column: hovering a sleeve,
-   or the empty space beside one, should not move the portrait. */
-.personal-photo:hover {
+   the album sleeves make, so the two media objects behave as one family. Only
+   the top card moves; the stack stays a stack. */
+.portrait-deck:hover .portrait-card[data-pos="0"],
+.portrait-deck:focus-visible .portrait-card[data-pos="0"] {
   box-shadow: var(--shadow-print-lift);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .personal-photo:hover {
-    transform: rotate(0deg);
+  .portrait-deck:hover .portrait-card[data-pos="0"],
+  .portrait-deck:focus-visible .portrait-card[data-pos="0"] {
+    --card-tilt: 0deg;
   }
 }
 
-/* Temporary — replaced by a real image element when the portrait lands. Styled
-   as a deliberate empty frame rather than a missing-asset gap. */
-.personal-photo-placeholder {
-  display: grid;
-  place-items: center;
-  background: var(--color-card);
-  border: 1px solid var(--color-rule);
+/* Under reduced motion the deck still cycles on click; it just arrives rather
+   than travels, matching how the album hover keeps its border and shadow half. */
+@media (prefers-reduced-motion: reduce) {
+  .portrait-card {
+    transition: none;
+  }
+}
+
+/* Frame number, stamped in the corner of the top print the way a contact sheet
+   numbers a frame. Sits on the card's own tilt rather than the deck's axis, so
+   it belongs to the photo instead of floating above it. */
+.portrait-idx {
+  position: absolute;
+  z-index: 4;
+  right: 0.9rem;
+  bottom: 0.85rem;
+  transform: rotate(-0.9deg);
   font-family: var(--font-mono);
   font-size: 0.6875rem;
+  font-weight: 500;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
-  line-height: 1.7;
-  text-align: center;
-  color: var(--color-ink-3);
+  color: var(--color-paper);
+  /* The prints run from a bright sandstone wall to a near-black silhouette, so
+     the number cannot rely on any one of them for contrast. A small ink plate
+     under it is the only thing that holds across all three. */
+  background: rgba(33, 26, 20, 0.72);
+  padding: 0.28rem 0.5rem;
+  border-radius: var(--radius-xs);
+}
+
+.portrait-idx-of {
+  color: var(--color-ink-dim);
+}
+
+.portrait-deck:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: var(--radius-lg);
 }
 
 /* Intermediate step. The spread still works side by side here — what has to go
@@ -1637,7 +2166,7 @@ body {
   .personal-media {
     max-width: 20rem;
   }
-  .personal-photo {
+  .portrait-deck {
     height: auto;
     min-height: 0;
     aspect-ratio: 4 / 5;
@@ -1703,10 +2232,6 @@ body {
   }
 }
 
-.spinner {
-  animation: spin 0.8s linear infinite;
-}
-
 /* ========================================
    Print Styles
    ======================================== */
@@ -1741,33 +2266,342 @@ body {
 }
 
 /* ========================================
-   Contact Icon Buttons (resume/pid-steering utility pages)
+   Utility Pages (résumé picker, PDF viewers)
    ======================================== */
 
-.contact-link {
-  display: inline-flex;
+/* REPLACES: `.contact-link`, a pill-shaped icon button with a 9999px radius
+   and a translateY hover. DESIGN.md documented it as *the* component on these
+   pages; no markup ever used it. These pages were built from raw Tailwind
+   instead — rounded-lg/xl/full, hover:scale-105, and a
+   `shadow-[0_10px_40px_-10px_var(--color-accent-glow)]`, which is the
+   zero-offset colored halo the system bans by name. They carried the palette
+   and none of the identity, and would have transplanted into any SaaS
+   product unchanged. What follows is the same chrome in the ledger's own
+   vocabulary: square corners, hairline rules, mono labels, one accent. */
+
+.utility-nav {
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.utility-main {
+  padding-block: clamp(3rem, 8vw, 5rem);
+}
+
+.utility-inner {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding-inline: clamp(1.15rem, 5vw, 3rem);
+}
+
+/* Closes the picker the way the homepage's Contact section closes the page:
+   the list is short by design, and a page that just stops after one row
+   reads as unfinished rather than concise. */
+.utility-note {
+  margin: 2.25rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+  max-width: 52ch;
+}
+
+.utility-note a {
+  color: var(--color-accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-accent-dim);
+  transition: border-color 0.15s var(--ease-out);
+}
+
+.utility-note a:hover {
+  border-bottom-color: var(--color-accent);
+}
+
+.utility-head h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 7vw, 3.75rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+/* --- PDF viewer chrome --- */
+
+.viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.viewer-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem clamp(1rem, 4vw, 2rem);
+  background: var(--color-paper);
+  border-bottom: 1px solid var(--color-rule);
+}
+
+.viewer-id {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+/* The variant name is the one thing that differs between the three viewers,
+   so it gets the mono label treatment the ledger uses for classification. */
+.viewer-variant {
+  margin: 0;
+  font-weight: 400;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewer-tools {
+  display: flex;
   align-items: center;
   gap: 0.5rem;
-  min-height: 44px;
-  padding: 0.5rem 0.9rem;
-  border-radius: 9999px;
-  border: 1px solid var(--color-rule);
-  color: var(--color-ink-2);
-  font-size: 0.8125rem;
-  text-decoration: none;
-  transition: color 0.2s, border-color 0.2s, transform 0.15s;
+  flex-shrink: 0;
 }
 
-.contact-link:hover {
+.viewer-btn {
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid var(--color-rule);
+  background: none;
+  color: var(--color-ink-2);
+  cursor: pointer;
+  transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out);
+}
+
+.viewer-btn:hover:not(:disabled) {
   color: var(--color-accent);
   border-color: var(--color-accent-dim);
-  transform: translateY(-2px);
 }
 
-.contact-link svg {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
+.viewer-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.viewer-btn:focus-visible,
+.viewer-download:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.viewer-zoom {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ink-2);
+  min-width: 3.25rem;
+  text-align: center;
+}
+
+/* Was a 56px circular icon-only button pinned to the bottom-right corner —
+   the only way to the actual file, and unlabelled. It says what it does now
+   and sits with the other controls. */
+.viewer-download {
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  height: 2.25rem;
+  padding-inline: 0.85rem;
+  border: 1px solid var(--color-accent-dim);
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s var(--ease-out), border-color 0.15s var(--ease-out), background-color 0.15s var(--ease-out);
+}
+
+.viewer-download:hover {
+  background: var(--color-tint);
+  border-color: var(--color-accent);
+}
+
+.viewer-stage {
+  flex: 1;
+  overflow: auto;
+  background: var(--color-cream);
+}
+
+/* min-width: fit-content matters: a centred column wider than its scroll
+   container clips its own left edge, so a zoomed-in page could never be
+   scrolled back to. */
+.viewer-stage-inner {
+  min-height: 100%;
+  min-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(0.75rem, 3vw, 2rem);
+}
+
+#canvasContainer {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+
+#canvasContainer.is-visible {
+  display: flex;
+}
+
+#pdfCanvas {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-rule);
+  box-shadow: var(--shadow-print);
+}
+
+.viewer-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-block: 5rem;
+  gap: 0.6rem;
+}
+
+.viewer-state.is-shown {
+  display: flex;
+}
+
+/* One spinner for both viewers. It used to be split in two — this class plus a
+   bare `.spinner` that was animation-only, because pid-steering.html supplied
+   its box through Tailwind utilities and intrinsic dimensions here would have
+   collided with them. That page now uses this class like the résumé viewers
+   do, so the split had nothing left to keep apart. */
+.viewer-spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--color-rule);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viewer-spinner {
+    animation: none;
+  }
+}
+
+.viewer-state h2 {
+  font-family: var(--font-serif);
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.viewer-state p {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-ink-2);
+  max-width: 42ch;
+}
+
+.viewer-state .viewer-download {
+  margin-top: 0.85rem;
+}
+
+/* --- Paginated viewer (the paper) --- */
+
+/* The byline that sits under the paper's title in the bar. Mono, because on
+   this page it is classification — who and when — not prose. */
+.viewer-meta {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--color-ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.viewer-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ink-3);
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.35rem;
+  white-space: nowrap;
+}
+
+.viewer-pages {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.viewer-pages.is-visible {
+  display: flex;
+}
+
+/* A page is a sheet: white, square-ish corners on the system ramp, one
+   hairline, and the same print shadow the album sleeves and portraits use, so
+   a rendered page reads as paper on the cream stage rather than as a card. */
+.pdf-page {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-print);
+}
+
+.pdf-page canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 560px) {
+  /* The byline is the first thing to go: the bar is a tool strip at this
+     width, and the paper's title has to keep its room. */
+  .viewer-meta {
+    display: none;
+  }
+
+  .viewer-pages {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .viewer-count {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .viewer-id .nav-mark {
+    display: none;
+  }
+  .viewer-download span {
+    display: none;
+  }
+  .viewer-download {
+    padding-inline: 0.6rem;
+  }
 }
 
 /* ========================================
@@ -1777,10 +2611,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  .spinner {
-    animation: none !important;
   }
 
   /* A blinking caret is a loop with no off-switch; the line still types under
@@ -1807,13 +2637,15 @@ body {
      transform is already gated behind prefers-reduced-motion: no-preference.
      What goes here is the transition, so state changes land instantly. */
   .row,
+  .row::before,
+  .work-header::before,
   .row-arrow,
   .row-title,
   .work-toggle .sym,
   .nav-link::after,
   .nav-mark::after,
   .album,
-  .personal-photo {
+  .portrait-card {
     transition: none;
   }
 }
@@ -1844,9 +2676,15 @@ body {
     font-size: clamp(2.9rem, 13vw, 4rem);
     letter-spacing: -0.028em;
   }
+  /* The index keeps its column and the title moves up beside it, with the
+     metadata dropping underneath aligned to the title. The previous
+     "idx meta" / "main main" put the action above the thing it acts on —
+     a Writing row read "01  Read ↗" and only then named the article. */
   .row {
     grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas: "idx meta" "main main";
+    grid-template-areas:
+      "idx  main"
+      ".    meta";
     column-gap: 0.6rem;
     row-gap: 0.45rem;
     padding-block: 1.15rem;
@@ -1880,7 +2718,9 @@ body {
   }
   .work-header {
     grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas: "idx meta" "main main";
+    grid-template-areas:
+      "idx  main"
+      ".    meta";
     column-gap: 0.6rem;
     row-gap: 0.45rem;
     padding-block: 1.15rem;
@@ -1898,8 +2738,10 @@ body {
   .nav-mark {
     display: none;
   }
+  /* 1.05rem (16.8px) clears twice the 0.45rem hit-area inset (14.4px), so
+     neighbouring tap targets stay disjoint. */
   .nav-list {
-    gap: 0.85rem;
+    gap: 1.05rem;
   }
   .nav-link {
     font-size: 0.6875rem;
@@ -1917,9 +2759,15 @@ body {
   }
 }
 
+/* Below here the row can't afford the full 1.05rem gap, so the hit-area
+   inset steps down with it — the two are a pair, and the inset must stay
+   under half the gap at every step or taps bleed into the next link. */
 @media (max-width: 400px) {
   .nav-list {
-    gap: 0.7rem;
+    gap: 0.8rem;
+  }
+  .nav-link::before {
+    inset: -0.85rem -0.35rem;
   }
 }
 
@@ -1928,6 +2776,9 @@ body {
 @media (max-width: 360px) {
   .nav-list {
     gap: 0.5rem;
+  }
+  .nav-link::before {
+    inset: -0.85rem -0.2rem;
   }
   .nav-link {
     font-size: 0.625rem;

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "shots": "bash scripts/shots.sh"
+    "shots": "bash scripts/shots.sh",
+    "check:facts": "node scripts/check-facts.mjs"
   },
   "repository": {
     "type": "git",

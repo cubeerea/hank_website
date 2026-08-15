@@ -4,17 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Global PID Steering: Simpler Control, Better Capability Preservation in LLM Jailbreak Defense — a paper by Hank Sha, UC Santa Barbara.">
+    <meta name="description" content="Hank Sha's résumé — Data Science version.">
+    <meta name="robots" content="noindex">
     <meta name="theme-color" content="#F6F1E8">
-    <link rel="canonical" href="https://www.hanksha.com/pid-steering">
-    <title>Global PID Steering | Hank Sha</title>
-
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="Global PID Steering — Hank Sha">
-    <meta property="og:description"
-        content="A single averaged refusal vector, applied over a verified persistence window, preserves capability far better than full-depth per-layer PID steering.">
-    <meta property="og:url" content="https://www.hanksha.com/pid-steering">
+    <link rel="canonical" href="https://www.hanksha.com/resume/data-science">
+    <title>Résumé · Data Science | Hank Sha</title>
 
     <!-- Icons -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -25,33 +19,24 @@
 </head>
 
 <!--
-  The paper viewer. Shares the .viewer chrome with the three résumé viewers —
-  same bar, same buttons, same states — and differs only in being paginated:
-  a .viewer-pages list of .pdf-page boxes rather than one canvas, plus the
-  page counter that implies.
-
-  This page used to be built from raw Tailwind utilities: rounded-lg corners
-  off the radius ramp, backdrop-blur on a fixed header, bg-ink/5 button fills,
-  a 56px rounded-full floating download button, and a 12/14/16/18px type ramp
-  with nothing in it from the system. It carried the palette and none of the
-  identity — and it is the first click out of the Projects grid, so it was the
-  one page that undid the ledger the moment a visitor left the homepage.
+  One viewer page per résumé variant. They differ only in the three values
+  below (slug, label, file) — src/resume.ts reads the PDF path off
+  data-pdf so the page stays the single place a variant's file is named in
+  markup, and src/resume-variants.ts stays the place it is named in code.
 -->
 
-<body class="viewer-page">
+<body class="viewer-page" data-pdf="/assets/resume-data-science.pdf">
 
     <div class="viewer">
 
         <header class="viewer-bar">
             <div class="viewer-id">
                 <a class="nav-mark" href="/">Hank Sha</a>
-                <a class="nav-link" href="/#projects">Projects</a>
-                <h1 class="viewer-variant"><span class="sr-only">Paper — </span>Global PID Steering</h1>
-                <p class="viewer-meta">UC Santa Barbara · June 2026</p>
+                <a class="nav-link" href="/resume">Résumé</a>
+                <h1 class="viewer-variant"><span class="sr-only">Résumé — </span>Data Science</h1>
             </div>
 
             <div class="viewer-tools">
-                <span id="pageCounter" class="viewer-count" role="status"></span>
                 <button id="zoomOutBtn" class="viewer-btn" type="button" aria-label="Zoom out">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
@@ -65,7 +50,7 @@
                         <path d="M12 4v16m8-8H4" />
                     </svg>
                 </button>
-                <a class="viewer-download" href="/assets/global-pid-steering.pdf" download="global-pid-steering.pdf">
+                <a class="viewer-download" href="/assets/resume-data-science.pdf" download="hank-sha-data-science.pdf">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
                         aria-hidden="true">
@@ -78,20 +63,19 @@
             </div>
         </header>
 
-        <main id="viewport" class="viewer-stage">
+        <main class="viewer-stage">
             <div class="viewer-stage-inner">
 
                 <div id="loadingState" class="viewer-state is-shown">
                     <div class="viewer-spinner"></div>
-                    <p>Loading the paper…</p>
+                    <p>Loading résumé…</p>
                 </div>
 
                 <div id="errorState" class="viewer-state">
-                    <h2>This paper didn't load</h2>
+                    <h2>This résumé didn't load</h2>
                     <p>The in-browser viewer needs the PDF to load over the network. Download it instead — the
                         file itself is fine.</p>
-                    <a class="viewer-download" href="/assets/global-pid-steering.pdf"
-                        download="global-pid-steering.pdf">
+                    <a class="viewer-download" href="/assets/resume-data-science.pdf" download="hank-sha-data-science.pdf">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"
                             aria-hidden="true">
@@ -103,15 +87,16 @@
                     </a>
                 </div>
 
-                <!-- One .pdf-page per page, appended by src/pid-steering.ts. -->
-                <div id="pageList" class="viewer-pages"></div>
+                <div id="canvasContainer">
+                    <canvas id="pdfCanvas"></canvas>
+                </div>
 
             </div>
         </main>
 
     </div>
 
-    <script type="module" src="/src/pid-steering.ts"></script>
+    <script type="module" src="/src/resume.ts"></script>
 </body>
 
 </html>

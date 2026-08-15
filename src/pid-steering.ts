@@ -20,7 +20,7 @@ import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
 import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from 'pdfjs-dist';
 import PdfWorker from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?worker';
 import { debounce } from './debounce';
-import { MIN_ZOOM, MAX_ZOOM, ZOOM_STEP, computeAvailableWidth, updateZoomDisplay, bindZoomKeys } from './pdf-viewer';
+import { MIN_ZOOM, MAX_ZOOM, ZOOM_STEP, updateZoomDisplay, bindZoomKeys } from './pdf-viewer';
 
 pdfjsLib.GlobalWorkerOptions.workerPort = new PdfWorker();
 
@@ -78,9 +78,20 @@ async function init(): Promise<void> {
   }
 }
 
-/** Width available to a page, minus the column padding in pid-steering.html. */
+/**
+ * Width available to a page: the stage minus its own padding, capped.
+ *
+ * Measured rather than assumed. This used to call `computeAvailableWidth`,
+ * whose gutter is a constant that happened to match the Tailwind `p-6`/`p-2`
+ * this page carried; moving onto `.viewer-stage-inner` changed the padding and
+ * would have left every page ~16px too wide, which a `min-width: fit-content`
+ * scroll container turns into horizontal scrolling rather than a visible bug.
+ */
 function availableWidth(): number {
-  return computeAvailableWidth(viewport.clientWidth, 1100);
+  const inner = viewport.firstElementChild as HTMLElement | null;
+  const style = inner ? getComputedStyle(inner) : null;
+  const gutter = style ? parseFloat(style.paddingLeft) + parseFloat(style.paddingRight) : 0;
+  return Math.min(viewport.clientWidth - gutter, 1100);
 }
 
 function computeFitScale(page: PDFPageProxy): void {
@@ -94,13 +105,10 @@ function buildSlots(numPages: number, first: PDFPageProxy): void {
 
   for (let num = 1; num <= numPages; num++) {
     const el = document.createElement('div');
-    el.className =
-      'pdf-page relative bg-white rounded border border-rule ' +
-      'shadow-[0_20px_60px_-15px_rgba(33,26,20,0.28)] overflow-hidden';
+    el.className = 'pdf-page';
     el.dataset.page = String(num);
 
     const canvas = document.createElement('canvas');
-    canvas.className = 'block w-full h-auto';
     // A fresh canvas defaults to a 300x150 backing store; zero it so an
     // unrendered page costs nothing until it scrolls into the window.
     canvas.width = 0;
