@@ -43,7 +43,7 @@ export const RESUME_VARIANTS: ResumeVariant[] = [
     slug: 'applied-ai',
     label: 'Applied AI',
     blurb: 'For applied AI and ML engineering roles.',
-    file: '/assets/hank_sha_resume.pdf',
+    file: '/assets/resume-applied-ai.pdf',
     download: 'hank-sha-applied-ai.pdf',
     available: true,
   },
@@ -53,7 +53,7 @@ export const RESUME_VARIANTS: ResumeVariant[] = [
     blurb: 'For forward-deployed and solutions engineering roles.',
     file: '/assets/resume-fde.pdf',
     download: 'hank-sha-fde.pdf',
-    available: false,
+    available: true,
   },
   {
     slug: 'data-science',
@@ -61,7 +61,7 @@ export const RESUME_VARIANTS: ResumeVariant[] = [
     blurb: 'For data science and applied statistics roles.',
     file: '/assets/resume-data-science.pdf',
     download: 'hank-sha-data-science.pdf',
-    available: false,
+    available: true,
   },
 ];
 

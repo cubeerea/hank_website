@@ -48,6 +48,12 @@
       "conflicts": ["June 2025 – Present", "Jun 2025 – Present"]
     },
     {
+      "id": "xeno-cli-name",
+      "note": "The agent CLI project's name. The site links github.com/cubeerea/xeno-cli, so the repo settles it.",
+      "canonical": "Xeno CLI",
+      "conflicts": ["Zeno CLI"]
+    },
+    {
       "id": "inference-speedup",
       "note": "Inference speedup from the CUDA batching work",
       "canonical": "4x",
