@@ -26,7 +26,12 @@
   --color-card: #FBF8F2;
   --color-ink: #211A14;
   --color-ink-2: #5A4C40;
-  --color-ink-3: #77675A;
+  /* Tertiary ink. Was #77675A, which cleared 4.5:1 on Warm Paper (4.82) but
+     landed at 4.41 on the Cream band — so the same token passed in one band
+     and failed AA in the next. Darkened one step to hold 4.92 on Cream and
+     5.38 on Paper, which keeps it a tertiary tone (ink-2 is 7.34 on Paper)
+     while making the band it sits on stop mattering. */
+  --color-ink-3: #6F6052;
   --color-accent: #B0442A;
   --color-accent-dim: rgba(176, 68, 42, 0.35);
   --color-accent-glow: rgba(176, 68, 42, 0.16);
@@ -104,6 +109,36 @@ body {
    they now actually run. Don't reintroduce a global transition rule — if a
    future theme switch needs one, scope it to the properties and elements that
    change, and keep `transform` out of it. */
+
+/* ========================================
+   Skip Link
+   ======================================== */
+
+/* Every load used to start with nine forced tab stops through the nav before
+   a keyboard user reached any content. Parked off-screen rather than
+   display:none so it stays in the tab order, and it lands as a ledger label
+   in the accent, not a browser-default blue box. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  transform: translateY(-120%);
+  padding: 0.6rem 1rem;
+  background: var(--color-accent);
+  color: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
 
 /* ========================================
    Nav
@@ -238,11 +273,18 @@ body {
 
 /* Grow the hit area with a pseudo-element rather than padding so the active
    underline stays tight against the text. */
+/* The hit area has to be wider than the horizontal inset alone can make it:
+   the expansion has to stay under half the flex gap or adjacent links start
+   stealing each other's taps. So the gap grows with it below — see the 720px
+   and 400px blocks. "Work", the shortest label, ends up ~41x52 rather than
+   27x25: past the 24px AA floor (2.5.8) with real margin, short of the 44px
+   AAA target, which the no-hamburger commitment in DESIGN.md rules out
+   reaching without a second nav row. */
 @media (pointer: coarse), (max-width: 768px) {
   .nav-link::before {
     content: "";
     position: absolute;
-    inset: -0.85rem -0.25rem;
+    inset: -0.85rem -0.45rem;
   }
 }
 
@@ -772,7 +814,14 @@ body {
   color: var(--color-ink-3);
 }
 
-.bento-foot a {
+/* The cue is a <span>, not a second <a>. The tile title already carries a
+   full-tile ::after overlay, so a link here pointed at the same URL and
+   bought nothing but a duplicate tab stop and a second announcement of the
+   same destination. It still has to read as the affordance it is, so it
+   keeps the anchor's styling and lights up with the tile instead of on its
+   own hover. */
+.bento-foot a,
+.bento-foot .bento-cue {
   position: relative;
   z-index: 2;
   color: var(--color-ink-2);
@@ -780,7 +829,8 @@ body {
   transition: color 0.15s ease;
 }
 
-.bento-foot a:hover {
+.bento-foot a:hover,
+.bento-tile:hover .bento-cue {
   color: var(--color-accent);
 }
 
@@ -862,7 +912,11 @@ body {
   min-width: 0;
 }
 
+/* Block because this is an <h3> in the Writing and Contact ledgers but a
+   <span> inside the Work disclosure button, where the heading moved out to
+   wrap the button instead. */
 .row-title {
+  display: block;
   font-size: 1.0625rem;
   font-weight: 500;
   letter-spacing: -0.012em;
@@ -948,22 +1002,32 @@ body {
   z-index: 2;
 }
 
-.row-links a {
+/* Same reasoning as .bento-cue: the row title already covers the whole row
+   with its ::after overlay, so a second anchor to the same URL was a
+   duplicate tab stop. Kept as styled text that follows the row's hover. */
+.row-links a,
+.row-links .row-cue {
   color: var(--color-ink-2);
   text-decoration: none;
   transition: color 0.15s ease;
 }
 
-.row-links a:hover {
+.row-links a:hover,
+.row:hover .row-links .row-cue {
   color: var(--color-accent);
 }
 
+/* The arrow is the resting-state signal that a row is a link at all. At 0.22
+   alpha it measured 1.58:1 — present in the markup, invisible in practice.
+   0.5 is the lowest alpha that clears the 3:1 floor for non-text indicators
+   (1.4.11) on both Paper and Cream, so it reads without becoming a second
+   piece of type competing with the title. */
 .row-arrow {
   grid-area: arrow;
   justify-self: end;
   font-family: var(--font-mono);
   font-size: 0.875rem;
-  color: rgba(33, 26, 20, 0.22);
+  color: rgba(33, 26, 20, 0.5);
   padding-top: 0.2rem;
   transition: transform 0.18s ease, color 0.18s ease;
 }
@@ -971,6 +1035,74 @@ body {
 .row:hover .row-arrow {
   transform: translateX(4px);
   color: var(--color-accent);
+}
+
+/* ========================================
+   Contact — the primary row
+   ======================================== */
+
+/* Contact was five rows at identical weight, so the section that exists to
+   produce one action offered five doors and pointed at none. The email row
+   steps up a size and parks the accent rule under itself; everything else
+   stays exactly as it was. No new component — the ledger already had the
+   vocabulary, it just wasn't being spent anywhere. */
+.row-primary .row-title {
+  font-size: 1.3125rem;
+  letter-spacing: -0.016em;
+}
+
+.band-ink .row.row-primary {
+  border-bottom-color: var(--color-accent-light-dim);
+}
+
+.chip-preferred {
+  align-self: flex-end;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--color-accent-light-dim);
+  color: var(--color-accent-light);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Sits above .row-title a::after, which otherwise swallows the click and
+   fires the mailto: instead of copying. */
+.copy-email {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--color-rule-inverse);
+  background: none;
+  color: var(--color-paper-dim);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.copy-email:hover {
+  color: var(--color-accent-light);
+  border-color: var(--color-accent-light-dim);
+}
+
+.copy-email:focus-visible {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 2px;
+}
+
+.copy-email svg {
+  flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+  .chip-preferred {
+    align-self: flex-start;
+  }
 }
 
 /* Stack — five grouped tool columns. Sits on a paper band between the Writing
@@ -1083,6 +1215,18 @@ body {
 
 .row.row-work:hover {
   background: transparent;
+}
+
+/* The job title used to be an <h3> *inside* the toggle button. Most screen
+   readers don't expose headings nested in a button, so all three roles fell
+   out of the heading outline and it jumped straight from "04 Selected
+   Experience" to "05 Off the Ledger". Heading-wraps-button is the APG
+   disclosure shape: the role is a heading again, the button keeps the whole
+   row as its hit area, and the visible type is unchanged. */
+.work-heading {
+  margin: 0;
+  font: inherit;
+  font-weight: inherit;
 }
 
 .work-header {
@@ -1844,9 +1988,15 @@ body {
     font-size: clamp(2.9rem, 13vw, 4rem);
     letter-spacing: -0.028em;
   }
+  /* The index keeps its column and the title moves up beside it, with the
+     metadata dropping underneath aligned to the title. The previous
+     "idx meta" / "main main" put the action above the thing it acts on —
+     a Writing row read "01  Read ↗" and only then named the article. */
   .row {
     grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas: "idx meta" "main main";
+    grid-template-areas:
+      "idx  main"
+      ".    meta";
     column-gap: 0.6rem;
     row-gap: 0.45rem;
     padding-block: 1.15rem;
@@ -1880,7 +2030,9 @@ body {
   }
   .work-header {
     grid-template-columns: auto minmax(0, 1fr);
-    grid-template-areas: "idx meta" "main main";
+    grid-template-areas:
+      "idx  main"
+      ".    meta";
     column-gap: 0.6rem;
     row-gap: 0.45rem;
     padding-block: 1.15rem;
@@ -1898,8 +2050,10 @@ body {
   .nav-mark {
     display: none;
   }
+  /* 1.05rem (16.8px) clears twice the 0.45rem hit-area inset (14.4px), so
+     neighbouring tap targets stay disjoint. */
   .nav-list {
-    gap: 0.85rem;
+    gap: 1.05rem;
   }
   .nav-link {
     font-size: 0.6875rem;
@@ -1917,9 +2071,15 @@ body {
   }
 }
 
+/* Below here the row can't afford the full 1.05rem gap, so the hit-area
+   inset steps down with it — the two are a pair, and the inset must stay
+   under half the gap at every step or taps bleed into the next link. */
 @media (max-width: 400px) {
   .nav-list {
-    gap: 0.7rem;
+    gap: 0.8rem;
+  }
+  .nav-link::before {
+    inset: -0.85rem -0.35rem;
   }
 }
 
@@ -1928,6 +2088,9 @@ body {
 @media (max-width: 360px) {
   .nav-list {
     gap: 0.5rem;
+  }
+  .nav-link::before {
+    inset: -0.85rem -0.2rem;
   }
   .nav-link {
     font-size: 0.625rem;

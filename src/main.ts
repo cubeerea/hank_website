@@ -333,6 +333,52 @@ function initExperienceCards(): void {
 }
 
 // ========================================
+// Copy Email
+// ========================================
+
+/**
+ * The Contact row's address is a `mailto:` link, which is dead on a machine
+ * with no mail client bound — a common state on a locked-down corporate
+ * laptop, which is exactly what a recruiter is using. The button is the way
+ * out of that dead end.
+ *
+ * The label doubles as the confirmation rather than a toast: the feedback
+ * belongs on the control that was pressed, and a `role="status"` on the
+ * label means a screen reader hears the change without focus moving.
+ */
+function initCopyEmail(): void {
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.copy-email');
+
+  buttons.forEach((btn) => {
+    const label = btn.querySelector<HTMLElement>('.copy-email-label');
+    const address = btn.dataset.copy;
+    if (!label || !address) return;
+
+    const idle = label.textContent ?? 'Copy address';
+    let revert: ReturnType<typeof setTimeout> | undefined;
+
+    btn.addEventListener('click', async () => {
+      let ok = false;
+      try {
+        await navigator.clipboard.writeText(address);
+        ok = true;
+      } catch {
+        // Denied permission, or a non-secure origin where the API doesn't
+        // exist at all. Say so instead of claiming a copy that didn't happen —
+        // the address is on screen next to the button either way.
+        ok = false;
+      }
+
+      label.textContent = ok ? 'Copied' : 'Copy blocked — select the address';
+      clearTimeout(revert);
+      revert = setTimeout(() => {
+        label.textContent = idle;
+      }, 2000);
+    });
+  });
+}
+
+// ========================================
 // Initialize
 // ========================================
 
@@ -345,6 +391,7 @@ function init(): void {
   initNavStuck();
   initNavTracking();
   initExperienceCards();
+  initCopyEmail();
 }
 
 if (document.readyState === 'loading') {
