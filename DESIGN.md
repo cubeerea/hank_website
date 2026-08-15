@@ -153,7 +153,7 @@ The order, top to bottom:
 - **Body** (400–500, 0.875–1.0625rem, sans/mono mixed by context, line-height 1.35–1.6): Row titles (sans, 500 weight), row descriptions and work-detail prose (sans, 400 weight, ~56–65ch max width).
 
 ### Named Rules
-**The One-Serif Rule.** Serif type appears in exactly one place per page: the hero headline (including its emphasized word). It is never used for the name, section headers, body copy, or UI chrome. *(Supersedes the old "Two-Serif Rule" — the name moved out of serif/display scale entirely when the hero was rebalanced to lead with positioning over identity.)*
+**The One-Serif Rule.** Serif type appears in exactly two places, and they bookend the page: the hero headline (including its emphasized word) and the Contact closing statement (`.contact-call`). Both run at 600 weight, both put the accent on one word, and nothing between them is serif — that gap is what makes the return register as a close rather than a second heading. It is never used for the name, section headers, body copy, or UI chrome. A third serif is a decision, not a detail: it would turn the bookend back into a typeface the page merely uses. *(Supersedes the old "Two-Serif Rule," which counted the name — the name moved out of serif/display scale entirely when the hero was rebalanced to lead with positioning over identity.)*
 
 **Low-Ego Hero.** The person's name is never the biggest thing on the page. It lives at label scale (nav) and body scale (first line of the intro paragraph) — never at display scale. What the headline says about the work always outranks who's saying it.
 
@@ -329,7 +329,7 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 
 ### Do:
 - **Do** keep the accent to marks and hovers by default — labels, underlines, index numbers, `::selection`. The two CTA pills and the headline's highlight block are the named exceptions, not a pattern to extend.
-- **Do** use mono for anything structural or numeric (nav, index numbers, meta, chips, labels); sans for prose; serif only for the hero headline and its one highlighted word (see the One-Serif Rule) — never for the name.
+- **Do** use mono for anything structural or numeric (nav, index numbers, meta, chips, labels); sans for prose; serif only for the hero headline and the Contact closing statement, each with its one highlighted word (see the One-Serif Rule); never for the name.
 - **Do** separate content with rule weight (Hairline Rule / Hairline Rule Soft / Terracotta Dim), not shadows or elevation.
 - **Do** keep row hover feedback in-plane (tint wash, color shift, small arrow nudge) — nothing lifts off the page except the explicit pill-button exceptions.
 

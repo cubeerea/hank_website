@@ -86,10 +86,10 @@ function initTypewriter(): void {
   // and a phrase that wraps makes the whole spec table jump a line-height each
   // time it comes round. ("Mechanistic interpretability" was exactly that.)
   const phrases = [
-    'Applied AI / FDE roles',
-    'Production LLM systems',
-    'Interpretability research',
-    'Applied ML research',
+    'Applied AI',
+    'FDE roles',
+    'Agentic systems',
+    'ML research',
   ];
 
   const TYPE_MS = 52;

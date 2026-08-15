@@ -867,6 +867,45 @@ body {
   margin: 0;
 }
 
+/* The closing statement above the Contact ledger. This is the only serif on the
+   page besides the hero headline, and the pairing is the point: the two sit at
+   the same weight and near the same scale at opposite ends of the scroll, so the
+   page opens and closes in the same voice. See DESIGN.md "One-Serif Rule".
+   `em` carries the accent rather than italics — the terracotta lands on `build`,
+   which is the claim, not on `pitch`, which is the thing being declined. */
+.contact-call {
+  margin: 0.4rem 0 2.4rem;
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5.4vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  max-width: 17ch;
+  text-wrap: balance;
+}
+
+.contact-call em {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.band-ink .contact-call {
+  color: var(--color-paper);
+}
+
+.band-ink .contact-call em {
+  color: var(--color-accent-light);
+}
+
+/* The hard break is a desktop line-break decision, not a sentence boundary.
+   Below 560px the measure does the breaking on its own and the manual one
+   leaves a two-word orphan line. */
+@media (max-width: 560px) {
+  .contact-call br {
+    display: none;
+  }
+}
+
 /* ========================================
    Projects Bento Grid
    ======================================== */
