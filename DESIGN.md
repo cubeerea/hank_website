@@ -246,7 +246,7 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 ### Primary CTA Pill (one of the two filled exceptions)
 - **Shape:** Fully rounded, solid Terracotta Ink background, Warm Paper text.
 - **Hover:** Background shifts to Deep Ink, lifts 1px — the fill stays solid, it just darkens rather than washing out.
-- **Instances:** The hero's "Get in touch →" (`.spec .cta`, in the Contact spec row) and the nav's "Résumé ↗" (`.nav-cta`, last item in `.nav-list`, smaller/denser to fit the nav's fixed height). Same visual language, two contexts.
+- **Instances:** The hero's "Get in touch →" (`.spec .cta`, in the Contact spec row) and the nav's "Résumé" (`.nav-cta`, last item in `.nav-list`, smaller/denser to fit the nav's fixed height — no `↗`, since `↗` marks leaving the site and `/resume` does not). Same visual language, two contexts.
 - **Rule:** Capped at these two (see the 60/30/10 rule above). Don't reuse this fill for a third button or a badge.
 
 ### Flagship Band
