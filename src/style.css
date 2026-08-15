@@ -873,13 +873,38 @@ body {
    page opens and closes in the same voice. See DESIGN.md "One-Serif Rule".
    `em` carries the accent rather than italics — the terracotta lands on `build`,
    which is the claim, not on `pitch`, which is the thing being declined. */
-/* The statement sits down on the ledger's top rule rather than floating
-   between it and the section head — the rule reads as the line the sentence is
-   written on. The bottom gap is in `em` so it scales with the clamped type and
-   the sentence stays the same distance off the rule at every width; the top gap
-   is in `rem` because it answers to the section head, which doesn't scale. */
+/* Statement and note ride down onto the ledger's top rule together rather than
+   floating above it, so the rule reads as the line both are written on. Bottoms
+   align rather than baselines: the statement is clamped to ~3.5x the note's
+   size, and baseline-aligning type that far apart in scale leaves the small one
+   looking hung off the large one instead of resting on the same rule.
+   The bottom gap clears the descenders in "pitch" and in "fastest" without
+   opening a band between the pair and the rule. */
+.contact-close {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 2.5rem;
+  flex-wrap: wrap;
+  margin: 2.6rem 0 0.7rem;
+}
+
+/* Below the wrap the note lands under the statement, where a right-aligned
+   ragged edge would float free of everything. Left keeps it on the same
+   margin as the statement and the ledger indices. */
+.contact-close .sec-note {
+  text-align: right;
+  flex: 0 1 auto;
+}
+
+@media (max-width: 720px) {
+  .contact-close .sec-note {
+    text-align: left;
+  }
+}
+
 .contact-call {
-  margin: 2.6rem 0 0.28em;
+  margin: 0;
   font-family: var(--font-serif);
   font-size: clamp(2rem, 5.4vw, 3.5rem);
   font-weight: 600;
