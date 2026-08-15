@@ -132,12 +132,39 @@
         <!-- Flagship (ink band 1 of 3) -->
         <section class="section band-ink flagship fade-in" aria-labelledby="flagship-h">
             <div class="flagship-inner">
-                <span class="flagship-label">Flagship · Live</span>
-                <h2 class="flagship-title" id="flagship-h"><a href="https://biotech-catalyst-engine-black.vercel.app/"
-                        target="_blank" rel="noopener noreferrer">Biotech Intelligence Engine</a></h2>
-                <p class="flagship-desc">Aggregates SEC filings, clinical trials, FDA calendars and news to
-                    surface investable signals early.</p>
-                <span class="flagship-cta">Try it live <span aria-hidden="true">↗</span></span>
+                <div class="flagship-lead">
+                    <span class="flagship-label">Flagship · Live</span>
+                    <h2 class="flagship-title" id="flagship-h"><a
+                            href="https://biotech-catalyst-engine-black.vercel.app/" target="_blank"
+                            rel="noopener noreferrer">Biotech Intelligence Engine</a></h2>
+                    <p class="flagship-desc">Aggregates SEC filings, clinical trials, FDA calendars and news to
+                        surface investable signals early.</p>
+                    <span class="flagship-cta">Try it live <span aria-hidden="true">↗</span></span>
+                </div>
+                <!-- The band's second column. It holds the spec table today; add an img
+                     with class "flagship-art" ahead of the dl when a screenshot exists
+                     and the column takes it without a layout change — the spec falls
+                     underneath it. (Written out rather than as a tag: a literal img
+                     element inside a comment reads as a broken image to markup scanners.)
+                     The column is also what bounds the title's full-block ::after overlay:
+                     before it existed, that invisible link covered the whole band
+                     including the empty half, so clicking dead space navigated off-site. -->
+                <div class="flagship-aside">
+                    <dl class="spec flagship-spec">
+                        <div>
+                            <dt>Sources</dt>
+                            <dd>SEC filings · ClinicalTrials.gov · FDA calendars · News</dd>
+                        </div>
+                        <div>
+                            <dt>Surfaces</dt>
+                            <dd>Investable signals, early</dd>
+                        </div>
+                        <div>
+                            <dt>Status</dt>
+                            <dd>Live, open to anyone</dd>
+                        </div>
+                    </dl>
+                </div>
             </div>
         </section>
 
@@ -155,6 +182,32 @@
                         <p class="bento-desc">One averaged refusal vector beats per-layer PID at defending Gemma-2
                             without
                             wrecking it on benign prompts.</p>
+                        <!-- The 2x2 tile's emphasis mechanism is area, so the area has to
+                             carry something. Every value here is lifted from the paper's
+                             own abstract — including the caveat, which is the row that
+                             makes the other three trustworthy. Verify against
+                             /assets/global-pid-steering.pdf before editing any number.
+                             An img with class "bento-art" above the dl takes the room
+                             instead, and the rows fall underneath it. -->
+                        <dl class="bento-spec">
+                            <div>
+                                <dt>Model</dt>
+                                <dd>Gemma-2-2B-it</dd>
+                            </div>
+                            <div>
+                                <dt>Method</dt>
+                                <dd>One averaged refusal vector, over a verified persistence window</dd>
+                            </div>
+                            <div>
+                                <dt>Benign refusals</dt>
+                                <dd>3.5% vs 96% for full-depth per-layer PID (1.5% unsteered)</dd>
+                            </div>
+                            <div>
+                                <dt>Caveat</dt>
+                                <dd>Both block all 104 GCG attacks, largely the model's existing alignment
+                                    rather than the steering</dd>
+                            </div>
+                        </dl>
                         <div class="bento-foot">
                             <span class="bento-tag">Research · AI Safety</span>
                             <span class="bento-cue" aria-hidden="true">Read the paper&nbsp;→</span>
@@ -615,12 +668,36 @@
                      "The Loose Page Exception". -->
                 <div class="personal">
                     <div class="personal-media">
-                        <!-- PLACEHOLDER: swap this <div> for <img class="personal-photo" src="..."
-                             alt="Hank Sha" width="800" height="1000"> when the portrait is ready. -->
-                        <div class="personal-photo personal-photo-placeholder" role="img"
-                            aria-label="Portrait of Hank Sha — placeholder, photo pending">
-                            <span>Portrait<br>pending</span>
-                        </div>
+                        <!-- Three prints laid on each other rather than one framed photo.
+                             The deck cycles on a timer and on click, so the section shows
+                             three sides of the same person in the space of one — which is
+                             the section's whole argument. Same Loose Page treatment as the
+                             sleeves below (tilt, print shadow, straighten under the
+                             cursor) because they are the same kind of object: something
+                             set down on the page rather than placed in a frame.
+                             DOM order is cycle order. The <button> carries the accessible
+                             name for whichever card is on top, so the images take alt="";
+                             three alts on one stack would read as three photos.
+                             src/portrait-deck.ts owns the state — with JS off, the deck is
+                             still a valid composition showing the first print. -->
+                        <button class="portrait-deck" type="button" data-portrait-deck
+                            aria-label="Portrait of Hank Sha at UC Santa Barbara, Class of 2026">
+                            <img class="portrait-card" src="/assets/portraits/ucsb-2026.webp" alt=""
+                                data-caption="Hank Sha at UC Santa Barbara, Class of 2026" width="840" height="1120"
+                                loading="lazy" decoding="async">
+                            <img class="portrait-card" src="/assets/portraits/channel-islands-dive.webp" alt=""
+                                data-caption="Hank Sha in dive gear off the Channel Islands" width="840" height="1120"
+                                loading="lazy" decoding="async">
+                            <img class="portrait-card" src="/assets/portraits/sunrise-ridge.webp" alt=""
+                                data-caption="Hank Sha on a ridge at sunrise" width="840" height="1120" loading="lazy"
+                                decoding="async">
+                            <!-- Frame number, the way a contact sheet stamps one. It says
+                                 how many prints there are without an icon or a dot row,
+                                 and it is the one place on the page where a number counts
+                                 something the reader can act on. -->
+                            <span class="portrait-idx" aria-hidden="true" data-portrait-idx>01<span
+                                    class="portrait-idx-of">/03</span></span>
+                        </button>
                         <!-- Covers are generated by scripts/album-covers.sh, which takes a
                              Spotify album URL and writes a self-hosted WebP + this markup.
                              They shingle rather than sit in an even row — see .albums. -->
@@ -645,19 +722,16 @@
                         </div>
                     </div>
                     <div class="personal-main">
-                        <p class="personal-lead">Two things hold most of my attention, and it's the same instinct
-                            behind both.</p>
-                        <p class="personal-note">The first is business — small and mid-sized companies and startups
-                            especially: how they actually make money, what breaks as they grow, and which problems
-                            are worth solving with software at all.</p>
-                        <p class="personal-note">The second is mechanistic interpretability.</p>
-                        <p class="personal-pull">Deep learning models are black boxes, and I'd rather open one up
-                            and find out empirically.</p>
-                        <p class="personal-note">It's also why I'm deliberately building toward being
-                            <strong>Pi-shaped</strong>, and eventually comb-shaped — deep in more than one place,
-                            with enough range to connect them. That's what I think it takes to stay useful in a
-                            world of AI.
+                        <p class="personal-lead">I've worked across a few industries, and shipped my own projects
+                            alongside.</p>
+                        <p class="personal-note">Most of that has been close to the business, startups and small
+                            and mid-sized companies especially: how they make money, and what breaks as they grow.
                         </p>
+                        <p class="personal-note">The research I care about is narrower: deep learning architecture,
+                            and AI safety. I work empirically.</p>
+                        <p class="personal-pull">I'd rather open a model up than trust a description of it.</p>
+                        <p class="personal-note">It's why I'm building toward being <strong>Pi-shaped</strong>:
+                            deep in more than one place, with enough breadth to connect them.</p>
                     </div>
                     <!-- Each row is one line to edit; separate multiple values with " · ". -->
                     <dl class="spec personal-spec">

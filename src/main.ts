@@ -7,8 +7,13 @@
 
 import './style.css';
 import { animate, inView, stagger } from 'motion';
+import { initPortraitDeck } from './portrait-deck';
 
-const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
+/* The same curve as `--ease-out` in style.css, in the tuple form motion wants.
+   These two have to stay in step: everything on the page arrives on one clock,
+   and a JS entrance easing differently from the CSS transition it hands off to
+   is the kind of mismatch you feel without being able to name. */
+const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -392,6 +397,7 @@ function init(): void {
   initNavTracking();
   initExperienceCards();
   initCopyEmail();
+  initPortraitDeck();
 }
 
 if (document.readyState === 'loading') {
