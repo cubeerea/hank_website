@@ -286,6 +286,20 @@ body {
     position: absolute;
     inset: -0.85rem -0.45rem;
   }
+
+  /* The pill measures 63x24 on its own — the padding that gives it its shape
+     can't grow without changing how it looks, so the hit area grows behind
+     it instead. Kept narrower than the links' so the two never overlap at
+     the tightest gap (0.5rem at 360px). */
+  .nav-cta {
+    position: relative;
+  }
+
+  .nav-cta::before {
+    content: "";
+    position: absolute;
+    inset: -0.55rem -0.25rem;
+  }
 }
 
 /* ========================================
@@ -566,12 +580,16 @@ body {
   color: var(--color-ink-dim);
 }
 
-.band-ink .row-links a {
+.band-ink .row-links a,
+.band-ink .row-links .row-cue {
   color: var(--color-paper-dim);
 }
 
+/* 0.28 measured 2.38:1 against Deep Ink — the affordance was invisible on
+   the ink bands specifically. 0.4 clears the 3:1 non-text floor and still
+   sits well behind the row title. */
 .band-ink .row-arrow {
-  color: rgba(246, 241, 232, 0.28);
+  color: rgba(246, 241, 232, 0.4);
 }
 
 .band-ink .row:hover {
@@ -581,6 +599,7 @@ body {
 .band-ink .row:hover .row-title,
 .band-ink .row:hover .row-arrow,
 .band-ink .row-links a:hover,
+.band-ink .row:hover .row-links .row-cue,
 .band-ink .row:hover .row-title a svg {
   color: var(--color-accent-light);
 }
