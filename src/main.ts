@@ -215,14 +215,16 @@ function initScrollReveal(): void {
 // Magnetic CTA Buttons
 // ========================================
 
-/** Subtle cursor-follow on the two hero pill buttons — fine pointers only. */
+/** Subtle cursor-follow on the site's two filled CTA pills (hero + nav
+ *  Résumé) — the same pair named in DESIGN.md's 60/30/10 rule — fine
+ *  pointers only. */
 function initMagneticButtons(): void {
   if (prefersReducedMotion() || !window.matchMedia('(pointer: fine)').matches) return;
 
   const MAX_OFFSET = 6;
   const STRENGTH = 0.35;
 
-  document.querySelectorAll<HTMLElement>('.spec .cta').forEach((btn) => {
+  document.querySelectorAll<HTMLElement>('.spec .cta, .nav-cta').forEach((btn) => {
     btn.addEventListener('pointermove', (e: PointerEvent) => {
       const rect = btn.getBoundingClientRect();
       const relX = e.clientX - (rect.left + rect.width / 2);
@@ -307,15 +309,43 @@ function initNavTracking(): void {
 }
 
 // ========================================
-// Nav Sticky Border
+// Nav Sticky Border / Floating
 // ========================================
 
-function initNavStuck(): void {
+/** The nav sits flush and opaque at the very top of the page. Once the hero
+ *  has scrolled fully underneath it, it detaches into the inset, translucent
+ *  floating capsule (`.is-floating` in style.css) — measured against the
+ *  hero's own height rather than a fixed scroll distance, so the transition
+ *  point tracks the hero's actual height at any viewport size.
+ *
+ *  The threshold is read once (on load/resize) rather than inside the scroll
+ *  handler. Forcing a layout read (getBoundingClientRect/offsetHeight) on
+ *  every scroll frame — layout thrashing — while also toggling classes on
+ *  the sticky nav itself desyncs its stuck position from real scroll offset
+ *  in some engines; comparing plain numbers on scroll avoids that path
+ *  entirely and is cheaper besides. */
+function initNavFloating(): void {
   const nav = document.getElementById('nav');
+  const hero = document.getElementById('top');
   if (!nav) return;
-  const onScroll = () => nav.classList.toggle('is-stuck', window.scrollY > 0);
+
+  let floatThreshold = Infinity;
+  const measure = () => {
+    if (hero) floatThreshold = hero.offsetTop + hero.offsetHeight - nav.offsetHeight;
+  };
+
+  const onScroll = () => {
+    nav.classList.toggle('is-stuck', window.scrollY > 0);
+    nav.classList.toggle('is-floating', window.scrollY >= floatThreshold);
+  };
+
+  measure();
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => {
+    measure();
+    onScroll();
+  }, { passive: true });
 }
 
 // ========================================
@@ -393,7 +423,7 @@ function init(): void {
   initTypewriter();
   initScrollReveal();
   initMagneticButtons();
-  initNavStuck();
+  initNavFloating();
   initNavTracking();
   initExperienceCards();
   initCopyEmail();

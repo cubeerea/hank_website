@@ -8,10 +8,6 @@
 @import "@fontsource/ibm-plex-serif/latin-500.css";
 @import "@fontsource/ibm-plex-serif/latin-600.css";
 @import "@fontsource/ibm-plex-serif/latin-400-italic.css";
-/* Hero headline only — see DESIGN.md "One-Serif Rule" amendment. Everything
-   else (labels, body, the Contact closing statement) stays on Plex. */
-@import "@fontsource/geist-sans/latin-600.css";
-@import "@fontsource/geist-sans/latin-500.css";
 @import "tailwindcss";
 
 /* ========================================
@@ -25,10 +21,6 @@
   --font-display: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
-  /* Hero headline only. A geometric grotesk (Vercel's Geist) instead of the
-     serif masthead — the one deliberate departure from the ledger's serif
-     bookend, scoped to this single element. See DESIGN.md. */
-  --font-headline: "Geist Sans", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 
   --color-paper: #F6F1E8;
   --color-card: #FBF8F2;
@@ -111,6 +103,27 @@ body {
   /* Backstop against any child overhanging the viewport width; color bands
      run edge-to-edge so a stray overflow would show as a horizontal scroll. */
   overflow-x: clip;
+}
+
+/* ========================================
+   Paper Grain
+   ======================================== */
+
+/* A faint noise texture over the whole page so the paper reads as paper, not
+   a flat digital color field. Fixed and blend-moded rather than painted per
+   band, so one layer works over every surface (light or ink) without a
+   second texture asset; pointer-events: none keeps it out of the hit-testing
+   tree, and the opacity is low enough to stay a texture, not a filter. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
 }
 
 /* REMOVED: a blanket `html.theme-ready *, *::before, *::after { transition: … }`
@@ -218,11 +231,40 @@ body {
   z-index: 40;
   background: var(--color-paper);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.2s var(--ease-out);
+  /* `top` is deliberately not transitioned: it's the property the browser's
+     own sticky-position algorithm recomputes on every scroll frame, and a
+     CSS transition on it fights that recompute and desyncs the nav from the
+     scroll position. It jumps instantly on the .is-floating toggle instead —
+     everything else here still eases. */
+  transition: border-color 0.3s var(--ease-out), background-color 0.3s var(--ease-out),
+    border-radius 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), margin-inline 0.3s var(--ease-out);
 }
 
 .nav.is-stuck {
   border-bottom-color: var(--color-rule);
+}
+
+/* Detaches into an inset, translucent capsule once the hero has scrolled
+   fully under the nav (see initNavFloating in main.ts) — the flush, opaque
+   bar at the very top of the page is unchanged. */
+.nav.is-floating {
+  top: 0.75rem;
+  margin-inline: clamp(0.75rem, 3vw, 1.5rem);
+  border: 1px solid var(--color-rule);
+  border-radius: 14px;
+  background: rgba(246, 241, 232, 0.88);
+  box-shadow: 0 10px 30px -14px rgba(33, 26, 20, 0.22), 0 2px 10px rgba(33, 26, 20, 0.06);
+}
+
+/* Backdrop blur is a progressive enhancement — the raised opacity above is
+   the fallback for browsers without it, so the floating nav still reads as
+   solid chrome rather than a see-through smear. */
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .nav.is-floating {
+    background: rgba(246, 241, 232, 0.72);
+    backdrop-filter: blur(14px) saturate(1.4);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  }
 }
 
 .nav-inner {
@@ -238,13 +280,16 @@ body {
 
 .nav-mark {
   position: relative;
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.02em;
-  font-weight: 500;
-  color: var(--color-ink);
-  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-accent);
   text-decoration: none;
+}
+
+.nav-mark svg {
+  display: block;
+  width: 1.375rem;
+  height: 1.375rem;
 }
 
 /* Same wipe as the nav links, drawn in ink rather than terracotta — the
@@ -254,7 +299,7 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -0.25rem;
+  bottom: -0.3rem;
   height: 1.5px;
   background: var(--color-ink);
   transform: scaleX(0);
@@ -279,8 +324,8 @@ body {
 
 .nav-link {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  font-size: 0.8125rem;
+  letter-spacing: 0.03em;
   color: var(--color-ink-3);
   text-decoration: none;
   padding-block: 0.35rem;
@@ -383,10 +428,10 @@ body {
 }
 
 .hero-headline {
-  font-family: var(--font-headline);
+  font-family: var(--font-serif);
   font-size: clamp(3.25rem, 11vw, 6.25rem);
   line-height: 0.94;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.032em;
   font-weight: 600;
   margin: 0;
   color: var(--color-ink);
@@ -394,7 +439,7 @@ body {
 
 .hero-headline em {
   display: inline-block;
-  font-style: normal;
+  font-style: italic;
   line-height: 1;
   color: var(--color-paper);
   background: var(--color-accent);
@@ -2721,6 +2766,7 @@ body {
   .work-toggle .sym,
   .nav-link::after,
   .nav-mark::after,
+  .nav,
   .album,
   .portrait-card {
     transition: none;

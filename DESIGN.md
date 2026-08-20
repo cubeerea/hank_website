@@ -21,11 +21,11 @@ colors:
   ink-dim: "rgba(246, 241, 232, 0.55)"
 typography:
   display:
-    fontFamily: "Geist Sans, IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"
+    fontFamily: "IBM Plex Serif, Georgia, Times New Roman, serif"
     fontSize: "clamp(3.25rem, 11vw, 6.25rem)"
     fontWeight: 600
     lineHeight: 0.94
-    letterSpacing: "-0.04em"
+    letterSpacing: "-0.032em"
   body:
     fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"
     fontSize: "1rem"
@@ -82,7 +82,7 @@ The page is no longer one uninterrupted field. It runs as a sequence of **full-b
 - Ledger rows: numbered, hairline-ruled, terracotta-on-hover — the structural unit for Writing, Experience, and Contact
 - Projects renders as an asymmetric bento grid instead, and Off the Ledger as a 12-column spread — the two places the system allows shadow/elevation (see Components)
 - Warm paper and cream both stay paper-like; the cream step is deliberately subtle, so the ink bands carry the contrast
-- Geist Sans display type for the hero headline only (a tight geometric grotesk, the one deliberate dev-tool inflection); monospace for every structural/label element; sans for body prose; the Contact closing statement is the system's remaining serif moment
+- Serif display type for the hero only; monospace for every structural/label element; sans for body prose
 - Zero elevation everywhere except the Projects bento grid and the Off the Ledger media — flat surfaces, ruled dividers instead of shadows
 - Terracotta used at low frequency and small scale: labels, hover states, one italic word in the hero. On ink bands it steps up to Terracotta Light for contrast.
 
@@ -140,20 +140,20 @@ The order, top to bottom:
 
 ## Typography
 
-**Display Font:** Geist Sans (with IBM Plex Sans, system sans fallback) — hero headline only
+**Display Font:** IBM Plex Serif (with Georgia, Times New Roman fallback)
 **Body Font:** IBM Plex Sans (with system sans fallback)
 **Label/Mono Font:** IBM Plex Mono (with system monospace fallback)
 
-**Character:** A tight geometric-grotesk masthead against an otherwise typewriter-and-report voice. Geist Sans appears in exactly one place — the `<h1>` hero headline (a positioning line, not the name) — with its single emphasized word set in Terracotta Ink on a filled highlight block, no italic; everything structural — nav, section headers, index numbers, meta, chips, footer — runs in mono. Body prose (descriptions, work details, the hero intro paragraph) runs in plain sans. Low-ego by design: "Hank Sha" the name appears small in the nav wordmark and once, in sans body text, at the top of the hero intro paragraph — it never runs at display scale. The big, bold, headline moment is reserved for what the work is about, not who's saying it. This is a deliberate, scoped departure from the ledger's earlier serif masthead — a dev-tool inflection meant to read closer to Linear/Vercel-style product type, while everything else (mono labels, sans body, terracotta accent, ledger rows) stays exactly as documented.
+**Character:** A serif masthead against an otherwise typewriter-and-report voice. The serif appears in exactly one place — the `<h1>` hero headline (a positioning line, not the name) — with its single emphasized word set in Terracotta Ink; everything structural — nav, section headers, index numbers, meta, chips, footer — runs in mono. Body prose (descriptions, work details, the hero intro paragraph) runs in plain sans. Low-ego by design: "Hank Sha" the name appears small in the nav wordmark and once, in sans body text, at the top of the hero intro paragraph — it never runs at display scale. The big, bold, serif moment is reserved for what the work is about, not who's saying it.
 
 ### Hierarchy
-- **Display** (600, `clamp(3.25rem, 11vw, 6.25rem)`, line-height 0.94, Geist Sans): The hero `<h1>` (`.hero-headline`) — the positioning line ("Broad by instinct, deep by choice."), not the name. Tight tracking (-0.04em), nearly touching line-height — a masthead, not a byline. Its single word runs upright (no italic — Geist Sans carries none loaded, and a synthesized slant would fight the grotesk's straight terminals) in Terracotta Ink on a filled highlight block at the same giant scale — this is the one place a large surface of the accent color is visible on the page, and it's the site's boldest color moment by design.
+- **Display** (600, `clamp(3.25rem, 11vw, 6.25rem)`, line-height 0.94, serif): The hero `<h1>` (`.hero-headline`) — the positioning line ("Broad by instinct, deep by choice."), not the name. Tight tracking (-0.032em), nearly touching line-height — a masthead, not a byline. Its single italic word runs in Terracotta Ink at the same giant scale — this is the one place a large surface of the accent color is visible on the page, and it's the site's boldest color moment by design.
 - **Hero Intro** (400, `clamp(1.0625rem, 2.2vw, 1.25rem)`, sans, max 52ch, `--color-ink-2`): The paragraph under the headline — first-person, names the person ("I'm **Hank Sha**", `<strong>` in `--color-ink`) and what they do. Replaces what used to be a one-line positioning statement; this is where biography lives now, not the display line.
 - **Label** (500, 0.6875–0.8125rem, mono, uppercase where noted, letter-spacing 0.04–0.15em): Nav links, section eyebrow numbers ("01", "02"), row index numbers, meta text, chip labels, footer. This is the dominant typographic voice of the page.
 - **Body** (400–500, 0.875–1.0625rem, sans/mono mixed by context, line-height 1.35–1.6): Row titles (sans, 500 weight), row descriptions and work-detail prose (sans, 400 weight, ~56–65ch max width).
 
 ### Named Rules
-**The One-Serif Rule.** Serif type appears in exactly one place now: the Contact closing statement (`.contact-call`), still 600 weight with the accent on one word. It is never used for the name, section headers, body copy, UI chrome, or (as of this amendment) the hero headline. A second serif elsewhere is a decision, not a detail — it would turn the one remaining serif moment into a typeface the page merely uses. *(Supersedes the old "Two-Serif Rule," which counted the name, and the version of this rule that bookended the page with the hero headline in serif — the hero headline moved to Geist Sans as a deliberate, scoped dev-tool/Linear-esque inflection; see "Character" above. The Contact statement is unaffected and remains the system's one serif surface.)*
+**The One-Serif Rule.** Serif type appears in exactly two places, and they bookend the page: the hero headline (including its emphasized word) and the Contact closing statement (`.contact-call`). Both run at 600 weight, both put the accent on one word, and nothing between them is serif — that gap is what makes the return register as a close rather than a second heading. It is never used for the name, section headers, body copy, or UI chrome. A third serif is a decision, not a detail: it would turn the bookend back into a typeface the page merely uses. *(Supersedes the old "Two-Serif Rule," which counted the name — the name moved out of serif/display scale entirely when the hero was rebalanced to lead with positioning over identity.)*
 
 **Low-Ego Hero.** The person's name is never the biggest thing on the page. It lives at label scale (nav) and body scale (first line of the intro paragraph) — never at display scale. What the headline says about the work always outranks who's saying it.
 
@@ -182,7 +182,13 @@ The portrait is a *deck* of three prints, not one photo (`.portrait-deck` / `.po
 
 *Why this is allowed here and nowhere else:* the section's whole premise is that it is the material the record doesn't hold. It is the one place the ledger is supposed to loosen, and the objects doing the loosening are physical reproductions, not UI. Everything typographic in the section stays strictly on-grid — the tilt is confined to the media, which is what keeps it reading as deliberate rather than as a broken layout. Extending shadow, rotation, or soft corners to a third element, or to type, ends the exception and starts a habit.
 
-Between them, these two account for every `box-shadow` and every `rotate()` on the page. A third is a design decision, not a detail.
+**The Floating Nav Exception.** `.nav.is-floating`'s shadow is a third, narrower exception: chrome, not content, and it only appears once the nav has detached from the top of the page (see Components → Navigation). It exists for the same reason the bento tiles' does — a surface that's meant to read as lifted off the page needs a shadow to sell that, rule-weight alone can't do it — but it's scoped to exactly one element, never extends to a second nav-adjacent surface, and carries no rotation (chrome doesn't get the Loose Page treatment).
+
+Between them, these three account for every `box-shadow` on the page (rotation stays limited to the two Loose Page objects). A fourth is a design decision, not a detail.
+
+## Texture
+
+**Paper Grain.** A fixed, full-viewport, near-invisible noise layer (`body::after`, `mix-blend-mode: overlay`, `opacity: 0.035`) sits above every band. It's the one texture on the page that isn't rule-weight or color — the paper metaphor gets an actual grain instead of staying a flat digital fill. `pointer-events: none` keeps it out of the hit-testing tree entirely, and the blend mode is what lets one layer work identically over Warm Paper, Cream, and the ink bands without a second texture asset per surface. This is additive to Flat-By-Default, not an exception to it — it doesn't lift, shadow, or separate anything; it's closer to a property of the paper itself than a UI effect.
 
 ## Motion
 
@@ -192,7 +198,7 @@ Powered by [Motion](https://motion.dev) (`src/main.ts`), used sparingly and only
 - **Typed availability line** (`initTypewriter`): the hero spec's "Open to —" value types through four things Hank is open to, holds each ~2.4s, deletes, and moves on. **This is the page's one authored motion moment.** It sits in the mono spec table because the whole site is a typewritten ledger — the effect is the house voice, not a widget. It starts ~2.2s in so it doesn't compete with the hero entrance and so its shipped value can be read before it erases; it stops when the tab is hidden or the hero scrolls out of view. The element ships with real text in the HTML, so no-JS and reduced-motion both see a true line. The typed span is `aria-hidden` with an `.sr-only` sibling carrying the same content as one static string — a live region stuttering a character at a time is worse than no animation.
 - **Nav underline wipe**: `.nav-link::after` scales in from its left edge on hover and out toward its right (`transform-origin` flips between the two states), so the rule reads as a pen stroke following the cursor rather than a bar switching on. The active link parks the same rule at full width from the left. `.nav-mark` carries the identical wipe in ink rather than terracotta.
 - **Scroll reveal**: ledger rows and stack columns fade/rise in, staggered ~60ms apart, the first time their section crosses 10% into the viewport (`initScrollReveal`). Sections are visible-by-default in CSS — JS only hides a row the instant before it schedules that row's reveal, so a JS failure never leaves content invisible.
-- **Magnetic CTA**: the hero pill button (`.spec .cta`) nudges up to 6px toward the cursor on `pointermove`, springs back on `pointerleave`. Fine-pointer devices only (`(pointer: fine)`) — never on touch. There is one such button in the markup; `.cta-outline` has styling but no instance.
+- **Magnetic CTA**: the two filled CTA pills — the hero's "Get in touch →" (`.spec .cta`) and the nav's "Résumé" (`.nav-cta`) — nudge up to 6px toward the cursor on `pointermove`, spring back on `pointerleave`. Fine-pointer devices only (`(pointer: fine)`) — never on touch. Extending it from one button to both closes the set named in the 60/30/10 rule's two-pill exception, rather than opening a new one — nothing beyond those two carries the effect. `.cta-outline` has styling but no instance.
 - **Loose Page straightening**: hovering the portrait deck's top card or an album sleeve rotates it back to level and lifts it (see the Loose Page Exception). The border and shadow half of that hover is unconditional; only the transform sits behind `prefers-reduced-motion: no-preference`, so the state is never invisible — it just doesn't travel.
 - **Portrait deck cycling** (`initPortraitDeck`): the top print moves to the back every 6s, and on click. It is the page's second timed motion and the only one the visitor can operate, which is what earns it: it runs *only* while the deck is on screen, pauses while a pointer or keyboard focus rests on it, and never auto-runs under reduced motion — where click still cycles, it just arrives instead of travelling. The timer re-arms after each turn rather than running on an interval, so a backgrounded tab doesn't deliver a backlog of turns at once when you come back to it.
 
@@ -222,6 +228,7 @@ Powered by [Motion](https://motion.dev) (`src/main.ts`), used sparingly and only
 | `--radius-md` | 7px | Mid surfaces: album sleeves, `.gist-grid`, the PDF canvas, hover panes |
 | `--radius-lg` | 12px | Large surfaces: `.bento-tile`, the Off the Ledger portrait deck |
 | `--radius-pill` | 9999px | The two filled CTA pills — stamped tokens, not page furniture |
+| 14px (literal, `.nav.is-floating`) | 14px | The floating nav capsule only. A literal value rather than a ramp token on purpose: the ramp above is sized for tiles/media by the surface-area rule, and applying that ratio to a 52px-tall UI chrome bar rounds to a near-square 2px, which reads as barely-rounded rather than as the "floating capsule" the nav is going for. Chrome gets its own value; it isn't a fourth tile size. |
 
 **Rounded frames clip their contents.** `.gist-grid` and the album sleeves set `overflow: hidden`, so internal dividers and images clip to the rounded frame instead of squaring off the corners the border just rounded. The portrait cards need no clip — they *are* images, and their paper border rounds with them.
 
@@ -238,10 +245,12 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 - **Hover:** Background washes to Terracotta Tint; title and arrow shift to Terracotta Ink; arrow nudges 4px right. A `.row-static` variant (no link) explicitly suppresses this — hovering it does nothing, signaling non-interactivity.
 
 ### Navigation
-- Sticky, mono labels in Soft Ink; hover/active state shifts to Deep Ink with a 1.5px Terracotta underline (active = current section via scroll-spy).
+- Sticky, mono labels in Soft Ink at 0.8125rem (bumped up from 0.75rem for legibility); hover/active state shifts to Deep Ink with a 1.5px Terracotta underline (active = current section via scroll-spy).
 - **The underline is directional.** It wipes in from the left on hover and out toward the right on leave — one rule with `transform-origin` flipped between the two states. A centre-out scale reads as a bar switching on; the wipe reads as a pen stroke. Same treatment on `.nav-mark`, drawn in ink rather than terracotta since the wordmark is a destination, not a section marker.
 - Mobile: wordmark hides, gaps and tracking tighten, no overlay/hamburger — the same inline list just gets denser.
 - **Six items is the mobile ceiling.** Below 720px, Home and Stack drop out (Home is covered by the wordmark; Stack is reference material rather than a destination), leaving Projects · Writing · Work · About · Contact · CV. Below 360px a final density step tightens gaps and type. Verified to fit without clipping the CV pill at 320/360/390/420px — **re-measure at 320px before adding a seventh nav item**, since the list has no overflow affordance and the pill clips silently.
+- **The wordmark is now the favicon's "HS" monogram** (`.nav-mark`, inline SVG reusing the same markup as `public/favicon.svg`, minus its paper background/border box — transparent, terracotta letterforms via `currentColor`), not the "Hank Sha" text. One mark now does browser tab, nav, and (unchanged) apple-touch-icon — a single identity instead of a text wordmark plus a separate icon. `aria-label="Hank Sha — home"` on the anchor carries the accessible name since the visible glyph no longer spells it out. Same hover-wipe underline as before, unchanged. Still hidden below 720px (unchanged mobile behavior — the icon is small enough it *could* fit, but re-introducing it there wasn't verified against the same 320px-clipping risk the six-item ceiling above already flags, so it stays out for now).
+- **Docked-to-floating.** The nav sits flush and fully opaque (`var(--color-paper)`) at the very top of the page, edge-to-edge, exactly as before. Once the hero has scrolled fully underneath it (measured in `main.ts`'s `initNavFloating`, precomputed once on load/resize rather than read on every scroll frame — see the comment there on why), it gains `.is-floating`: inset from the sides, rounded corners, a translucent `backdrop-filter: blur()` background (with a higher-opacity solid fallback via `@supports` for browsers without backdrop-filter), and a soft shadow — the same "detached chrome" pattern used by most dev-tool product sites, applied to this system's own materials rather than borrowed wholesale. `top` and `margin-inline` on `.is-floating` are **not** in the `.nav` transition list — animating the inset offset of an already-stuck `position: sticky` element fought the browser's own scroll-linked sticky recompute and produced a visibly broken, unstuck nav; the gap/inset snaps in instantly while background/shadow/radius still ease. **Known issue, not introduced by this change:** on a very long scroll (multiple viewport-heights down the page), `position: sticky` itself intermittently drops out entirely — reproduced on the pre-floating nav too, so it predates this work and isn't specific to `.is-floating`. Root cause wasn't isolated (ruled out backdrop-filter, margin, overflow, `will-change`); it scales with viewport height rather than absolute scroll distance, which points at a browser/engine-level sticky bug rather than anything in this stylesheet. Worth re-checking against a stable (non-bleeding-edge) browser before spending more time on it.
 
 ### Section Header
 - **Structure:** `<h2><span>05</span>Off the Ledger</h2>` in mono, uppercase, `0.15em` tracking.
@@ -329,7 +338,7 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 
 ### Do:
 - **Do** keep the accent to marks and hovers by default — labels, underlines, index numbers, `::selection`. The two CTA pills and the headline's highlight block are the named exceptions, not a pattern to extend.
-- **Do** use mono for anything structural or numeric (nav, index numbers, meta, chips, labels); sans for prose; Geist Sans only for the hero headline, serif only for the Contact closing statement (see the One-Serif Rule), each with its one highlighted word; never for the name.
+- **Do** use mono for anything structural or numeric (nav, index numbers, meta, chips, labels); sans for prose; serif only for the hero headline and the Contact closing statement, each with its one highlighted word (see the One-Serif Rule); never for the name.
 - **Do** separate content with rule weight (Hairline Rule / Hairline Rule Soft / Terracotta Dim), not shadows or elevation.
 - **Do** keep row hover feedback in-plane (tint wash, color shift, small arrow nudge) — nothing lifts off the page except the explicit pill-button exceptions.
 
@@ -343,4 +352,4 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 - **Don't** restyle components for ink bands. Add the inversion to the existing `.band-ink` block instead; a component that needs bespoke dark styling is a sign the component is wrong, not that dark is hard.
 - **Don't** use base Terracotta (#B0442A) on an ink band — it fails contrast at 3.1:1. Terracotta Light is the ink-band accent.
 - **Don't** give `.section` a top-only padding again; bands need symmetric `padding-block` or content collides with the next band's edge.
-- **Don't** round corners by default; the pills and album covers are the named exceptions (see Shapes), not a precedent.
+- **Don't** round corners by default; the pills, album covers, and the floating nav capsule are the named exceptions (see Shapes), not a precedent.

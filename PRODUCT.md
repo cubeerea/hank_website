@@ -24,11 +24,11 @@ Single-page ledger/index-style site (`index.html`) with sections: Hero, Projects
 
 ## Capabilities and Constraints
 
-Static site, no backend. Content (projects, writing links, work history, skills) is hand-authored in `index.html`, not data-driven. Fonts: self-hosted IBM Plex Sans/Mono/Serif plus Geist Sans (hero headline only) via `@fontsource`.
+Static site, no backend. Content (projects, writing links, work history, skills) is hand-authored in `index.html`, not data-driven. Fonts: self-hosted IBM Plex Sans/Mono/Serif via `@fontsource`.
 
 ## Brand Commitments
 
-Name: Hank Sha. Current warm-paper/ledger editorial aesthetic (paper `#F6F1E8`, ink `#211A14`, rust accent `#B0442A`, IBM Plex type system, numbered ledger rows) is an intentional, binding visual identity — not a placeholder to redesign away from by default. Hero line is being changed to "Broad by instinct, deep by choice" (replacing "I build things that work, not just things that demo"). Scoped exception: the hero `<h1>` runs in Geist Sans (a grotesk, not IBM Plex) for a dev-tool/Linear-esque inflection — everything else (mono labels, sans body, terracotta accent, ledger rows, the Contact section's serif) stays on the original system.
+Name: Hank Sha. Current warm-paper/ledger editorial aesthetic (paper `#F6F1E8`, ink `#211A14`, rust accent `#B0442A`, IBM Plex type system, numbered ledger rows) is an intentional, binding visual identity — not a placeholder to redesign away from by default. Hero line is being changed to "Broad by instinct, deep by choice" (replacing "I build things that work, not just things that demo").
 
 ## Evidence on Hand
 
