@@ -21,11 +21,11 @@ colors:
   ink-dim: "rgba(246, 241, 232, 0.55)"
 typography:
   display:
-    fontFamily: "IBM Plex Serif, Georgia, Times New Roman, serif"
+    fontFamily: "Geist Sans, IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"
     fontSize: "clamp(3.25rem, 11vw, 6.25rem)"
     fontWeight: 600
     lineHeight: 0.94
-    letterSpacing: "-0.032em"
+    letterSpacing: "-0.04em"
   body:
     fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"
     fontSize: "1rem"
@@ -82,7 +82,7 @@ The page is no longer one uninterrupted field. It runs as a sequence of **full-b
 - Ledger rows: numbered, hairline-ruled, terracotta-on-hover — the structural unit for Writing, Experience, and Contact
 - Projects renders as an asymmetric bento grid instead, and Off the Ledger as a 12-column spread — the two places the system allows shadow/elevation (see Components)
 - Warm paper and cream both stay paper-like; the cream step is deliberately subtle, so the ink bands carry the contrast
-- Serif display type for the hero only; monospace for every structural/label element; sans for body prose
+- Geist Sans display type for the hero headline only (a tight geometric grotesk, the one deliberate dev-tool inflection); monospace for every structural/label element; sans for body prose; the Contact closing statement is the system's remaining serif moment
 - Zero elevation everywhere except the Projects bento grid and the Off the Ledger media — flat surfaces, ruled dividers instead of shadows
 - Terracotta used at low frequency and small scale: labels, hover states, one italic word in the hero. On ink bands it steps up to Terracotta Light for contrast.
 
@@ -140,20 +140,20 @@ The order, top to bottom:
 
 ## Typography
 
-**Display Font:** IBM Plex Serif (with Georgia, Times New Roman fallback)
+**Display Font:** Geist Sans (with IBM Plex Sans, system sans fallback) — hero headline only
 **Body Font:** IBM Plex Sans (with system sans fallback)
 **Label/Mono Font:** IBM Plex Mono (with system monospace fallback)
 
-**Character:** A serif masthead against an otherwise typewriter-and-report voice. The serif appears in exactly one place — the `<h1>` hero headline (a positioning line, not the name) — with its single emphasized word set in Terracotta Ink; everything structural — nav, section headers, index numbers, meta, chips, footer — runs in mono. Body prose (descriptions, work details, the hero intro paragraph) runs in plain sans. Low-ego by design: "Hank Sha" the name appears small in the nav wordmark and once, in sans body text, at the top of the hero intro paragraph — it never runs at display scale. The big, bold, serif moment is reserved for what the work is about, not who's saying it.
+**Character:** A tight geometric-grotesk masthead against an otherwise typewriter-and-report voice. Geist Sans appears in exactly one place — the `<h1>` hero headline (a positioning line, not the name) — with its single emphasized word set in Terracotta Ink on a filled highlight block, no italic; everything structural — nav, section headers, index numbers, meta, chips, footer — runs in mono. Body prose (descriptions, work details, the hero intro paragraph) runs in plain sans. Low-ego by design: "Hank Sha" the name appears small in the nav wordmark and once, in sans body text, at the top of the hero intro paragraph — it never runs at display scale. The big, bold, headline moment is reserved for what the work is about, not who's saying it. This is a deliberate, scoped departure from the ledger's earlier serif masthead — a dev-tool inflection meant to read closer to Linear/Vercel-style product type, while everything else (mono labels, sans body, terracotta accent, ledger rows) stays exactly as documented.
 
 ### Hierarchy
-- **Display** (600, `clamp(3.25rem, 11vw, 6.25rem)`, line-height 0.94, serif): The hero `<h1>` (`.hero-headline`) — the positioning line ("Broad by instinct, deep by choice."), not the name. Tight tracking (-0.032em), nearly touching line-height — a masthead, not a byline. Its single italic word runs in Terracotta Ink at the same giant scale — this is the one place a large surface of the accent color is visible on the page, and it's the site's boldest color moment by design.
+- **Display** (600, `clamp(3.25rem, 11vw, 6.25rem)`, line-height 0.94, Geist Sans): The hero `<h1>` (`.hero-headline`) — the positioning line ("Broad by instinct, deep by choice."), not the name. Tight tracking (-0.04em), nearly touching line-height — a masthead, not a byline. Its single word runs upright (no italic — Geist Sans carries none loaded, and a synthesized slant would fight the grotesk's straight terminals) in Terracotta Ink on a filled highlight block at the same giant scale — this is the one place a large surface of the accent color is visible on the page, and it's the site's boldest color moment by design.
 - **Hero Intro** (400, `clamp(1.0625rem, 2.2vw, 1.25rem)`, sans, max 52ch, `--color-ink-2`): The paragraph under the headline — first-person, names the person ("I'm **Hank Sha**", `<strong>` in `--color-ink`) and what they do. Replaces what used to be a one-line positioning statement; this is where biography lives now, not the display line.
 - **Label** (500, 0.6875–0.8125rem, mono, uppercase where noted, letter-spacing 0.04–0.15em): Nav links, section eyebrow numbers ("01", "02"), row index numbers, meta text, chip labels, footer. This is the dominant typographic voice of the page.
 - **Body** (400–500, 0.875–1.0625rem, sans/mono mixed by context, line-height 1.35–1.6): Row titles (sans, 500 weight), row descriptions and work-detail prose (sans, 400 weight, ~56–65ch max width).
 
 ### Named Rules
-**The One-Serif Rule.** Serif type appears in exactly two places, and they bookend the page: the hero headline (including its emphasized word) and the Contact closing statement (`.contact-call`). Both run at 600 weight, both put the accent on one word, and nothing between them is serif — that gap is what makes the return register as a close rather than a second heading. It is never used for the name, section headers, body copy, or UI chrome. A third serif is a decision, not a detail: it would turn the bookend back into a typeface the page merely uses. *(Supersedes the old "Two-Serif Rule," which counted the name — the name moved out of serif/display scale entirely when the hero was rebalanced to lead with positioning over identity.)*
+**The One-Serif Rule.** Serif type appears in exactly one place now: the Contact closing statement (`.contact-call`), still 600 weight with the accent on one word. It is never used for the name, section headers, body copy, UI chrome, or (as of this amendment) the hero headline. A second serif elsewhere is a decision, not a detail — it would turn the one remaining serif moment into a typeface the page merely uses. *(Supersedes the old "Two-Serif Rule," which counted the name, and the version of this rule that bookended the page with the hero headline in serif — the hero headline moved to Geist Sans as a deliberate, scoped dev-tool/Linear-esque inflection; see "Character" above. The Contact statement is unaffected and remains the system's one serif surface.)*
 
 **Low-Ego Hero.** The person's name is never the biggest thing on the page. It lives at label scale (nav) and body scale (first line of the intro paragraph) — never at display scale. What the headline says about the work always outranks who's saying it.
 
@@ -329,7 +329,7 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 
 ### Do:
 - **Do** keep the accent to marks and hovers by default — labels, underlines, index numbers, `::selection`. The two CTA pills and the headline's highlight block are the named exceptions, not a pattern to extend.
-- **Do** use mono for anything structural or numeric (nav, index numbers, meta, chips, labels); sans for prose; serif only for the hero headline and the Contact closing statement, each with its one highlighted word (see the One-Serif Rule); never for the name.
+- **Do** use mono for anything structural or numeric (nav, index numbers, meta, chips, labels); sans for prose; Geist Sans only for the hero headline, serif only for the Contact closing statement (see the One-Serif Rule), each with its one highlighted word; never for the name.
 - **Do** separate content with rule weight (Hairline Rule / Hairline Rule Soft / Terracotta Dim), not shadows or elevation.
 - **Do** keep row hover feedback in-plane (tint wash, color shift, small arrow nudge) — nothing lifts off the page except the explicit pill-button exceptions.
 
