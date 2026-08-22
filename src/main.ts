@@ -422,7 +422,7 @@ function initDotField(): void {
   const REST_EPS = 0.02;
   const DOT_ON_PAPER = '111, 96, 82'; // --color-ink-3, this system's tertiary/quiet ink
   const DOT_ON_INK = '246, 241, 232'; // --color-paper, at reduced alpha below
-  const DOT_ALPHA = 0.14;
+  const DOT_ALPHA = 0.20;
 
   const animated = !prefersReducedMotion() && window.matchMedia('(pointer: fine)').matches;
   const bandEls = Array.from(document.querySelectorAll<HTMLElement>('.band-ink'));
