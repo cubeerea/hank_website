@@ -258,7 +258,14 @@ body::after {
   position: sticky;
   top: 0.75rem;
   z-index: 40;
-  margin-inline: clamp(0.75rem, 3vw, 1.5rem);
+  /* A block-level <nav> stretches to the full viewport width by default, so
+     without this the capsule spanned edge to edge while nav-inner's
+     fit-content hugged the middle — a wide, mostly-empty bar with the links
+     stranded in the center. Shrinking the capsule itself to its content and
+     centering it turns that back into one compact, composed pill. */
+  width: fit-content;
+  max-width: calc(100% - clamp(0.75rem, 3vw, 1.5rem) * 2);
+  margin-inline: auto;
   border: 1px solid var(--color-rule);
   border-radius: 14px;
   background: rgba(246, 241, 232, 0.88);
