@@ -126,6 +126,28 @@ body::after {
   background-size: 180px 180px;
 }
 
+/* ========================================
+   Dot Field
+   ======================================== */
+
+/* A quiet dot grid behind everything, drawn to canvas rather than DOM nodes
+   (initDotField() in main.ts) so a page-wide field is cheap regardless of
+   viewport size. Fixed to the viewport like the grain above it, so it reads
+   as ambient chrome rather than content that scrolls with the page. Sits
+   above section backgrounds (those paint at the static in-flow layer) but
+   below the nav (z-index 40) and the grain (999), so neither ever competes
+   with it. pointer-events: none keeps mouse tracking on window/document,
+   where it belongs — this layer only ever gets drawn to, never hit-tested. */
+.dot-field {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
 /* REMOVED: a blanket `html.theme-ready *, *::before, *::after { transition: … }`
    used to live here, left over from the pre-ledger dark design's theme
    switcher. This site has no theme toggle (`color-scheme: light`, one palette),
