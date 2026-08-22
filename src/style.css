@@ -88,9 +88,10 @@ html {
   color-scheme: light;
   overflow-y: scroll;
   height: 100%;
-  /* Nav bar is a fixed 3.25rem (52px) tall at every breakpoint, so this and
-     NAV_LINE in main.ts don't need a separate mobile override. */
-  scroll-padding-top: 4rem;
+  /* Nav bar is a fixed 3.25rem (52px) tall at every breakpoint, plus the
+     constant 0.75rem floating inset from the top, so this and NAV_LINE in
+     main.ts don't need a separate mobile override. */
+  scroll-padding-top: 4.5rem;
 }
 
 body {
@@ -225,30 +226,17 @@ body::after {
    Nav
    ======================================== */
 
+/* Always the floating capsule — inset from the edges, translucent, blurred,
+   from the very first paint, not just once scrolled. (An earlier version of
+   this toggled the inset/background on scroll via a `.is-floating` class;
+   that meant mutating `top`/`margin` on an already-stuck `position: sticky`
+   element mid-scroll, which fought the browser's own scroll-linked sticky
+   recompute and produced a visibly broken, unstuck nav. Keeping every one of
+   these values constant from load sidesteps that class of bug entirely.) */
 .nav {
   position: sticky;
-  top: 0;
-  z-index: 40;
-  background: var(--color-paper);
-  border-bottom: 1px solid transparent;
-  /* `top` is deliberately not transitioned: it's the property the browser's
-     own sticky-position algorithm recomputes on every scroll frame, and a
-     CSS transition on it fights that recompute and desyncs the nav from the
-     scroll position. It jumps instantly on the .is-floating toggle instead —
-     everything else here still eases. */
-  transition: border-color 0.3s var(--ease-out), background-color 0.3s var(--ease-out),
-    border-radius 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), margin-inline 0.3s var(--ease-out);
-}
-
-.nav.is-stuck {
-  border-bottom-color: var(--color-rule);
-}
-
-/* Detaches into an inset, translucent capsule once the hero has scrolled
-   fully under the nav (see initNavFloating in main.ts) — the flush, opaque
-   bar at the very top of the page is unchanged. */
-.nav.is-floating {
   top: 0.75rem;
+  z-index: 40;
   margin-inline: clamp(0.75rem, 3vw, 1.5rem);
   border: 1px solid var(--color-rule);
   border-radius: 14px;
@@ -260,7 +248,7 @@ body::after {
    the fallback for browsers without it, so the floating nav still reads as
    solid chrome rather than a see-through smear. */
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
-  .nav.is-floating {
+  .nav {
     background: rgba(246, 241, 232, 0.72);
     backdrop-filter: blur(14px) saturate(1.4);
     -webkit-backdrop-filter: blur(14px) saturate(1.4);
@@ -2766,7 +2754,6 @@ body::after {
   .work-toggle .sym,
   .nav-link::after,
   .nav-mark::after,
-  .nav,
   .album,
   .portrait-card {
     transition: none;

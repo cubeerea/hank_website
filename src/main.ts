@@ -253,7 +253,7 @@ function initMagneticButtons(): void {
  * expanded. Measuring positions directly has no such failure.
  */
 function initNavTracking(): void {
-  const NAV_LINE = 64; // must match scroll-padding-top in style.css
+  const NAV_LINE = 72; // must match scroll-padding-top in style.css
 
   const targets = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('.nav-link'),
@@ -306,46 +306,6 @@ function initNavTracking(): void {
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule, { passive: true });
   update();
-}
-
-// ========================================
-// Nav Sticky Border / Floating
-// ========================================
-
-/** The nav sits flush and opaque at the very top of the page. Once the hero
- *  has scrolled fully underneath it, it detaches into the inset, translucent
- *  floating capsule (`.is-floating` in style.css) — measured against the
- *  hero's own height rather than a fixed scroll distance, so the transition
- *  point tracks the hero's actual height at any viewport size.
- *
- *  The threshold is read once (on load/resize) rather than inside the scroll
- *  handler. Forcing a layout read (getBoundingClientRect/offsetHeight) on
- *  every scroll frame — layout thrashing — while also toggling classes on
- *  the sticky nav itself desyncs its stuck position from real scroll offset
- *  in some engines; comparing plain numbers on scroll avoids that path
- *  entirely and is cheaper besides. */
-function initNavFloating(): void {
-  const nav = document.getElementById('nav');
-  const hero = document.getElementById('top');
-  if (!nav) return;
-
-  let floatThreshold = Infinity;
-  const measure = () => {
-    if (hero) floatThreshold = hero.offsetTop + hero.offsetHeight - nav.offsetHeight;
-  };
-
-  const onScroll = () => {
-    nav.classList.toggle('is-stuck', window.scrollY > 0);
-    nav.classList.toggle('is-floating', window.scrollY >= floatThreshold);
-  };
-
-  measure();
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => {
-    measure();
-    onScroll();
-  }, { passive: true });
 }
 
 // ========================================
@@ -423,7 +383,6 @@ function init(): void {
   initTypewriter();
   initScrollReveal();
   initMagneticButtons();
-  initNavFloating();
   initNavTracking();
   initExperienceCards();
   initCopyEmail();
