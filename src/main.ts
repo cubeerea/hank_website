@@ -254,6 +254,10 @@ function initMagneticButtons(): void {
  */
 function initNavTracking(): void {
   const NAV_LINE = 72; // must match scroll-padding-top in style.css
+  const PILL_PAD = 8; // px of breathing room the pill adds on each side of the link's own box
+
+  const navList = document.querySelector<HTMLElement>('.nav-list');
+  const pill = document.querySelector<HTMLElement>('.nav-pill');
 
   const targets = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('.nav-link'),
@@ -268,6 +272,29 @@ function initNavTracking(): void {
   if (!targets.length) return;
 
   let queued = false;
+
+  // Rides behind whichever link is active, in `.nav-list`'s own coordinate
+  // space — both share that as their nearest positioned ancestor, so plain
+  // getBoundingClientRect() deltas line up without a scroll-offset correction.
+  function positionPill(link: HTMLAnchorElement): void {
+    if (!pill || !navList) return;
+
+    // Below 720px, Home and Stack's <li> go display:none (see the 720px
+    // breakpoint in style.css) but the links stay in `targets`, so the
+    // "active" section can still resolve to one of them. A hidden link's
+    // rect is all zeros — positioning against that would fling the pill
+    // off to a bogus corner, so just hide it instead of showing garbage.
+    if (link.offsetParent === null) {
+      pill.style.opacity = '0';
+      return;
+    }
+
+    const listRect = navList.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    pill.style.left = `${linkRect.left - listRect.left - PILL_PAD}px`;
+    pill.style.width = `${linkRect.width + PILL_PAD * 2}px`;
+    pill.style.opacity = '1';
+  }
 
   function update(): void {
     queued = false;
@@ -295,6 +322,7 @@ function initNavTracking(): void {
     targets.forEach(({ link }) => {
       link.classList.toggle('is-active', link === active.link);
     });
+    positionPill(active.link);
   }
 
   function schedule(): void {
@@ -306,6 +334,10 @@ function initNavTracking(): void {
   window.addEventListener('scroll', schedule, { passive: true });
   window.addEventListener('resize', schedule, { passive: true });
   update();
+  // Self-hosted webfonts can still swap in after first layout and nudge link
+  // widths a few px — resync once they're actually ready rather than leaving
+  // the pill stale until the next scroll or resize.
+  document.fonts?.ready.then(update).catch(() => {});
 }
 
 // ========================================
