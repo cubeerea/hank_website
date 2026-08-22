@@ -1118,6 +1118,11 @@ body::after {
 
 .bento-tile {
   position: relative;
+  /* Dot-field is fixed at z-index: 5 (see .dot-field), which paints above any
+     in-flow content with z-index: auto in this stacking context. Without an
+     explicit z-index here, the card's opaque background didn't matter — the
+     dots painted on top of it anyway. */
+  z-index: 6;
   display: flex;
   flex-direction: column;
   padding: 1.4rem 1.5rem;
