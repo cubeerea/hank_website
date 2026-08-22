@@ -95,7 +95,6 @@ html {
 }
 
 body {
-  height: 100%;
   margin: 0;
   background: var(--color-paper);
   color: var(--color-ink);
@@ -255,14 +254,18 @@ body::after {
   }
 }
 
+/* Content hugs itself and centers as one group, rather than the mark and
+   list each pinned to opposite edges of a 68rem track — that stretch left a
+   few hundred px of dead air between them on anything wider than a laptop,
+   which is what read as "unbalanced" rather than as one composed object. */
 .nav-inner {
-  max-width: 68rem;
+  width: fit-content;
+  max-width: 100%;
   margin: 0 auto;
   padding-inline: clamp(1.15rem, 5vw, 3rem);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: 2rem;
   height: 3.25rem;
 }
 
@@ -2857,7 +2860,11 @@ body::after {
     font-size: 0.6875rem;
     letter-spacing: 0.02em;
   }
+  /* The mark is hidden below, leaving nav-list as the only flex child —
+     restore full width so it sits left-aligned near the edge instead of
+     shrink-wrapping to the middle of the bar. */
   .nav-inner {
+    width: 100%;
     justify-content: flex-start;
   }
   /* Six items is what fits at 360px. Home drops because the wordmark and a
