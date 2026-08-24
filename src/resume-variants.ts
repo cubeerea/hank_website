@@ -63,6 +63,14 @@ export const RESUME_VARIANTS: ResumeVariant[] = [
     download: 'hank-sha-data-science.pdf',
     available: true,
   },
+  {
+    slug: 'vc-analyst',
+    label: 'Venture Scout / Analyst',
+    blurb: 'For venture scout and analyst roles.',
+    file: '/assets/resume-vc-analyst.pdf',
+    download: 'hank-sha-vc-analyst.pdf',
+    available: true,
+  },
 ];
 
 export function availableVariants(): ResumeVariant[] {
