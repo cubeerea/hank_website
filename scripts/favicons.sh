@@ -2,7 +2,7 @@
 #
 # Regenerates the PNG favicon fallbacks from public/favicon.svg.
 #
-# Why a browser and not rsvg-convert/ImageMagick: the mark is set in IBM Plex
+# Why a browser and not rsvg-convert/ImageMagick: the mark is set in Geist
 # Mono, which the site self-hosts but does not install system-wide, so a
 # fontconfig-based rasterizer silently substitutes another mono face and the
 # PNGs stop matching the SVG. Chromium loading the same @fontsource file the
@@ -20,7 +20,10 @@ set -euo pipefail
 PORT="${1:-5173}"
 BROWSE="${BROWSE:-$HOME/.claude/skills/gstack/browse/dist/browse}"
 OUT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/public"
-TMP="$(mktemp -d)"
+# Under /private/tmp specifically: the browse binary refuses to write outside
+# /private/tmp and the project root, and macOS's default mktemp lands in
+# /var/folders, which is neither. Same constraint scripts/og.sh documents.
+TMP="$(mktemp -d /private/tmp/favicons.XXXXXX)"
 trap 'rm -rf "$TMP"' EXIT
 
 if [ ! -x "$BROWSE" ]; then

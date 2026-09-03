@@ -1,13 +1,14 @@
 /* Self-hosted so first paint doesn't wait on a third-party round-trip, and so
    no visitor data goes to Google. Only the weights actually used are imported. */
-@import "@fontsource/ibm-plex-sans/latin-400.css";
-@import "@fontsource/ibm-plex-sans/latin-500.css";
-@import "@fontsource/ibm-plex-sans/latin-600.css";
-@import "@fontsource/ibm-plex-mono/latin-400.css";
-@import "@fontsource/ibm-plex-mono/latin-500.css";
-@import "@fontsource/ibm-plex-serif/latin-500.css";
-@import "@fontsource/ibm-plex-serif/latin-600.css";
-@import "@fontsource/ibm-plex-serif/latin-400-italic.css";
+@import "@fontsource/geist-sans/latin-400.css";
+@import "@fontsource/geist-sans/latin-500.css";
+@import "@fontsource/geist-sans/latin-600.css";
+@import "@fontsource/geist-mono/latin-400.css";
+@import "@fontsource/geist-mono/latin-500.css";
+@import "@fontsource/newsreader/latin-400.css";
+@import "@fontsource/newsreader/latin-500.css";
+@import "@fontsource/newsreader/latin-400-italic.css";
+@import "@fontsource/newsreader/latin-500-italic.css";
 @import "tailwindcss";
 
 /* ========================================
@@ -15,14 +16,18 @@
    ======================================== */
 
 @theme {
-  --font-ui: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-ui: "Geist Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   /* Used only for the small UI headers on the resume/paper viewer pages —
      the homepage hero sets --font-serif directly, it doesn't go through Tailwind. */
-  --font-display: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --font-serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --font-display: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
 
-  --color-paper: #F6F1E8;
+  /* Warmed one step off the old #F6F1E8, which read as pale off-white rather
+     than warm paper. This is the bone tone the whole light half of the page
+     now sits on; --color-cream steps down from it in proportion so the band
+     rhythm keeps the same perceived gap it always had. */
+  --color-paper: #F4ECD8;
   --color-card: #FBF8F2;
   --color-ink: #211A14;
   --color-ink-2: #5A4C40;
@@ -31,19 +36,23 @@
      and failed AA in the next. Darkened one step to hold 4.92 on Cream and
      5.38 on Paper, which keeps it a tertiary tone (ink-2 is 7.34 on Paper)
      while making the band it sits on stop mattering. */
-  --color-ink-3: #6F6052;
-  --color-accent: #B0442A;
-  --color-accent-dim: rgba(176, 68, 42, 0.35);
-  --color-accent-glow: rgba(176, 68, 42, 0.16);
+  --color-ink-3: #695B4D;
+  /* Darkened one step from #B0442A when the page warmed. On the new Cream
+     band the old value fell to 4.28:1 — below AA — because warming the ground
+     closed the gap from the accent's own warm side. Same hue, one tonal step
+     deeper: 5.31 on Paper, 4.72 on Cream. */
+  --color-accent: #A63F26;
+  --color-accent-dim: rgba(166, 63, 38, 0.35);
+  --color-accent-glow: rgba(166, 63, 38, 0.16);
   --color-rule: rgba(33, 26, 20, 0.14);
   --color-rule-soft: rgba(33, 26, 20, 0.085);
-  --color-rule-hover: rgba(176, 68, 42, 0.35);
-  --color-tint: rgba(176, 68, 42, 0.045);
-  --color-paper-dim: rgba(246, 241, 232, 0.72);
+  --color-rule-hover: rgba(166, 63, 38, 0.35);
+  --color-tint: rgba(166, 63, 38, 0.045);
+  --color-paper-dim: rgba(244, 236, 216, 0.72);
   /* One step down from Warm Paper — the alternating band tone. Deliberately
      subtle: it should register as the page shifting weight, not as a
      different color. See DESIGN.md "Band Rhythm". */
-  --color-cream: #EFE7D8;
+  --color-cream: #E9DFC9;
   /* Terracotta lightened for ink bands. #B0442A only clears 3.1:1 on Deep Ink,
      which fails body text; this clears 5.3:1. Same hue, tonal step — not a
      second accent. */
@@ -72,9 +81,9 @@
   /* Confident deceleration. One curve for every authored transition on the
      page so nothing arrives on a different clock. */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --color-rule-inverse: rgba(246, 241, 232, 0.14);
-  --color-rule-inverse-soft: rgba(246, 241, 232, 0.08);
-  --color-ink-dim: rgba(246, 241, 232, 0.55);
+  --color-rule-inverse: rgba(244, 236, 216, 0.14);
+  --color-rule-inverse-soft: rgba(244, 236, 216, 0.08);
+  --color-ink-dim: rgba(244, 236, 216, 0.55);
 }
 
 /* ========================================
@@ -258,17 +267,24 @@ body::after {
   position: sticky;
   top: 0.75rem;
   z-index: 40;
-  /* A block-level <nav> stretches to the full viewport width by default, so
-     without this the capsule spanned edge to edge while nav-inner's
-     fit-content hugged the middle — a wide, mostly-empty bar with the links
-     stranded in the center. Shrinking the capsule itself to its content and
-     centering it turns that back into one compact, composed pill. */
-  width: fit-content;
-  max-width: calc(100% - clamp(0.75rem, 3vw, 1.5rem) * 2);
+  /* Bounded to the same 68rem column as every other section, not to the
+     viewport. A capsule that spanned the full width pushed the wordmark and
+     the Résumé pill out to the screen edges while the page's own content
+     started ~220px in — so the two ends of the nav lined up with nothing, and
+     the bar read as a separate object floating over the page rather than as
+     its masthead. Sharing the content column is what ties them together.
+
+     `min()` keeps the viewport inset as the second constraint, so below
+     ~68rem the bar goes back to hugging the screen with the same tight
+     0.75rem floor — on a phone the bar is already narrower than its content
+     needs, and every pixel spent on an inset comes straight out of the link
+     row's slack. */
+  width: auto;
+  max-width: 68rem;
   margin-inline: auto;
   border: 1px solid var(--color-rule);
   border-radius: 14px;
-  background: rgba(246, 241, 232, 0.88);
+  background: rgba(244, 236, 216, 0.88);
   box-shadow: 0 10px 30px -14px rgba(33, 26, 20, 0.22), 0 2px 10px rgba(33, 26, 20, 0.06);
 }
 
@@ -277,18 +293,20 @@ body::after {
    solid chrome rather than a see-through smear. */
 @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
   .nav {
-    background: rgba(246, 241, 232, 0.72);
+    background: rgba(244, 236, 216, 0.72);
     backdrop-filter: blur(14px) saturate(1.4);
     -webkit-backdrop-filter: blur(14px) saturate(1.4);
   }
 }
 
-/* Content hugs itself and centers as one group, rather than the mark and
-   list each pinned to opposite edges of a 68rem track — that stretch left a
-   few hundred px of dead air between them on anything wider than a laptop,
-   which is what read as "unbalanced" rather than as one composed object. */
+/* The padding is deliberately the *same* clamp the hero and every
+   .section-inner use. With the capsule bounded to 68rem above, matching the
+   padding is what puts the wordmark on the exact x-position where the hero
+   headline starts and the Résumé pill where the text column ends — the nav
+   reads as the top row of the page's own grid instead of as chrome laid over
+   it. Change this only alongside the section padding. */
 .nav-inner {
-  width: fit-content;
+  width: 100%;
   max-width: 100%;
   margin: 0 auto;
   padding-inline: clamp(1.15rem, 5vw, 3rem);
@@ -296,6 +314,35 @@ body::after {
   align-items: center;
   gap: 2rem;
   height: 3.25rem;
+}
+
+/* Two regimes, and the switch has to happen at exactly 68rem — the width
+   where the sections stop being centred and start filling the viewport.
+
+   At or above it the capsule and the sections are the same 68rem box with the
+   same padding, so they align for free. Below it the sections run edge to
+   edge while the capsule still wants an inset to keep floating — so the nav
+   hands back exactly what the inset took, and the wordmark stays on the
+   headline's left edge.
+
+   Writing this as `max-width: min(68rem, 100% - inset*2)` on .nav instead was
+   the obvious-looking version and is wrong: just above 68rem the inset term
+   is the smaller of the two, so it binds while the sections are still capped
+   at 68rem, and the wordmark jumps ~33px inboard for a band of widths right
+   around the crossover. The regimes have to be separated by the media query,
+   not by min().
+
+   The `max()` floor stops the subtraction collapsing the padding to nothing
+   on phones, where the two clamps converge. Under it the alignment goes
+   approximate (a few px at 500 and below) — acceptable, because by then the
+   wordmark is hidden and there is no shared left edge left to honour. */
+@media (max-width: 68rem) {
+  .nav {
+    max-width: calc(100% - clamp(0.75rem, 3vw, 2.5rem) * 2);
+  }
+  .nav-inner {
+    padding-inline: max(0.85rem, calc(clamp(1.15rem, 5vw, 3rem) - clamp(0.75rem, 3vw, 2.5rem)));
+  }
 }
 
 .nav-mark {
@@ -361,19 +408,63 @@ body::after {
   transform-origin: 0 50%;
 }
 
+/* The gap is an authored, typographic value — NOT leftover space. `flex: 1`
+   with `justify-content: space-between` was tried and is wrong: it hands the
+   spacing to whatever width happens to be left, so at 1440px the links sat
+   ~100px apart and the row read as eight unrelated words rather than one nav.
+   The gap has to be sized against the labels instead. ~2rem at desktop is a
+   little over one em of the 13px label — enough that "Projects" and "Writing"
+   are plainly separate words, tight enough that all eight still scan as a
+   single object. It rides down to 1.25rem on narrower viewports. */
 .nav-list {
+  flex: 1;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
+  gap: clamp(1.25rem, 2.2vw, 2rem);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+/* Three anchors across the bar: the mark holds the left edge, the Résumé pill
+   holds the right, and the section links sit as one centred group between
+   them. Auto margins at the two ends of the list do it — the free space is
+   split evenly before the first link and before the pill, so the group
+   centres *without* the links themselves being pulled apart. That separation
+   is the whole point: the bar can span the full page while the spacing
+   between links stays a fixed, legible value.
+
+   Scoped to `> li` so it keys off list structure, not off which item happens
+   to be the CTA. Below 720px the first item (Home) is display:none and
+   contributes no margin, which is the behaviour we want there anyway — the
+   links pack left and only the pill keeps its auto margin to hold the right
+   edge, with the wordmark gone. */
+.nav-list > li:first-child,
+.nav-list > li:last-child {
+  margin-left: auto;
+}
+
+/* The résumé page's bar carries two links, not eight. Centring a pair would
+   split them to either side of the void between the anchors — visibly the
+   same dead-air defect that the full-width rework had to solve in the first
+   place. With too few items to be a group in the middle, they stay a group at
+   the end: the first item absorbs all the free space, the last keeps a normal
+   gap. (The paper viewer and the résumé variant pages are unaffected — they
+   use `.viewer-bar`/`.viewer-id`, not `.nav-list`.) */
+.utility-nav .nav-list > li:last-child {
+  margin-left: 0;
+}
+
+/* Sans, not mono — the one place the Label voice steps aside. Mono's fixed
+   advance width is what makes it right for columns of data, and wrong here:
+   spread across a full-width track its already-wide letterforms drift apart
+   until the row reads as scattered labels rather than one navigation object.
+   Geist Sans is an interface grotesque and holds a wide row together. See
+   "The Nav Exception" in DESIGN.md. */
 .nav-link {
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 0.8125rem;
-  letter-spacing: 0.03em;
+  letter-spacing: -0.005em;
   color: var(--color-ink-3);
   text-decoration: none;
   padding-block: 0.35rem;
@@ -383,9 +474,9 @@ body::after {
 }
 
 .nav-cta {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.04em;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  letter-spacing: -0.005em;
   font-weight: 500;
   color: var(--color-paper);
   background: var(--color-accent);
@@ -475,13 +566,67 @@ body::after {
   padding-bottom: clamp(2.5rem, 6vw, 4rem);
 }
 
+/* The status eyebrow, above the headline. Mono, uppercase, wide-tracked — the
+   Label voice the rest of the page already uses for meta, so leading with it
+   costs no new typographic idea. The dot is the only pulsing element on the
+   page and it earns that by marking the one genuinely live fact here. */
+.hero-eyebrow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+  margin: 0 0 clamp(1.15rem, 2.5vw, 1.6rem);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.5;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+}
+
+.hero-eyebrow-dot {
+  flex: none;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  /* Baseline-aligned like a word rather than centered like an icon: the row is
+     a line of text, and a flex-centered dot drifts off the cap line as the
+     eyebrow wraps at narrow widths. */
+  align-self: baseline;
+  translate: 0 -0.1em;
+  animation: eyebrow-pulse 2.4s var(--ease-out) infinite;
+}
+
+.hero-eyebrow-key {
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+@keyframes eyebrow-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.32;
+  }
+}
+
 .hero-headline {
   font-family: var(--font-serif);
-  font-size: clamp(3.25rem, 11vw, 6.25rem);
-  line-height: 0.94;
-  letter-spacing: -0.032em;
-  font-weight: 600;
+  /* Was clamp(3.25rem, 11vw, 6.25rem) at 600. It was sized as a poster and
+     took the whole first screen with it, which left the line no room to be
+     read as a sentence. Down ~25% and back to 500: Newsreader's 500 already
+     carries a display line at this size, and 600 was making a positioning
+     statement look like a headline shout. */
+  font-size: clamp(2.5rem, 7vw, 4.75rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-weight: 500;
   margin: 0;
+  max-width: 20ch;
+  text-wrap: balance;
   color: var(--color-ink);
 }
 
@@ -495,13 +640,26 @@ body::after {
   margin: 0.06em -0.06em;
 }
 
+.hero-rule {
+  width: 3.5rem;
+  height: 1px;
+  margin: clamp(1.5rem, 3vw, 2rem) 0;
+  background: var(--color-accent);
+  opacity: 0.55;
+}
+
 .hero-intro {
-  margin: 1.5rem 0 0;
-  font-size: clamp(1.0625rem, 2.2vw, 1.25rem);
-  line-height: 1.55;
-  letter-spacing: -0.006em;
+  /* Serif now, matching the headline. The .hero-rule above carries the break
+     the old sans/serif contrast used to; at 1.7 line-height and 52ch this
+     reads as the display line settling into prose rather than as a caption
+     under it. */
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.0625rem, 2.2vw, 1.1875rem);
+  line-height: 1.7;
+  letter-spacing: 0;
   max-width: 52ch;
-  text-wrap: balance;
+  text-wrap: pretty;
   color: var(--color-ink-2);
 }
 
@@ -619,11 +777,12 @@ body::after {
 
 /* The site's whole voice is typewritten — mono labels, ruled rows, numbered
    entries — so the one line that is genuinely in flux (what he's open to)
-   types itself out instead of sitting still. Lives in the spec table's mono
-   column, where the effect is native rather than costume.
+   types itself out instead of sitting still. Lives in the hero eyebrow's mono
+   Label voice, where the effect is native rather than costume.
    Nothing follows the caret on its line, so no width needs reserving — but
-   every phrase must fit one line at 320px, or the row grows and shrinks a
-   line-height on each cycle. See the phrase list in main.ts. */
+   every phrase must fit one line at 320px, or the eyebrow grows and shrinks a
+   line-height on each cycle and shoves the headline with it. See the phrase
+   list in main.ts. */
 .typeline {
   display: inline-block;
 }
@@ -750,11 +909,11 @@ body::after {
    the ink bands specifically. 0.4 clears the 3:1 non-text floor and still
    sits well behind the row title. */
 .band-ink .row-arrow {
-  color: rgba(246, 241, 232, 0.4);
+  color: rgba(244, 236, 216, 0.4);
 }
 
 .band-ink .row::before {
-  background: rgba(246, 241, 232, 0.04);
+  background: rgba(244, 236, 216, 0.04);
 }
 
 .band-ink .row:hover .row-title,
@@ -1008,7 +1167,10 @@ body::after {
   margin: 0;
   font-family: var(--font-serif);
   font-size: clamp(2rem, 5.4vw, 3.5rem);
-  font-weight: 600;
+  /* 500, like the hero headline it bookends — the pairing only reads if both
+     ends are set at the same weight, and Newsreader ships no 600 here anyway
+     (a 600 would render as a synthesized faux-bold). */
+  font-weight: 500;
   line-height: 1.02;
   letter-spacing: -0.03em;
   max-width: 19ch;
@@ -2493,7 +2655,7 @@ body::after {
 .utility-head h1 {
   font-family: var(--font-serif);
   font-size: clamp(2.5rem, 7vw, 3.75rem);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1;
   letter-spacing: -0.03em;
   margin: 0;
@@ -2681,7 +2843,7 @@ body::after {
 .viewer-state h2 {
   font-family: var(--font-serif);
   font-size: 1.375rem;
-  font-weight: 600;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -2795,13 +2957,21 @@ body::after {
     opacity: 0;
   }
 
+  /* Same reasoning for the eyebrow dot: it marks a live status, and under
+     reduced motion a static dot still marks it. */
+  .hero-eyebrow-dot {
+    animation: none;
+  }
+
   .row,
   .row-work,
   .bento-tile,
   .stack-col,
   .flagship-inner,
   .personal > *,
+  .hero-eyebrow,
   .hero-headline,
+  .hero-rule,
   .hero-intro,
   .spec {
     opacity: 1 !important;
@@ -2848,9 +3018,22 @@ body::after {
 }
 
 @media (max-width: 720px) {
+  /* Has to track the desktop clamp down. The old override peaked at 4rem
+     against a 6.25rem desktop, which read as a reduction; against the new
+     4.75rem it would have made the headline *bigger* on a phone than on a
+     laptop. */
   .hero h1 {
-    font-size: clamp(2.9rem, 13vw, 4rem);
-    letter-spacing: -0.028em;
+    font-size: clamp(2.25rem, 9vw, 3.25rem);
+    letter-spacing: -0.026em;
+  }
+  /* The eyebrow is one line of wide-tracked mono, and the longest phrase the
+     typewriter cycles ("Building agentic systems") overruns 320px at the
+     desktop tracking — which would wrap the value onto a second line and
+     shove the headline down a line-height mid-cycle. Tighten both steps so
+     every phrase still fits on one line at the narrowest width. */
+  .hero-eyebrow {
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
   }
   /* The index keeps its column and the title moves up beside it, with the
      metadata dropping underneath aligned to the title. The previous
@@ -2919,15 +3102,21 @@ body::after {
   .nav-list {
     gap: 1.05rem;
   }
+  /* Held at the same 0.6875rem the mono used. Sans is narrower per character,
+     so this is a small width saving rather than a licence to size up: at
+     0.75rem the row measured out to exactly the track width at 375px, with
+     zero slack left for space-between — one pixel of font-metric drift from
+     a fallback face and it would wrap. The gap steps below assume the row
+     has room to spare. */
   .nav-link {
     font-size: 0.6875rem;
-    letter-spacing: 0.02em;
+    letter-spacing: -0.005em;
   }
-  /* The mark is hidden below, leaving nav-list as the only flex child —
-     restore full width so it sits left-aligned near the edge instead of
-     shrink-wrapping to the middle of the bar. */
+  /* The mark is hidden below, leaving nav-list as the only flex child. It
+     still takes the full track and distributes across it — with the mark
+     gone there is no left anchor, so a left-aligned row would strand the
+     dead space on the right instead of sharing it out. */
   .nav-inner {
-    width: 100%;
     justify-content: flex-start;
   }
   /* Six items is what fits at 360px. Home drops because the wordmark and a

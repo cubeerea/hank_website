@@ -6,7 +6,7 @@
     <title>favicon render rig</title>
     <!--
       Rig for scripts/favicons.sh. Renders the same artwork as
-      public/favicon.svg at each raster size with the real IBM Plex Mono
+      public/favicon.svg at each raster size with the real Geist Mono
       loaded, so the PNG fallbacks match the SVG instead of falling back to
       whatever mono face the rasterizer happens to find.
 
@@ -16,7 +16,7 @@
       Keep the artwork here in sync with public/favicon.svg.
       Not shipped — scripts/ is outside the Vite build's page entries.
     -->
-    <link rel="stylesheet" href="/node_modules/@fontsource/ibm-plex-mono/latin-600.css">
+    <link rel="stylesheet" href="/node_modules/@fontsource/geist-mono/latin-600.css">
     <style>
         html,
         body {
@@ -49,13 +49,13 @@
 <body>
     <template id="art">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-            <rect width="64" height="64" fill="#F6F1E8" />
-            <rect x="1" y="1" width="62" height="62" fill="none" stroke="#B0442A" stroke-opacity="0.4"
+            <rect width="64" height="64" fill="#F4ECD8" />
+            <rect x="1" y="1" width="62" height="62" fill="none" stroke="#A63F26" stroke-opacity="0.4"
                 stroke-width="2" />
-            <text x="32" y="29" fill="#B0442A"
-                font-family="IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="34"
+            <text x="32" y="29" fill="#A63F26"
+                font-family="Geist Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="34"
                 font-weight="600" letter-spacing="-1.5" text-anchor="middle" dominant-baseline="central">HS</text>
-            <rect x="14" y="49" width="36" height="3" fill="#B0442A" fill-opacity="0.5" />
+            <rect x="14" y="49" width="36" height="3" fill="#A63F26" fill-opacity="0.5" />
         </svg>
     </template>
 

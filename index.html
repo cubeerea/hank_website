@@ -13,7 +13,7 @@
         content="applied machine learning, AI engineering, mechanistic interpretability, PyTorch, LLMs, NLP, UCSB, portfolio, Hank Sha">
     <meta name="author" content="Hank Sha">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#F6F1E8">
+    <meta name="theme-color" content="#F4ECD8">
     <link rel="canonical" href="https://www.hanksha.com">
 
     <!-- Open Graph -->
@@ -87,7 +87,7 @@
             <a class="nav-mark" href="#top" aria-label="Hank Sha — home">
                 <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
                     <text x="32" y="29" fill="currentColor"
-                        font-family="IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+                        font-family="Geist Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
                         font-size="34" font-weight="600" letter-spacing="-1.5" text-anchor="middle"
                         dominant-baseline="central">HS</text>
                     <rect x="14" y="49" width="36" height="3" fill="currentColor" fill-opacity="0.5" />
@@ -113,7 +113,28 @@
 
         <!-- Hero -->
         <header class="hero" id="top">
+            <!-- The availability line leads the hero rather than sitting in the spec
+                 table below it. It is the one fact on this page with a shelf life, so
+                 it reads first — and an eyebrow is where a reader already expects
+                 status, which the table row had to work against. The typed span is the
+                 animated surface and is hidden from AT; the .sr-only sibling carries
+                 the same information as one static string, which reads better than a
+                 live region stuttering one char at a time. The default text is real
+                 content so no-JS/reduced-motion still says something true. -->
+            <p class="hero-eyebrow">
+                <span class="hero-eyebrow-dot" aria-hidden="true"></span>
+                <span class="hero-eyebrow-key">Open to</span>
+                <span class="typeline" aria-hidden="true"><span id="typewriter">Applied AI /
+                        FDE roles</span><span class="typeline-caret"></span></span><span class="sr-only">Open to
+                    Applied AI and forward-deployed engineering roles, Data Science/Analytics, Building agentic
+                    systems. </span>
+            </p>
             <h1 class="hero-headline">Broad by instinct, <em>deep</em> by choice.</h1>
+            <!-- Short accent rule between the headline and the intro. It is the only
+                 thing separating a serif display line from serif body copy now that
+                 both run in Newsreader, and it does that job at hairline weight
+                 instead of by opening a gap large enough to read as a break. -->
+            <div class="hero-rule" aria-hidden="true"></div>
             <!-- Two sentences, and the full stop between them is load-bearing.
                  The agentic work is all self-directed; no company has shipped an
                  agentic system built here. One sentence joined by "and" let a
@@ -127,18 +148,6 @@
             <p class="hero-intro">I'm <strong>Hank Sha</strong>. I've helped businesses ship LLM features and ML
                 models. Now, I build <strong class="accent">agentic systems</strong> and AI products.</p>
             <dl class="spec">
-                <div>
-                    <dt>Availability</dt>
-                    <!-- The typed span is the animated surface and is hidden from AT; the
-                         .sr-only sibling carries the same information as one static string,
-                         which reads better than a live region stuttering one char at a time.
-                         The default text is real content so no-JS/reduced-motion still says
-                         something true. -->
-                    <dd><b>Open to</b> — <span class="typeline" aria-hidden="true"><span id="typewriter">Applied AI /
-                                FDE roles</span><span class="typeline-caret"></span></span><span class="sr-only">Open to
-                            Applied AI and forward-deployed engineering roles, Data Science/Analytics, Building agentic
-                            systems. </span></dd>
-                </div>
                 <div>
                     <dt>Education</dt>
                     <dd>UC Santa Barbara '26 — Stats &amp; DS</dd>

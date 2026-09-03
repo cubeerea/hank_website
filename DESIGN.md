@@ -2,38 +2,38 @@
 name: Hank Sha — Portfolio
 description: A field ledger for real work — numbered entries, terracotta marginalia, warm paper, zero decoration that isn't information.
 colors:
-  terracotta-ink: "#B0442A"
-  terracotta-dim: "rgba(176, 68, 42, 0.35)"
-  terracotta-glow: "rgba(176, 68, 42, 0.16)"
-  terracotta-tint: "rgba(176, 68, 42, 0.045)"
-  warm-paper: "#F6F1E8"
+  terracotta-ink: "#A63F26"
+  terracotta-dim: "rgba(166, 63, 38, 0.35)"
+  terracotta-glow: "rgba(166, 63, 38, 0.16)"
+  terracotta-tint: "rgba(166, 63, 38, 0.045)"
+  warm-paper: "#F4ECD8"
   warm-paper-card: "#FBF8F2"
   deep-ink: "#211A14"
   mid-ink: "#5A4C40"
-  soft-ink: "#77675A"
+  soft-ink: "#695B4D"
   hairline-rule: "rgba(33, 26, 20, 0.14)"
   hairline-rule-soft: "rgba(33, 26, 20, 0.085)"
-  cream: "#EFE7D8"
+  cream: "#E9DFC9"
   terracotta-light: "#D9724F"
   terracotta-light-dim: "rgba(217, 114, 79, 0.45)"
-  rule-inverse: "rgba(246, 241, 232, 0.14)"
-  rule-inverse-soft: "rgba(246, 241, 232, 0.08)"
-  ink-dim: "rgba(246, 241, 232, 0.55)"
+  rule-inverse: "rgba(244, 236, 216, 0.14)"
+  rule-inverse-soft: "rgba(244, 236, 216, 0.08)"
+  ink-dim: "rgba(244, 236, 216, 0.55)"
 typography:
   display:
-    fontFamily: "IBM Plex Serif, Georgia, Times New Roman, serif"
-    fontSize: "clamp(3.25rem, 11vw, 6.25rem)"
-    fontWeight: 600
-    lineHeight: 0.94
-    letterSpacing: "-0.032em"
+    fontFamily: "Newsreader, Georgia, Times New Roman, serif"
+    fontSize: "clamp(2.5rem, 7vw, 4.75rem)"
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: "-0.03em"
   body:
-    fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"
+    fontFamily: "Geist Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.55
     letterSpacing: "normal"
   label:
-    fontFamily: "IBM Plex Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    fontFamily: "Geist Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
     fontSize: "0.75rem"
     fontWeight: 500
     lineHeight: 1.5
@@ -73,7 +73,7 @@ components:
 
 This is a researcher's logbook rendered as a website: numbered entries, terse monospace labels, hairline rules standing in for ruled paper, and a single terracotta ink used sparingly for annotation — never for decoration. Nothing on the page exists to look nice; every mark (an index number, a section rule, an uppercase mono label) carries information about what it's attached to. Outside the Projects grid and the Off the Ledger media the system is flat: no shadows, no gradients, no rounded cards. Depth comes from ink weight and rule contrast, not elevation.
 
-The palette stays warm and paper-like on its light bands (`#F6F1E8` and one cream step down), with near-black warm ink for text, so the terracotta accent (`#B0442A`) reads as a rubber-stamp or red-pen mark against the page rather than a "brand color" wash. Confirmed rejection: no saturated multi-color palette — the identity is monochrome-plus-one-accent, and that restraint is load-bearing, not a placeholder.
+The palette stays warm and paper-like on its light bands (`#F4ECD8` and one cream step down), with near-black warm ink for text, so the terracotta accent (`#A63F26`) reads as a rubber-stamp or red-pen mark against the page rather than a "brand color" wash. Confirmed rejection: no saturated multi-color palette — the identity is monochrome-plus-one-accent, and that restraint is load-bearing, not a placeholder.
 
 The page is no longer one uninterrupted field. It runs as a sequence of **full-bleed color bands** — Warm Paper, Cream (one subtle step down), and three Deep Ink bands — so the scroll has a pulse. The ledger identity is unchanged; it now plays out across alternating surfaces instead of a single one. See "Band Rhythm" below for the exact order, which is load-bearing.
 
@@ -91,24 +91,24 @@ The page is no longer one uninterrupted field. It runs as a sequence of **full-b
 Warm and restrained: one ink family for paper and text, one accent used mostly for marks and state, with two named exceptions where it fills a primary action (see the 60/30/10 rule below).
 
 ### Primary
-- **Terracotta Ink** (#B0442A): The single accent. Used for section-number labels, hover states on rows/links/nav, the italicized word in the hero subhead, and the `::selection` highlight. Never used as a background fill for anything larger than a hairline rule.
-- **Terracotta Dim** (rgba(176, 68, 42, 0.35)): Divider rules directly under the hero spec block and the top of each ledger — a slightly warmer, more present rule than the standard hairline.
-- **Terracotta Glow** (rgba(176, 68, 42, 0.16)): Reserved token for accent-adjacent glow states; currently defined but lightly used — treat as available headroom, not an invitation to add new glow effects freely.
-- **Terracotta Tint** (rgba(176, 68, 42, 0.045)): The near-invisible wash behind a ledger row on hover. The whole point is that it's barely perceptible — a page catching light, not a highlighted list item.
+- **Terracotta Ink** (#A63F26): The single accent. Used for section-number labels, hover states on rows/links/nav, the italicized word in the hero subhead, and the `::selection` highlight. Never used as a background fill for anything larger than a hairline rule.
+- **Terracotta Dim** (rgba(166, 63, 38, 0.35)): Divider rules directly under the hero spec block and the top of each ledger — a slightly warmer, more present rule than the standard hairline.
+- **Terracotta Glow** (rgba(166, 63, 38, 0.16)): Reserved token for accent-adjacent glow states; currently defined but lightly used — treat as available headroom, not an invitation to add new glow effects freely.
+- **Terracotta Tint** (rgba(166, 63, 38, 0.045)): The near-invisible wash behind a ledger row on hover. The whole point is that it's barely perceptible — a page catching light, not a highlighted list item.
 
 ### Neutral
-- **Warm Paper** (#F6F1E8): Page background, every page. Never pure white.
+- **Warm Paper** (#F4ECD8): Page background, every page. Never pure white — and, since the warming pass, never near-white either. The old #F6F1E8 was warm only in its hex; on a screen it read as pale off-white and the "paper" idea had to be taken on trust. This is bone: the warmth is visible without being a color the eye has to work around.
 - **Warm Paper Card** (#FBF8F2): Slightly lighter paper used for isolated content blocks (e.g. the résumé/paper viewer chrome). Defined but used sparingly — most of the site is single-surface (no card layer).
 - **Deep Ink** (#211A14): Primary text, headings, active nav state, `<strong>`/`<b>` emphasis. Never pure black. Also the fill of all three ink bands (Flagship, Writing, Contact+footer) — see Band Rhythm.
 - **Mid Ink** (#5A4C40): Secondary text — descriptions, body copy in the ledger, footnotes.
-- **Soft Ink** (#77675A): Tertiary text — index numbers, inactive nav links, timestamps/meta.
-- **Paper Dim** (rgba(246, 241, 232, 0.72)): Warm Paper at reduced opacity — secondary/body text on ink bands, the ink-band twin of Mid Ink (8.4:1 on Deep Ink).
+- **Soft Ink** (#695B4D): Tertiary text — index numbers, inactive nav links, timestamps/meta.
+- **Paper Dim** (rgba(244, 236, 216, 0.72)): Warm Paper at reduced opacity — secondary/body text on ink bands, the ink-band twin of Mid Ink (8.4:1 on Deep Ink).
 - **Hairline Rule** (rgba(33, 26, 20, 0.14)): Standard row and section dividers.
 - **Hairline Rule Soft** (rgba(33, 26, 20, 0.085)): Interior dividers between rows within the same list, one step quieter than Hairline Rule.
-- **Cream** (#EFE7D8): Exactly one step down from Warm Paper. The alternating band tone (Projects, Selected Experience). The subtlety is the point — it should register as the page shifting weight, not as a second background color. A more saturated oat was tried and rejected: with three ink bands already carrying the contrast, a loud cream made the page busy rather than warm.
+- **Cream** (#E9DFC9): Exactly one step down from Warm Paper. The alternating band tone (Projects, Selected Experience). The subtlety is the point — it should register as the page shifting weight, not as a second background color. *Note the earlier rejection this supersedes:* a more saturated oat was once tried against the old pale paper and rejected for making the page busy. What made it busy was the **gap**, not the saturation — a loud cream under a near-white paper is two different backgrounds. Now that Warm Paper carries the same warmth, Cream is a tonal step within one ground rather than a second color, and the objection no longer applies. The step size is what was preserved, not the hex.
 - **Terracotta Light** (#D9724F): Terracotta lightened for use on ink bands — eyebrow labels, hovers, link underlines. Deep Ink puts base Terracotta at only 3.1:1, which fails body text; this clears 5.3:1. It is a tonal step of the same hue, not a second accent, and it appears **only** on ink bands.
-- **Rule Inverse** (rgba(246, 241, 232, 0.14)) / **Rule Inverse Soft** (rgba(246, 241, 232, 0.08)): The ink-band twins of Hairline Rule and Hairline Rule Soft.
-- **Ink Dim** (rgba(246, 241, 232, 0.55)): Tertiary text on ink bands — index numbers, meta, footer. The ink-band twin of Soft Ink (5.5:1 on Deep Ink).
+- **Rule Inverse** (rgba(244, 236, 216, 0.14)) / **Rule Inverse Soft** (rgba(244, 236, 216, 0.08)): The ink-band twins of Hairline Rule and Hairline Rule Soft.
+- **Ink Dim** (rgba(244, 236, 216, 0.55)): Tertiary text on ink bands — index numbers, meta, footer. The ink-band twin of Soft Ink (5.5:1 on Deep Ink).
 
 ### Band Rhythm
 
@@ -140,20 +140,30 @@ The order, top to bottom:
 
 ## Typography
 
-**Display Font:** IBM Plex Serif (with Georgia, Times New Roman fallback)
-**Body Font:** IBM Plex Sans (with system sans fallback)
-**Label/Mono Font:** IBM Plex Mono (with system monospace fallback)
+**Display Font:** Newsreader (with Georgia, Times New Roman fallback)
+**Body Font:** Geist Sans (with system sans fallback)
+**Label/Mono Font:** Geist Mono (with system monospace fallback)
 
-**Character:** A serif masthead against an otherwise typewriter-and-report voice. The serif appears in exactly one place — the `<h1>` hero headline (a positioning line, not the name) — with its single emphasized word set in Terracotta Ink; everything structural — nav, section headers, index numbers, meta, chips, footer — runs in mono. Body prose (descriptions, work details, the hero intro paragraph) runs in plain sans. Low-ego by design: "Hank Sha" the name appears small in the nav wordmark and once, in sans body text, at the top of the hero intro paragraph — it never runs at display scale. The big, bold, serif moment is reserved for what the work is about, not who's saying it.
+*Replaced the IBM Plex superfamily (Serif/Sans/Mono). Plex is one family wearing three costumes, which made the roles hard to tell apart at a glance — the page used three faces but only sounded like one. Newsreader is a genuine editorial serif and Geist a genuine interface grotesque, so display and structure now read as different voices doing different jobs. Same three roles, same count; only the contrast between them changed.*
+
+**Character:** A serif masthead against an otherwise typewriter-and-report voice. The serif opens the page — the `<h1>` hero headline (a positioning line, not the name) and the intro paragraph directly under it — with the headline's single emphasized word set in Terracotta Ink; everything structural — nav, section headers, index numbers, meta, chips, footer — runs in mono. Body prose everywhere below the hero (descriptions, work details) runs in plain sans. Low-ego by design: "Hank Sha" the name appears small in the nav wordmark and once, in sans body text, at the top of the hero intro paragraph — it never runs at display scale. The big, bold, serif moment is reserved for what the work is about, not who's saying it.
 
 ### Hierarchy
-- **Display** (600, `clamp(3.25rem, 11vw, 6.25rem)`, line-height 0.94, serif): The hero `<h1>` (`.hero-headline`) — the positioning line ("Broad by instinct, deep by choice."), not the name. Tight tracking (-0.032em), nearly touching line-height — a masthead, not a byline. Its single italic word runs in Terracotta Ink at the same giant scale — this is the one place a large surface of the accent color is visible on the page, and it's the site's boldest color moment by design.
-- **Hero Intro** (400, `clamp(1.0625rem, 2.2vw, 1.25rem)`, sans, max 52ch, `--color-ink-2`): The paragraph under the headline — first-person, names the person ("I'm **Hank Sha**", `<strong>` in `--color-ink`) and what they do. Replaces what used to be a one-line positioning statement; this is where biography lives now, not the display line.
+- **Eyebrow** (500, 0.6875rem, mono, uppercase, letter-spacing 0.2em): `.hero-eyebrow` — the availability line, and the **first** thing in the hero, above the headline. It is the one fact on the page with a shelf life, so it reads first; an eyebrow is also where a reader already expects status, which the old spec-table row had to work against. Carries a pulsing Terracotta dot (`.hero-eyebrow-dot`, the page's only pulsing element) and the typed value. Tightens to 0.625rem / 0.14em below 720px so the longest typed phrase still fits one line at 320px — if it wrapped, the headline would jump a line-height mid-cycle.
+- **Display** (500, `clamp(2.5rem, 7vw, 4.75rem)`, line-height 1, serif): The hero `<h1>` (`.hero-headline`) — the positioning line ("Broad by instinct, deep by choice."), not the name. Tight tracking (-0.03em), capped at 20ch. Its single italic word runs in Terracotta Ink at the same scale — this is the one place a large surface of the accent color is visible on the page, and it's the site's boldest color moment by design. *Was 600 at `clamp(3.25rem, 11vw, 6.25rem)`:* sized as a poster, it took the whole first screen and left the line no room to be read as a sentence. Down ~25% and back to 500 — Newsreader's 500 already carries a display line at this size, and 600 made a positioning statement look like a headline shout. **The mobile override must track this clamp down** (`clamp(2.25rem, 9vw, 3.25rem)` below 720px); the old override peaked at 4rem, which against the new desktop maximum would have rendered the headline *larger* on a phone than on a laptop.
+- **Hero Rule** (`.hero-rule`, 3.5rem × 1px, Terracotta at 55%): Sits between headline and intro. It is the only thing separating a serif display line from serif body copy now that both run in Newsreader, and it does that at hairline weight instead of by opening a gap wide enough to read as a section break.
+- **Hero Intro** (400, `clamp(1.0625rem, 2.2vw, 1.1875rem)`, **serif**, line-height 1.7, max 52ch, `--color-ink-2`): The paragraph under the rule — first-person, names the person ("I'm **Hank Sha**", `<strong>` in `--color-ink`) and what they do. Serif, not sans: at 1.7 line-height it reads as the display line settling into prose rather than as a caption under it. This is where biography lives, not the display line.
 - **Label** (500, 0.6875–0.8125rem, mono, uppercase where noted, letter-spacing 0.04–0.15em): Nav links, section eyebrow numbers ("01", "02"), row index numbers, meta text, chip labels, footer. This is the dominant typographic voice of the page.
 - **Body** (400–500, 0.875–1.0625rem, sans/mono mixed by context, line-height 1.35–1.6): Row titles (sans, 500 weight), row descriptions and work-detail prose (sans, 400 weight, ~56–65ch max width).
 
 ### Named Rules
-**The One-Serif Rule.** Serif type appears in exactly two places, and they bookend the page: the hero headline (including its emphasized word) and the Contact closing statement (`.contact-call`). Both run at 600 weight, both put the accent on one word, and nothing between them is serif — that gap is what makes the return register as a close rather than a second heading. It is never used for the name, section headers, body copy, or UI chrome. A third serif is a decision, not a detail: it would turn the bookend back into a typeface the page merely uses. *(Supersedes the old "Two-Serif Rule," which counted the name — the name moved out of serif/display scale entirely when the hero was rebalanced to lead with positioning over identity.)*
+**The Serif Bookend Rule.** Serif type is confined to the two **ends** of the page: the hero opening (the headline, its emphasized word, and the intro paragraph beneath it) and the Contact closing statement (`.contact-call`). Both ends run at **500 weight** — the pairing only reads if both are set the same — and both put the accent on one word. Nothing between them is serif: not section headers, not body copy, not UI chrome, and never the name. That gap is what makes the return register as a close rather than as a second heading.
+
+The count is not the rule; the **placement** is. The hero intro joined the serif when the hero was rebuilt against a reference whose opening paragraph is serif — it is part of the *same opening gesture* as the headline it sits under, not a third site. A serif `<h2>` in the middle of the page would break this rule even though it would leave the count at three, because it would turn a bookend into a typeface the page merely uses. Ask "is this an end of the page?", not "how many serifs are there?"
+
+*(Supersedes the "One-Serif Rule," which counted sites rather than naming the principle, and the older "Two-Serif Rule," which counted the name — the name moved out of serif/display scale entirely when the hero was rebalanced to lead with positioning over identity. Also note: Newsreader loads at 400/500 only. A `font-weight: 600` on serif renders a synthesized faux-bold — if a 600 is ever genuinely needed, load the file rather than letting synthesis carry it.)*
+
+**The Nav Exception.** The nav is the one piece of structural chrome set in **sans, not mono** — the single documented exception to "mono for anything structural." Mono's fixed advance width is exactly what makes it right for columns of data and wrong for a full-width nav: spread across a wide track, its already-loose letterforms drift until the row reads as scattered labels standing near each other rather than one navigation object. Geist Sans holds the row together. The Label voice is not weakened by this — it still carries section eyebrows, index numbers, meta, chips, spec tables, the hero eyebrow and the footer, which is where the typewritten-ledger identity actually lives. The exception is the nav specifically, because it is the only structural element that has to span the full page width. Do not read it as permission to sand mono off other labels.
 
 **Low-Ego Hero.** The person's name is never the biggest thing on the page. It lives at label scale (nav) and body scale (first line of the intro paragraph) — never at display scale. What the headline says about the work always outranks who's saying it.
 
@@ -199,8 +209,8 @@ Between them, these three account for every `box-shadow` on the page (rotation s
 
 Powered by [Motion](https://motion.dev) (`src/main.ts`), used sparingly and only where it communicates something real — never decoration for its own sake.
 
-- **Hero entrance**: headline, intro paragraph, and spec table fade/rise in on load, staggered ~90ms apart (`initHeroEntrance`).
-- **Typed availability line** (`initTypewriter`): the hero spec's "Open to —" value types through four things Hank is open to, holds each ~2.4s, deletes, and moves on. **This is the page's one authored motion moment.** It sits in the mono spec table because the whole site is a typewritten ledger — the effect is the house voice, not a widget. It starts ~2.2s in so it doesn't compete with the hero entrance and so its shipped value can be read before it erases; it stops when the tab is hidden or the hero scrolls out of view. The element ships with real text in the HTML, so no-JS and reduced-motion both see a true line. The typed span is `aria-hidden` with an `.sr-only` sibling carrying the same content as one static string — a live region stuttering a character at a time is worse than no animation.
+- **Hero entrance**: eyebrow, headline, rule, intro paragraph, and spec table fade/rise in on load, staggered ~90ms apart (`initHeroEntrance`). Source order is the stagger order, so the availability line arrives first and the headline it introduces follows.
+- **Typed availability line** (`initTypewriter`): the hero eyebrow's "Open to" value types through four things Hank is open to, holds each ~2.4s, deletes, and moves on. **This is the page's one authored motion moment.** It runs in the mono Label voice because the whole site is a typewritten ledger — the effect is the house voice, not a widget. It moved out of the spec table and into the eyebrow above the headline when the hero was rebalanced; the phrase-length constraint got *stricter* in the move, since a wrap here shoves the headline rather than growing a table row. It starts ~2.2s in so it doesn't compete with the hero entrance and so its shipped value can be read before it erases; it stops when the tab is hidden or the hero scrolls out of view. The element ships with real text in the HTML, so no-JS and reduced-motion both see a true line. The typed span is `aria-hidden` with an `.sr-only` sibling carrying the same content as one static string — a live region stuttering a character at a time is worse than no animation.
 - **Nav underline wipe**: `.nav-link::after` scales in from its left edge on hover and out toward its right (`transform-origin` flips between the two states), so the rule reads as a pen stroke following the cursor rather than a bar switching on. The active link parks the same rule at full width from the left. `.nav-mark` carries the identical wipe in ink rather than terracotta.
 - **Scroll reveal**: ledger rows and stack columns fade/rise in, staggered ~60ms apart, the first time their section crosses 10% into the viewport (`initScrollReveal`). Sections are visible-by-default in CSS — JS only hides a row the instant before it schedules that row's reveal, so a JS failure never leaves content invisible.
 - **Magnetic CTA**: the two filled CTA pills — the hero's "Get in touch →" (`.spec .cta`) and the nav's "Résumé" (`.nav-cta`) — nudge up to 6px toward the cursor on `pointermove`, spring back on `pointerleave`. Fine-pointer devices only (`(pointer: fine)`) — never on touch. Extending it from one button to both closes the set named in the 60/30/10 rule's two-pill exception, rather than opening a new one — nothing beyond those two carries the effect. `.cta-outline` has styling but no instance.
@@ -250,14 +260,35 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 - **Hover:** Background washes to Terracotta Tint; title and arrow shift to Terracotta Ink; arrow nudges 4px right. A `.row-static` variant (no link) explicitly suppresses this — hovering it does nothing, signaling non-interactivity.
 
 ### Navigation
-- Sticky, mono labels in Soft Ink at 0.8125rem (bumped up from 0.75rem for legibility); hover/active state shifts to Deep Ink with a 1.5px Terracotta underline (active = current section via scroll-spy).
+- Sticky, **sans** labels (Geist Sans) in Soft Ink at 0.8125rem, tracking -0.005em; hover/active state shifts to Deep Ink with a 1.5px Terracotta underline (active = current section via scroll-spy). The Résumé pill matches at 0.75rem/500.
 - **The underline is directional.** It wipes in from the left on hover and out toward the right on leave — one rule with `transform-origin` flipped between the two states. A centre-out scale reads as a bar switching on; the wipe reads as a pen stroke. Same treatment on `.nav-mark`, drawn in ink rather than terracotta since the wordmark is a destination, not a section marker.
 - Mobile: wordmark hides, gaps and tracking tighten, no overlay/hamburger — the same inline list just gets denser.
-- **Six items is the mobile ceiling.** Below 720px, Home and Stack drop out (Home is covered by the wordmark; Stack is reference material rather than a destination), leaving Projects · Writing · Work · About · Contact · CV. Below 360px a final density step tightens gaps and type. Verified to fit without clipping the CV pill at 320/360/390/420px — **re-measure at 320px before adding a seventh nav item**, since the list has no overflow affordance and the pill clips silently.
+- **Six items is the mobile ceiling.** Below 720px, Home and Stack drop out (Home is covered by the wordmark; Stack is reference material rather than a destination), leaving Projects · Writing · Work · About · Contact · CV. Below 360px a final density step tightens gaps and type. Verified to fit without clipping the CV pill at 320/360/375/400/430px — **re-measure at 320px before adding a seventh nav item**, since the list has no overflow affordance and the pill clips silently.
+- **The narrow end has almost no slack, and it is spent easily.** Measured free space in the link track: 660px at 1440, but only 7px at 375 and 4px at 320. Two separate changes during the full-width rework each silently consumed all of it — sizing the mobile links up to 0.75rem (sans is narrower per character, but not by *that* much), and raising the capsule's inset floor from 0.75rem to 1rem (which comes straight out of the track, twice). Both were caught by measuring, not by looking: the row still *appeared* fine because `space-between` collapses to the minimum `gap` and the overhang went into a transparent hit-area pseudo. **Measure the slack at 320 and 375 after touching nav type, gaps, or capsule inset** — the failure is invisible until it clips.
 - **The wordmark is now the favicon's "HS" monogram** (`.nav-mark`, inline SVG reusing the same markup as `public/favicon.svg`, minus its paper background/border box — transparent, terracotta letterforms via `currentColor`), not the "Hank Sha" text. One mark now does browser tab, nav, and (unchanged) apple-touch-icon — a single identity instead of a text wordmark plus a separate icon. `aria-label="Hank Sha — home"` on the anchor carries the accessible name since the visible glyph no longer spells it out. Same hover-wipe underline as before, unchanged. Still hidden below 720px (unchanged mobile behavior — the icon is small enough it *could* fit, but re-introducing it there wasn't verified against the same 320px-clipping risk the six-item ceiling above already flags, so it stays out for now).
 - **Always floating.** The nav is the inset, translucent, blurred capsule from the very first paint — not a state it detaches into on scroll. `top: 0.75rem`, `margin-inline`, the border, radius, background, and shadow are all constant values on `.nav` itself, never toggled by JS. (An earlier version of this toggled them via a `.is-floating` class once the hero had scrolled underneath the nav — flush and opaque at the top of the page, floating once scrolled. That meant mutating `top`/`margin` on an already-stuck `position: sticky` element mid-scroll, which fought the browser's own scroll-linked sticky recompute and produced a visibly broken, unstuck nav. Making every one of these values constant from load sidesteps that failure mode entirely, and there's no more `initNavFloating`/`initNavStuck` in `main.ts` — the nav needs zero scroll-driven JS now.) Backdrop blur is progressive enhancement: the higher-opacity solid background is the `@supports`-gated fallback for browsers without `backdrop-filter`.
 - **Fixed: sticky dropping out past one viewport of scroll.** `body` carried `height: 100%` alongside `overflow-x: clip`. Because `html` already declares a non-`visible` `overflow-y`, the usual body→viewport overflow propagation doesn't kick in, so `body` became its own scroll-container-ish box pinned to exactly one viewport tall — which capped how far a `position: sticky` child of `body` (the nav) could stay stuck before falling back into normal flow and scrolling off with the rest of the page. Fix was to drop `height: 100%` from `body` (the `overflow-x: clip` alone still does its job — nothing else in the sheet depended on body's own height, only `html`'s). Nothing about the floating-capsule styling itself was implicated.
-- **Content is centered as one group, not stretched edge-to-edge.** `.nav-inner` used to be `max-width: 68rem; justify-content: space-between`, which pinned the wordmark to the capsule's left edge and the link list to its right — on anything wider than a laptop that left several hundred px of dead air between them, reading as two unrelated clusters rather than one composed nav. It's now `width: fit-content` with a flat `gap: 2rem` between the mark and the list, centered via `margin: 0 auto` inside the full-width capsule — symmetric empty space on both sides instead of one lopsided gap in the middle. Below 720px, where the wordmark is hidden and the link list is the only flex child left, `.nav-inner` goes back to `width: 100%` so the list stays pinned to the left edge instead of drifting to center.
+- **The bar shares the page's 68rem column.** It is not full-bleed. A capsule spanning the whole viewport pushed the wordmark and the Résumé pill out to the screen edges while the page's own content started ~220px in, so both ends of the nav lined up with nothing and the bar read as a separate object floating over the page instead of as its masthead. `.nav` is capped at 68rem and `.nav-inner` carries the *same* `clamp(1.15rem, 5vw, 3rem)` padding as `.hero` and every `.section-inner` — which puts the wordmark on the exact x where the headline starts and the pill where the text column ends. **Change that padding only alongside the section padding.**
+
+- **The 68rem crossover needs a media query, not `min()`.** Below 68rem the sections run edge to edge while the capsule still wants an inset to keep floating, so the nav has to hand back exactly what the inset took (`padding: max(0.85rem, heroPadding − inset)`). The switch must happen at exactly 68rem. Writing it as `max-width: min(68rem, 100% - inset*2)` on `.nav` is the obvious-looking version and is **wrong**: just above 68rem the inset term is the smaller of the two, so it binds while the sections are still capped at 68rem, and the wordmark jumps ~33px inboard across a band of widths around the crossover — measured 51 vs 84 at 1160px. Verified at 1px constant delta (the capsule's own border) from 760px to 1920px.
+
+- **Three anchors: mark left, link group centred, pill right.** Inside the bar, `.nav-list` is `flex: 1`, and auto margins on its **first and last** `li` split the free space evenly — so the wordmark holds the left edge, the Résumé pill holds the right, and the seven section links float as one group in the middle.
+
+  **The spacing between links is an authored value, not leftover space:** `gap: clamp(1.25rem, 2.2vw, 2rem)`, about one em of the 13px label. This separation is the entire trick — it lets the bar span the full page while the links stay a fixed, legible distance apart.
+
+  This is the fourth layout the nav has had, and the three rejected ones are the useful part:
+
+  | Layout | Failure |
+  |---|---|
+  | `max-width: 68rem` + `space-between` on `.nav-inner` | Wordmark left, whole link *cluster* right — hundreds of px of dead air in the middle. |
+  | `width: fit-content`, centred capsule | Cured the dead air by making the nav small. Fixed the symptom, gave up the full-width bar. |
+  | Full-width + `space-between` on `.nav-list` | Spread eight links across 1440px at ~100px apart — the row stopped reading as one nav and became eight unrelated words. |
+
+  The lesson across all three: **dead air is a distribution problem, and distribution is not the same as stretching.** Two items at opposite ends of a wide track always strand the middle — but handing the gap to `space-between` overcorrects, because the spacing then depends on viewport width rather than on the type. Anchoring three groups and keeping the gap typographic satisfies both. If a future change reintroduces dead air, add an anchor — don't stretch the gaps, and don't shrink the bar.
+
+- **Too few items needs the opposite answer.** `.utility-nav` (the résumé page) carries two links. Centring a *pair* splits them to either side of the void between anchors — the original dead-air defect, reproduced exactly. So `.utility-nav .nav-list > li:last-child` drops its auto margin, which collapses the group onto the trailing edge with the wordmark holding the left. **The centred-group layout assumes enough items to read as a group**; below roughly four, anchor them to one end. (The paper viewer and the résumé variant pages are unaffected — they use `.viewer-bar`/`.viewer-id`, not `.nav-list`.)
+
+- **Mobile falls out of the same rule for free.** Below 720px the wordmark and the first item (Home) are both `display: none`, and a hidden element contributes no auto margin — so only the pill keeps one. The links pack left, the pill holds the right edge. No mobile-specific layout override is needed.
 
 ### Section Header
 - **Structure:** `<h2><span>05</span>Off the Ledger</h2>` in mono, uppercase, `0.15em` tracking.
@@ -299,9 +330,9 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 - **Static tile** (`.bento-static`): For content with no link yet (the topological-signatures research write-up) — no hover lift or shadow deepening, mirroring `.row-static`'s non-interactive signal.
 
 ### Favicon
-- **Artwork:** Warm Paper ground, Terracotta `HS` set in IBM Plex Mono 600, a Terracotta hairline border at 40% and one short Terracotta rule beneath the initials — the ledger's own three ingredients at 64px. Square-cornered, matching the system default. The previous violet-to-pink gradient on near-black belonged to the pre-ledger design and matched nothing on the page.
+- **Artwork:** Warm Paper ground, Terracotta `HS` set in Geist Mono 600, a Terracotta hairline border at 40% and one short Terracotta rule beneath the initials — the ledger's own three ingredients at 64px. Square-cornered, matching the system default. The previous violet-to-pink gradient on near-black belonged to the pre-ledger design and matched nothing on the page.
 - **Sized for 16px.** The initials fill most of the tile because at a browser tab's real size the border and rule read as texture, not detail — the mark has to carry it alone. Check any change at 16px before 192px.
-- **Regeneration:** `bash scripts/favicons.sh` rasterises `public/favicon.svg` into the three PNG fallbacks (32, 180, 192). It drives a headless browser rather than a fontconfig rasteriser on purpose: IBM Plex Mono is self-hosted, not installed, so `rsvg-convert`/ImageMagick silently substitute another mono face and the PNGs stop matching the SVG. The artwork is duplicated in `scripts/favicon-render.html` because an SVG inside an `<img>` can't see the page's webfont — **edit both together.**
+- **Regeneration:** `bash scripts/favicons.sh` rasterises `public/favicon.svg` into the three PNG fallbacks (32, 180, 192). It drives a headless browser rather than a fontconfig rasteriser on purpose: Geist Mono is self-hosted, not installed, so `rsvg-convert`/ImageMagick silently substitute another mono face and the PNGs stop matching the SVG. The artwork is duplicated in `scripts/favicon-render.html` because an SVG inside an `<img>` can't see the page's webfont — **edit both together.**
 - `site.webmanifest`'s `theme_color`/`background_color` and the `<meta name="theme-color">` all carry Warm Paper. They're part of the mark; a stale value there shows as a dark browser chrome strip on mobile.
 
 ### Contact Pill Button
@@ -328,7 +359,7 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 - **Prose has three weights, not one.** A lead line (`.personal-lead`, one step up, Deep Ink, ~30ch) opens the section; body paragraphs (`.personal-note`) carry it; and one line is promoted to a pull quote (`.personal-pull`) that outdents clear through the ruled margin into the gutter, marked by a 1px terracotta stub sitting *outside* the spine. The outdent is what makes it read as pulled — the mark alone isn't enough, and a mark sitting on the spine just doubles the rule. This is the only place on the page where a line of type steps outside its own column.
 - **The pull quote's paper background is structural.** Outdenting past the spine puts the ruled margin *behind* the quote, where the hairline strikes through the first character of every line — that reads as a rendering fault, not as structure. An opaque `--color-paper` block on the quote interrupts the rule for exactly this passage, so the spine steps aside for the one thing that breaks out of the column. It couples the quote to Off the Ledger sitting on the paper band; move the section to another band and this moves with it. Below 900px the outdent is dropped entirely (the column gap is narrower than the outdent, so the quote would reach into the portrait instead of into empty space) and the terracotta mark carries it alone.
 - **Label voice:** The labels are deliberately not the generic ones ("Hobbies", "On repeat", "Reading"). They should sound like this person keeping a log, not like a template. Any new row should be named in that same register.
-- **Italics are faux here.** IBM Plex Mono ships no italic in the loaded weights, so `<em>` (used for book titles) is browser-synthesized. Checked at render and it holds up at this size — not worth a ~14KB font file for one string. If italics ever spread beyond the odd title, load `ibm-plex-mono/latin-400-italic` rather than letting synthesis carry it.
+- **Italics are faux here.** Geist Mono ships no italic in the loaded weights, so `<em>` (used for book titles) is browser-synthesized. Checked at render and it holds up at this size — not worth a ~14KB font file for one string. If italics ever spread beyond the odd title, load `geist-mono/latin-400-italic` rather than letting synthesis carry it.
 - **Unfilled values** carry a `.pending` class (italic, Soft Ink) so a placeholder can never be mistaken for real content — this section is all first-person claims, and a plausible-looking fake would be worse here than an obvious gap. Currently unused; keep it for the next row added before its value is known.
 - **Voice:** First person, and the only reflective prose on the site outside the hero intro. Three short paragraphs; this section earns its place by being brief.
 
@@ -345,7 +376,7 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 
 ### Do:
 - **Do** keep the accent to marks and hovers by default — labels, underlines, index numbers, `::selection`. The two CTA pills and the headline's highlight block are the named exceptions, not a pattern to extend.
-- **Do** use mono for anything structural or numeric (nav, index numbers, meta, chips, labels); sans for prose; serif only for the hero headline and the Contact closing statement, each with its one highlighted word (see the One-Serif Rule); never for the name.
+- **Do** use mono for anything structural or numeric (index numbers, meta, chips, labels, spec tables); sans for prose below the hero **and for the nav** (see The Nav Exception); serif only at the two ends of the page — the hero opening (headline + intro) and the Contact closing statement (see the Serif Bookend Rule); never for the name.
 - **Do** separate content with rule weight (Hairline Rule / Hairline Rule Soft / Terracotta Dim), not shadows or elevation.
 - **Do** keep row hover feedback in-plane (tint wash, color shift, small arrow nudge) — nothing lifts off the page except the explicit pill-button exceptions.
 
@@ -357,6 +388,6 @@ The core structural unit of most of the site — Writing, Skills, and Work rende
 - **Don't** add a filled/backgrounded terracotta element beyond the named ones (60/30/10 rule); everywhere else the accent marks, it doesn't fill. The named set is: the two CTA pills (`.spec .cta`, `.nav-cta`), the hero headline's highlight block (`.hero-headline em`), the typed line's caret (`.typeline-caret`), and the skip link (`.skip-link`). The last two are marks-not-surfaces and the skip link is focus-only, which is why they don't count against the ratio — but they are terracotta fills, and this list is the whole set. A sixth is a decision, not a detail.
 - **Don't** add a fourth ink band, or bunch the existing three together — see the Three-Band Rule. A new section joins the paper/cream alternation.
 - **Don't** restyle components for ink bands. Add the inversion to the existing `.band-ink` block instead; a component that needs bespoke dark styling is a sign the component is wrong, not that dark is hard.
-- **Don't** use base Terracotta (#B0442A) on an ink band — it fails contrast at 3.1:1. Terracotta Light is the ink-band accent.
+- **Don't** use base Terracotta (#A63F26) on an ink band — it fails contrast at 3.1:1. Terracotta Light is the ink-band accent.
 - **Don't** give `.section` a top-only padding again; bands need symmetric `padding-block` or content collides with the next band's edge.
 - **Don't** round corners by default; the pills, album covers, and the floating nav capsule are the named exceptions (see Shapes), not a precedent.

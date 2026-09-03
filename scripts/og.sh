@@ -2,7 +2,7 @@
 #
 # Regenerates public/assets/og-preview.png (1200x630) from scripts/og-render.html.
 #
-# Why a browser and not a static export: the card is set in IBM Plex Serif and
+# Why a browser and not a static export: the card is set in Newsreader and Geist
 # Mono, which the site self-hosts but does not install system-wide. Chromium
 # loading the same @fontsource files the site loads is the only rasterizer
 # guaranteed to agree with the page — same reasoning as scripts/favicons.sh.

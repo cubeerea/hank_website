@@ -46,8 +46,12 @@ function initLastUpdated(): void {
 function initHeroEntrance(): void {
   if (prefersReducedMotion()) return;
 
+  // Source order is the stagger order, and the eyebrow now leads it — the
+  // status line arrives first, then the headline it introduces.
   const targets = Array.from(
-    document.querySelectorAll<HTMLElement>('.hero-headline, .hero-intro, .spec'),
+    document.querySelectorAll<HTMLElement>(
+      '.hero-eyebrow, .hero-headline, .hero-rule, .hero-intro, .spec',
+    ),
   );
   if (!targets.length) return;
 
@@ -68,9 +72,9 @@ function initHeroEntrance(): void {
 // ========================================
 
 /**
- * Types the hero spec's "Open to —" value through the things Hank is actually
- * open to, then deletes and moves on. The line lives in the mono spec table,
- * so the typewriter reads as the site's own voice rather than a widget.
+ * Types the hero eyebrow's "Open to" value through the things Hank is actually
+ * open to, then deletes and moves on. The line runs in the page's mono Label
+ * voice, so the typewriter reads as the site's own voice rather than a widget.
  *
  * Three things keep it honest:
  *   - the element ships with real text in the HTML, so no-JS sees a true line;
@@ -82,8 +86,8 @@ function initTypewriter(): void {
   const el = document.getElementById('typewriter');
   if (!el || prefersReducedMotion()) return;
 
-  // Keep every phrase under ~26 characters: the row is one mono line at 320px,
-  // and a phrase that wraps makes the whole spec table jump a line-height each
+  // Keep every phrase under ~26 characters: the eyebrow is one mono line at
+  // 320px, and a phrase that wraps pushes the headline down a line-height each
   // time it comes round. ("Mechanistic interpretability" was exactly that.)
   const phrases = [
     'Applied AI',
@@ -420,8 +424,8 @@ function initDotField(): void {
   const STIFFNESS = 210;
   const DAMPING = 24;
   const REST_EPS = 0.02;
-  const DOT_ON_PAPER = '111, 96, 82'; // --color-ink-3, this system's tertiary/quiet ink
-  const DOT_ON_INK = '246, 241, 232'; // --color-paper, at reduced alpha below
+  const DOT_ON_PAPER = '105, 91, 77'; // --color-ink-3, this system's tertiary/quiet ink
+  const DOT_ON_INK = '244, 236, 216'; // --color-paper, at reduced alpha below
   const DOT_ALPHA = 0.17;
 
   const animated = !prefersReducedMotion() && window.matchMedia('(pointer: fine)').matches;
