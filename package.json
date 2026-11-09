@@ -5,10 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "node scripts/render-content.mjs --check && tsc --noEmit && vite build",
     "preview": "vite preview",
     "shots": "bash scripts/shots.sh",
-    "check:facts": "node scripts/check-facts.mjs"
+    "check:facts": "node scripts/check-facts.mjs",
+    "content": "node scripts/render-content.mjs",
+    "content:check": "node scripts/render-content.mjs --check",
+    "test": "node --test \"scripts/*.test.mjs\" \"manager/**/*.test.mjs\"",
+    "manager:scan": "node manager/github/scan.mjs --owner cubeerea",
+    "manager:linkedin": "node manager/linkedin/parse.mjs"
   },
   "repository": {
     "type": "git",

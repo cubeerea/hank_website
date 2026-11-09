@@ -1,0 +1,16 @@
+{
+  "owner": "cubeerea",
+  "repos": {
+    "alpha-tool": { "status": "included", "projectId": "alpha", "decidedAt": "2026-10-01" },
+    "beta-notes": { "status": "included", "projectId": "beta", "decidedAt": "2026-10-01" },
+    "gamma-lab": { "status": "ignored", "reason": "coursework", "decidedAt": "2026-10-01" },
+    "delta-site": { "status": "ignored", "reason": "the portfolio site itself", "decidedAt": "2026-10-01" },
+    "pending-proj": { "status": "pending", "offeredAt": "2026-10-25" }
+  },
+  "snapshot": {
+    "alpha-tool": { "description": "A CLI for alphas", "homepage": "", "stars": 3, "pushedAt": "2026-10-01T10:00:00Z", "topics": ["cli"], "archived": false, "language": "Python" },
+    "beta-notes": { "description": "Notes app", "homepage": "https://beta.example.com", "stars": 2, "pushedAt": "2026-10-05T10:00:00Z", "topics": ["notes", "ai"], "archived": false, "language": "TypeScript" },
+    "gamma-lab": { "description": "Research lab repo", "homepage": "", "stars": 0, "pushedAt": "2026-09-01T10:00:00Z", "topics": [], "archived": false, "language": "Jupyter Notebook" }
+  },
+  "lastScanAt": "2026-11-02T13:00:00.000Z"
+}

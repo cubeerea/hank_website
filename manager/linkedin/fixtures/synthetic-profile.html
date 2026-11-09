@@ -1,0 +1,106 @@
+<!doctype html>
+<!-- SYNTHETIC fixture mimicking the layout of LinkedIn "Save to PDF". Fictional person "Alex Example". -->
+<html lang="en"><head><meta charset="utf-8"><title>Alex Example - LinkedIn (synthetic)</title>
+<style>
+@page { size: Letter; margin: 0; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Helvetica, Arial, sans-serif; color: #111; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page { position: relative; width: 8.5in; height: 11in; display: flex; overflow: hidden; break-after: page; }
+.page:last-child { break-after: auto; }
+.side { width: 30%; background: #f1f2f4; padding: 36pt 18pt 36pt 24pt; font-size: 9.5pt; }
+.main { flex: 1; padding: 36pt 36pt 36pt 28pt; font-size: 10pt; }
+.side h2, .main h2 { font-size: 13pt; margin: 16pt 0 6pt; font-weight: bold; }
+.side .item, .main .item { margin: 0 0 2pt; line-height: 1.3; }
+.name { font-size: 24pt; font-weight: bold; margin: 0 0 4pt; }
+.headline { font-size: 11pt; margin: 0 0 2pt; }
+.location { font-size: 9.5pt; color: #444; margin: 0 0 6pt; }
+.company { font-weight: bold; font-size: 10.5pt; margin: 12pt 0 0; }
+.duration { font-size: 9pt; color: #444; margin: 0 0 6pt; }
+.role { font-weight: bold; margin: 8pt 0 0; }
+.sub { margin-left: 18pt; }
+.dates { font-size: 9pt; color: #444; margin: 0 0 2pt; }
+.desc { margin: 2pt 0 0; line-height: 1.35; }
+.meta { color: #444; font-size: 9pt; margin: 0 0 6pt; }
+.footer { position: absolute; bottom: 18pt; left: 0; right: 0; text-align: center; font-size: 8pt; color: #666; }
+</style></head><body>
+
+<!-- ============ PAGE 1 ============ -->
+<div class="page">
+  <aside class="side">
+    <h2>Contact</h2>
+    <div class="item">alex.example@example.com</div>
+    <div class="item">+1 555 0100</div>
+    <div class="item">linkedin.com/in/alex-example</div>
+    <h2>Top Skills</h2>
+    <div class="item">Python</div>
+    <div class="item">Distributed Systems</div>
+    <div class="item">Technical Writing</div>
+    <h2>Languages</h2>
+    <div class="item">English</div>
+    <div class="meta">Native or bilingual proficiency</div>
+    <div class="item">Spanish</div>
+    <div class="meta">Limited working proficiency</div>
+  </aside>
+  <section class="main">
+    <div class="name">Alex Example</div>
+    <div class="headline">Staff Data Engineer | Building reliable data pipelines</div>
+    <div class="location">Lisbon, Portugal</div>
+
+    <h2>Summary</h2>
+    <div class="desc">Data engineer with eight years of experience designing streaming ingestion,
+    warehouse modelling and developer tooling. Enjoys turning messy operational data into
+    dependable products.</div>
+
+    <h2>Experience</h2>
+    <div class="company">Northwind Analytics</div>
+    <div class="duration">Full-time · 4 yrs 2 mos</div>
+    <div class="sub">
+      <div class="role">Staff Data Engineer</div>
+      <div class="dates">September 2025 - Present (1 year 3 months)</div>
+      <div class="meta">Lisbon, Portugal · Hybrid</div>
+      <div class="desc">Own the event ingestion platform and lead a team of four engineers
+      delivering the customer analytics warehouse.</div>
+    </div>
+  </section>
+  <div class="footer">Page 1 of 2</div>
+</div>
+
+<!-- ============ PAGE 2 ============ -->
+<div class="page">
+  <aside class="side">
+    <h2>Certifications</h2>
+    <div class="item">Certified Kubernetes Administrator</div>
+    <div class="meta">Linux Foundation · Issued Mar 2024</div>
+    <div class="item">AWS Certified Developer - Associate</div>
+    <div class="meta">Amazon Web Services (AWS) · Issued Jan 2023</div>
+    <h2>Honors-Awards</h2>
+    <div class="item">Best Internal Platform Talk 2024</div>
+    <div class="meta">Issued Nov 2024 · Northwind Analytics</div>
+  </aside>
+  <section class="main">
+    <div class="sub">
+      <div class="role">Data Engineer</div>
+      <div class="dates">March 2023 - August 2025 (2 years 6 months)</div>
+      <div class="meta">Remote</div>
+      <div class="desc">Built the streaming pipeline that replaced the nightly batch jobs and
+      cut data freshness from 24 hours to 15 minutes.</div>
+    </div>
+
+    <div class="company">Harbor Robotics</div>
+    <div class="role">Machine Learning Engineer</div>
+    <div class="dates">June 2021 - February 2023 (1 year 9 months)</div>
+    <div class="meta">Porto, Portugal · On-site</div>
+    <div class="desc">Trained perception models for warehouse robots and shipped the on-device
+    inference runtime.</div>
+
+    <h2>Education</h2>
+    <div class="item" style="font-weight:bold">Universidade de Lisboa</div>
+    <div class="item">Master of Science - MSc, Computer Science</div>
+    <div class="dates">2019 - 2021</div>
+    <div class="item" style="font-weight:bold; margin-top:8pt">Example State University</div>
+    <div class="item">Bachelor of Science - BS, Information Systems</div>
+    <div class="dates">2015 - 2019</div>
+  </section>
+  <div class="footer">Page 2 of 2</div>
+</div>
+</body></html>
