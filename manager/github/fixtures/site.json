@@ -1,0 +1,11 @@
+{
+  "projects": [
+    { "id": "alpha", "title": "Alpha Tool", "href": "https://github.com/cubeerea/alpha-tool", "external": true, "desc": "x", "tag": "Tool", "source": { "github": "alpha-tool" } },
+    { "id": "beta", "title": "Beta Notes", "href": "https://github.com/cubeerea/beta-notes", "external": true, "desc": "x", "tag": "App", "source": { "github": "beta-notes" } },
+    { "id": "old", "title": "Old Thing", "href": "https://github.com/cubeerea/old-thing", "external": true, "desc": "x", "tag": "Old", "source": { "github": "old-thing" } },
+    { "id": "static", "title": "Static Tile", "desc": "x", "tag": "Misc", "static": true }
+  ],
+  "writing": [],
+  "stack": [],
+  "experience": { "items": [] }
+}

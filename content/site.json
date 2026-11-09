@@ -1,0 +1,271 @@
+{
+  "projects": [
+    {
+      "id": "pid",
+      "title": "Global PID Steering",
+      "href": "/pid-steering",
+      "external": false,
+      "desc": "One averaged refusal vector beats per-layer PID at defending Gemma-2 without wrecking it on benign prompts.",
+      "spec": [
+        { "term": "Model", "detail": "Gemma-2-2B-it" },
+        { "term": "Method", "detail": "One averaged refusal vector, over a verified persistence window" },
+        { "term": "Benign refusals", "detail": "3.5% vs 96% for full-depth per-layer PID (1.5% unsteered)" },
+        { "term": "Caveat", "detail": "Both block all 104 GCG attacks, largely the model's existing alignment rather than the steering" }
+      ],
+      "tag": "Research · AI Safety",
+      "cue": "Read the paper"
+    },
+    {
+      "id": "d4g",
+      "title": "Data4Good Hackathon",
+      "href": "https://devpost.com/software/project-nexus",
+      "external": true,
+      "desc": "Won the Civic Engagement &amp; Policy track at UCSB's Data4Good hackathon.",
+      "tag": "Hackathon",
+      "cue": "Devpost"
+    },
+    {
+      "id": "nba",
+      "title": "NBA Contract Value",
+      "href": "https://nba-contract-analytics.vercel.app/",
+      "external": true,
+      "desc": "Ranks all NBA contracts against performance and other metrics.",
+      "tag": "Personal Project",
+      "cue": "Live",
+      "source": { "github": "NBA-contract-analytics" }
+    },
+    {
+      "id": "zet",
+      "title": "Zettel AI",
+      "href": "https://github.com/cubeerea/zettel-ai",
+      "external": true,
+      "desc": "Non-linear note-taking app that surfaces connections between notes and visualizes them as a knowledge graph.",
+      "tag": "Personal Project",
+      "cue": "GitHub",
+      "source": { "github": "zettel-ai" }
+    },
+    {
+      "id": "xeno",
+      "title": "Xeno CLI",
+      "href": "https://github.com/cubeerea/xeno-cli",
+      "external": true,
+      "desc": "Six specialist agents plan, code, and review changes autonomously inside sandboxed, network-isolated containers.",
+      "tag": "Personal Project",
+      "cue": "GitHub",
+      "source": { "github": "xeno-cli" }
+    },
+    {
+      "id": "topo",
+      "title": "Exploring How LLMs Improve Graph Quality Using Topological Signatures",
+      "desc": "Authored work on node classification and graph unlearning. Pending IEEE BigData 2026.",
+      "tag": "Research · GNNs",
+      "static": true
+    }
+  ],
+  "writing": [
+    {
+      "title": "5 AI Prompts That Will Seriously Save You 20+ Hours a Week (Free Guide)",
+      "href": "https://medium.com/@cubeerea/ai-prompts-i-use-everyday-37f71a7b3cde",
+      "external": true,
+      "desc": "Sharing AI prompts in my workflow.",
+      "cue": "Read"
+    },
+    {
+      "title": "Under the Hood of Neural Networks: Implementing Autograd from Scratch",
+      "href": "https://medium.com/@cubeerea/5-steps-to-memorizing-the-autograd-implementation-for-good-9e49b683fe9c",
+      "external": true,
+      "desc": "Technical notes on Autograd implementation.",
+      "cue": "Read"
+    },
+    {
+      "title": "AI Didn't Raise the Bar. It Removed the Ladder.",
+      "href": "https://medium.com/@cubeerea/ai-didnt-raise-the-bar-it-removed-the-ladder-f435d9fac198",
+      "external": true,
+      "desc": "On how AI shifts skill floor expectations, not just ceilings.",
+      "cue": "Read"
+    },
+    {
+      "title": "Attention Isn't All You Need: The Essential Foundations of Transformers",
+      "href": "https://blog.gopenai.com/beyond-scalar-autograd-building-and-understanding-the-transformer-skeleton-8179b7f01462",
+      "external": true,
+      "desc": "Breaking down what actually makes transformers work beyond self-attention.",
+      "cue": "Read"
+    }
+  ],
+  "stack": [
+    {
+      "label": "Languages",
+      "items": [
+        { "name": "Python" },
+        { "name": "TypeScript", "note": "JS" },
+        { "name": "R" },
+        { "name": "bash" }
+      ]
+    },
+    {
+      "label": "LLM Engineering",
+      "items": [
+        { "name": "OpenRouter" },
+        { "name": "LangChain" },
+        { "name": "LangGraph" },
+        { "name": "Hugging Face" },
+        { "name": "Ollama" },
+        { "name": "Pinecone" },
+        { "name": "Neo4j", "note": "Kùzu" },
+        { "name": "LanceDB" }
+      ]
+    },
+    {
+      "label": "ML & Data",
+      "items": [
+        { "name": "PyTorch" },
+        { "name": "XGBoost" },
+        { "name": "scikit-learn" },
+        { "name": "SciPy" },
+        { "name": "NumPy" },
+        { "name": "pandas" },
+        { "name": "CUDA" },
+        { "name": "ETL" }
+      ]
+    },
+    {
+      "label": "Full-Stack",
+      "items": [
+        { "name": "Node.js" },
+        { "name": "FastAPI", "note": "Pydantic v2" },
+        { "name": "React", "note": "Vite" },
+        { "name": "PostgreSQL" },
+        { "name": "SQLite" },
+        { "name": "MongoDB" }
+      ]
+    },
+    {
+      "label": "Infra & Tools",
+      "items": [
+        { "name": "Docker" },
+        { "name": "GCP", "note": "Compute Engine" },
+        { "name": "Git", "note": "CI/CD" },
+        { "name": "GitHub Actions" },
+        { "name": "Vercel" },
+        { "name": "Upstash", "note": "Redis" }
+      ]
+    }
+  ],
+  "experience": {
+    "items": [
+      {
+        "id": "work-1",
+        "title": "Research Assistant",
+        "org": "Yuzhou Chen's Lab",
+        "dates": "Jun 2025 – Mar 2026",
+        "focus": "LLMs, Graph Unlearning",
+        "ariaLabel": "Research Assistant, Yuzhou Chen's Lab",
+        "meta": { "stack": "Research", "win": "4x inference speedup" },
+        "gist": [
+          { "label": "The Gist", "html": "Second author on research involving LLMs and Graph Unlearning. Built experimental pipelines and optimized local model inference under compute constraints." },
+          { "label": "Key Win", "html": "Achieved a 4x speedup in experiment runtimes by optimizing CUDA configurations and quantization settings." },
+          { "label": "Skills", "html": "PyTorch, Hugging Face, CUDA, Graph Neural Networks." }
+        ],
+        "blocks": [
+          {
+            "heading": "Context",
+            "paragraphs": [
+              "Research assistant on projects involving large language models, graph unlearning, and topological graph structures. Primary responsibilities: replicating results from existing papers, implementing experimental pipelines, and supporting ongoing research. Second author on a paper exploring the use of LLMs for node and graph unlearning tasks.",
+              "Constraints: limited compute budget, tight publication timelines, no dedicated infrastructure."
+            ]
+          },
+          {
+            "heading": "Action",
+            "items": [
+              "<strong>Inference 4x faster</strong> — profiled HF Transformers serving path; identified KV-cache thrash and tokenizer overhead as bottlenecks.",
+              "<strong>Evaluated vLLM</strong> — concluded setup cost outweighed gains under research timeline; documented the call.",
+              "<strong>Custom data pipeline</strong> — assembled a one-off ingestion stack for unstructured experiment logs using third-party tools."
+            ]
+          },
+          {
+            "heading": "Lessons",
+            "items": [
+              "Sophistication has overhead. A simpler CUDA setup outperformed a more advanced serving framework given the constraints. Knowing when not to use a tool is as important as knowing how.",
+              "Economic thinking applies to research. Time spent building infrastructure is time not spent running experiments. I learned to evaluate build-vs-buy tradeoffs quickly."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "work-2",
+        "title": "Clinical Data Science Internship",
+        "org": "Pre-IPO Biotech",
+        "dates": "Aug 2025 – Nov 2025",
+        "focus": "Phase II MDD Trial",
+        "ariaLabel": "Clinical Data Science Internship, Pre-IPO Biotech",
+        "meta": { "stack": "Internship", "win": "XGBoost · honest result" },
+        "gist": [
+          { "label": "The Gist", "html": "Applied ML to Phase II clinical trial data for MDD (Major Depressive Disorder). Conducted deep exploratory data analysis to find signals in high-noise environments." },
+          { "label": "Key Win", "html": "Provided a high-integrity technical audit that correctly identified ML as not suitable for the dataset, preventing action on unreliable signals." },
+          { "label": "Skills", "html": "XGBoost, Statistical Modeling, EDA, Biostatistics." }
+        ],
+        "blocks": [
+          {
+            "heading": "Context",
+            "paragraphs": [
+              "Analyzed Phase II clinical trial data for an MDD drug at a pre-IPO biotech company. Objective: use ML and statistical methods to identify potential gaps, latent signals, or patterns not captured by traditional analyses. I had no prior experience in clinical trials or biostatistics.",
+              "Constraints: small trial size, limited data points, high noise, and significant placebo effects—conditions that are common in psychiatric trials and fundamentally limit what ML can detect."
+            ]
+          },
+          {
+            "heading": "Action",
+            "items": [
+              "<strong>Trained classification models</strong> on biomarker data; XGBoost performed best of the candidates.",
+              "<strong>Honest negative result</strong> — accuracy unstable across folds; recommended against production deployment.",
+              "<strong>Domain ramp-up in 2 weeks</strong> — paired with biologists to translate assay outputs into ML-ready features."
+            ]
+          },
+          {
+            "heading": "Lessons",
+            "items": [
+              "Knowing when ML doesn't apply is part of the job. Small, noisy clinical datasets often lack the statistical power for ML to add value. Recognizing this early prevents wasted effort and misleading conclusions.",
+              "EDA and domain understanding matter more than model complexity. The most useful insights came from careful exploratory analysis, not from algorithmic sophistication."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "work-3",
+        "title": "AI/ML Engineer Intern",
+        "org": "GitRoll (HR-Tech, Pre-Seed)",
+        "dates": "Sep 2024 – Apr 2025",
+        "ariaLabel": "AI/ML Engineer Intern, GitRoll",
+        "meta": { "stack": "Internship", "win": "45K users · -13% cost" },
+        "gist": [
+          { "label": "The Gist", "html": "Scaled an LLM-based developer evaluation system to 45K+ users. Focused on prompt engineering, cost optimization, and reducing algorithmic bias." },
+          { "label": "Key Win", "html": "Reduced API costs by 13% and improved model performance by 20% through iterative benchmarking of GPT, Gemini, and Claude." },
+          { "label": "Skills", "html": "Python, LLMs, NLP, ast-grep, Supervised Learning." }
+        ],
+        "blocks": [
+          {
+            "heading": "Context",
+            "paragraphs": [
+              "GitRoll is a pre-seed HR-tech startup that scans GitHub repositories to evaluate developer contributions—designed to surface signal beyond resumes and help underrepresented developers get fairer evaluations."
+            ]
+          },
+          {
+            "heading": "Action",
+            "items": [
+              "<strong>Scaled to 45k+ users</strong> — owned PR-classification pipeline end-to-end; ~92% precision on 216+ hand-labeled issues.",
+              "<strong>Cut infra cost 13%</strong> — benchmarked GPT, Gemini, Claude; optimized model selection and prompt compression.",
+              "<strong>+20% throughput</strong> — replaced word-bank heuristic with NLTK-based categorization after A/B comparison."
+            ]
+          },
+          {
+            "heading": "Lessons",
+            "items": [
+              "Opportunities can be created, not just found. Proposing a trial period was uncomfortable but effective. Execution speaks louder than credentials.",
+              "Early-stage startups reward breadth. I touched LLM systems, labeling, static analysis, and product iteration—all within a few months. Context-switching is the job."
+            ]
+          }
+        ]
+      }
+    ],
+    "footnote": "Part-time <strong>Venture Scout</strong> at Bouken Capital (Sep 2025 – Apr 2026) — sourcing pre-seed/seed startups and writing partner-facing memos."
+  }
+}
