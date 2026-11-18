@@ -1212,6 +1212,10 @@ body::after {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-template-rows: repeat(3, minmax(10.5rem, auto));
+  /* Tiles beyond the six named areas (a 7th project, say) have no grid-area, so
+     they auto-place into implicit rows. Give those rows the named rows' minimum
+     height so a short tile is not collapsed to its content. Named rows unchanged. */
+  grid-auto-rows: minmax(10.5rem, auto);
   grid-template-areas:
     "pid pid d4g"
     "pid pid nba"
