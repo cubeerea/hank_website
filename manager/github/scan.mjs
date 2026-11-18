@@ -74,6 +74,12 @@ async function apiGet(url, token) {
   let res;
   try {
     res = await fetch(url, { headers });
+    // A token GitHub rejects (cloud sessions carry a proxy-scoped one) should not
+    // sink the scan: everything read here is public, so retry anonymously.
+    if (res.status === 401 && headers.Authorization) {
+      delete headers.Authorization;
+      res = await fetch(url, { headers });
+    }
   } catch (err) {
     throw new GitHubError(`network error calling GitHub: ${err.message}`, null);
   }
