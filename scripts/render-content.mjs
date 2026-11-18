@@ -72,48 +72,75 @@ const SPEC_COMMENT = [
 // documented as html in SCHEMA.md are inserted as-is.
 // ---------------------------------------------------------------------------
 
+// Project groups, in display order. `group` on a project picks one; a project
+// without it is engineering. Each group renders as its own labelled block with
+// its own 01, 02, … numbering.
+export const PROJECT_GROUPS = [
+  { key: 'engineering', label: 'Engineering' },
+  { key: 'research', label: 'Research' },
+];
+
+function renderTile(p, n) {
+  const classes = ['bento-tile', `bento-${p.id}`];
+  if (p.static) classes.push('bento-static');
+
+  const title = p.href
+    ? `<a href="${escapeText(p.href)}"${linkAttrs(p.external)}>${escapeText(p.title)}</a>`
+    : escapeText(p.title);
+
+  const lines = [
+    `<article class="${classes.join(' ')}">`,
+    `    <span class="bento-idx">${pad(n + 1)}</span>`,
+    `    <h4 class="bento-title">${title}</h4>`,
+    `    <p class="bento-desc">${p.desc}</p>`,
+  ];
+
+  if (p.spec) {
+    lines.push(...SPEC_COMMENT.map((l) => '    ' + l));
+    lines.push('    <dl class="bento-spec">');
+    for (const row of p.spec) {
+      lines.push('        <div>');
+      lines.push(`            <dt>${escapeText(row.term)}</dt>`);
+      lines.push(`            <dd>${row.detail}</dd>`);
+      lines.push('        </div>');
+    }
+    lines.push('    </dl>');
+  }
+
+  lines.push('    <div class="bento-foot">');
+  lines.push(`        <span class="bento-tag">${escapeText(p.tag)}</span>`);
+  if (p.cue) {
+    lines.push(
+      `        <span class="bento-cue" aria-hidden="true">${escapeText(p.cue)}${arrowFor(p.external)}</span>`,
+    );
+  }
+  lines.push('    </div>');
+  lines.push('</article>');
+  return lines;
+}
+
 export function renderProjects(projects, indent = '') {
-  return joinBlocks(
-    projects.map((p, n) => {
-      const classes = ['bento-tile', `bento-${p.id}`];
-      if (p.static) classes.push('bento-static');
-
-      const title = p.href
-        ? `<a href="${escapeText(p.href)}"${linkAttrs(p.external)}>${escapeText(p.title)}</a>`
-        : escapeText(p.title);
-
-      const lines = [
-        `<article class="${classes.join(' ')}">`,
-        `    <span class="bento-idx">${pad(n + 1)}</span>`,
-        `    <h3 class="bento-title">${title}</h3>`,
-        `    <p class="bento-desc">${p.desc}</p>`,
-      ];
-
-      if (p.spec) {
-        lines.push(...SPEC_COMMENT.map((l) => '    ' + l));
-        lines.push('    <dl class="bento-spec">');
-        for (const row of p.spec) {
-          lines.push('        <div>');
-          lines.push(`            <dt>${escapeText(row.term)}</dt>`);
-          lines.push(`            <dd>${row.detail}</dd>`);
-          lines.push('        </div>');
-        }
-        lines.push('    </dl>');
-      }
-
-      lines.push('    <div class="bento-foot">');
-      lines.push(`        <span class="bento-tag">${escapeText(p.tag)}</span>`);
-      if (p.cue) {
-        lines.push(
-          `        <span class="bento-cue" aria-hidden="true">${escapeText(p.cue)}${arrowFor(p.external)}</span>`,
-        );
-      }
-      lines.push('    </div>');
-      lines.push('</article>');
-      return lines;
-    }),
-    indent,
-  );
+  const blocks = [];
+  for (const g of PROJECT_GROUPS) {
+    const items = projects.filter((p) => (p.group ?? 'engineering') === g.key);
+    if (!items.length) continue;
+    const lines = [
+      `<section class="proj-group proj-${g.key}" aria-labelledby="proj-${g.key}-h">`,
+      '    <header class="proj-group-head">',
+      `        <h3 id="proj-${g.key}-h">${g.label}</h3>`,
+      `        <span class="proj-count">${pad(items.length)}</span>`,
+      '    </header>',
+      '    <div class="proj-track">',
+    ];
+    items.forEach((p, n) => {
+      lines.push('');
+      lines.push(...renderTile(p, n).map((l) => '        ' + l));
+    });
+    lines.push('    </div>');
+    lines.push('</section>');
+    blocks.push(lines);
+  }
+  return joinBlocks(blocks, indent);
 }
 
 export function renderWriting(writing, indent = '') {
@@ -278,6 +305,10 @@ function validateProject(p, path) {
   optString(p, 'cue', path);
   optBool(p, 'external', path);
   optBool(p, 'static', path);
+  optString(p, 'group', path);
+  if (p.group !== undefined && !PROJECT_GROUPS.some((g) => g.key === p.group)) {
+    fail(`${path}.group`, `must be one of ${PROJECT_GROUPS.map((g) => g.key).join(', ')}`);
+  }
   if (p.href !== undefined) {
     if (p.href.trim() === '') fail(`${path}.href`, 'must not be empty when present');
     reqString(p, 'cue', path);

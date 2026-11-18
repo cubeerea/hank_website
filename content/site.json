@@ -13,6 +13,7 @@
         { "term": "Caveat", "detail": "Both block all 104 GCG attacks, largely the model's existing alignment rather than the steering" }
       ],
       "tag": "Research · AI Safety",
+      "group": "research",
       "cue": "Read the paper"
     },
     {
@@ -22,6 +23,7 @@
       "external": true,
       "desc": "Won the Civic Engagement &amp; Policy track at UCSB's Data4Good hackathon.",
       "tag": "Hackathon",
+      "group": "engineering",
       "cue": "Devpost"
     },
     {
@@ -31,6 +33,7 @@
       "external": true,
       "desc": "Ranks all NBA contracts against performance and other metrics.",
       "tag": "Personal Project",
+      "group": "engineering",
       "cue": "Live",
       "source": { "github": "NBA-contract-analytics" }
     },
@@ -41,6 +44,7 @@
       "external": true,
       "desc": "Non-linear note-taking app that surfaces connections between notes and visualizes them as a knowledge graph.",
       "tag": "Personal Project",
+      "group": "engineering",
       "cue": "GitHub",
       "source": { "github": "zettel-ai" }
     },
@@ -51,14 +55,16 @@
       "external": true,
       "desc": "Six specialist agents plan, code, and review changes autonomously inside sandboxed, network-isolated containers.",
       "tag": "Personal Project",
+      "group": "engineering",
       "cue": "GitHub",
       "source": { "github": "xeno-cli" }
     },
     {
       "id": "topo",
       "title": "Exploring How LLMs Improve Graph Quality Using Topological Signatures",
-      "desc": "Authored work on node classification and graph unlearning. Pending IEEE BigData 2026.",
+      "desc": "Authored work on node classification and graph unlearning. Accepted to IEEE BigData 2026.",
       "tag": "Research · GNNs",
+      "group": "research",
       "static": true
     }
   ],
