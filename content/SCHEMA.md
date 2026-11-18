@@ -14,13 +14,13 @@
 The generated HTML is committed, so the site stays fully static and `check:facts` keeps reading `index.html`.
 
 String fields marked **html** may contain trusted inline HTML (`<strong>`, `&amp;`, `<em>`). Everything else is plain text and is escaped by the renderer.
-Display numbers (`01`, `02`, …) are derived from array order, never stored.
+Display numbers (`01`, `02`, …) are derived from array order within each project group, never stored.
 
 ```jsonc
 {
   "projects": [
     {
-      "id": "zet",                 // stable id; also the CSS suffix -> class "bento-zet" (grid-area for the first 6)
+      "id": "zet",                 // stable id; also the CSS suffix -> class "bento-zet"
       "title": "Zettel AI",
       "href": "https://github.com/cubeerea/zettel-ai",   // optional; omit => tile is static (no link)
       "external": true,            // true => target=_blank rel=noopener noreferrer
@@ -28,6 +28,7 @@ Display numbers (`01`, `02`, …) are derived from array order, never stored.
       "spec": [ { "term": "Model", "detail": "html" } ], // optional, only the anchor tile uses it today
       "tag": "Personal Project",
       "cue": "GitHub",             // optional footer cue text; renderer appends "&nbsp;↗" if external, "&nbsp;→" if not
+      "group": "engineering",      // optional; "engineering" (default) or "research" — which Projects block the tile sits in
       "static": false,             // optional; true adds class "bento-static"
       "source": { "github": "zettel-ai" }  // optional; repo name under cubeerea — how the manager matches repos to tiles
     }

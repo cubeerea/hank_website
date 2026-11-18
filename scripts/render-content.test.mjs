@@ -113,7 +113,7 @@ describe('renderProjects', () => {
     data.projects[1].static = true;
     const html = renderProjects(data.projects);
     assert.match(html, /<article class="bento-tile bento-b bento-static">/);
-    assert.match(html, /<h3 class="bento-title">Beta<\/h3>/);
+    assert.match(html, /<h4 class="bento-title">Beta<\/h4>/);
     assert.doesNotMatch(html.split('bento-b bento-static')[1], /bento-cue/);
   });
 
@@ -268,7 +268,7 @@ describe('renderIndex / drift', () => {
     const data = sample();
     const html = fixture(['projects', 'writing', 'stack', 'experience']);
     const out = renderIndex(html, data);
-    assert.match(out, /<!-- content:projects -->\n {8}<article class="bento-tile bento-a">/);
+    assert.match(out, /<!-- content:projects -->\n {8}<section class="proj-group proj-engineering"/);
     assert.match(out, /bento-tile bento-b">/);
     assert.match(out, /stack-num">01/);
     assert.match(out, /work-footnote/);
@@ -321,5 +321,21 @@ describe('CLI --check', () => {
     const r = spawnSync(process.execPath, [join(dir, 'scripts', 'render-content.mjs'), '--check'], { encoding: 'utf8' });
     assert.equal(r.status, 1);
     assert.match(r.stderr, /projects\[0\]\.tag: required/);
+  });
+});
+
+describe('project groups', () => {
+  test('engineering renders before research, each numbered from 01', () => {
+    const html = renderProjects([
+      { id: 'r', title: 'R', desc: 'd', tag: 'T', group: 'research' },
+      { id: 'e', title: 'E', desc: 'd', tag: 'T' },
+    ]);
+    assert.ok(html.indexOf('proj-engineering') < html.indexOf('proj-research'));
+    assert.equal((html.match(/bento-idx">01</g) || []).length, 2);
+  });
+
+  test('an empty group is not rendered', () => {
+    const html = renderProjects([{ id: 'e', title: 'E', desc: 'd', tag: 'T' }]);
+    assert.doesNotMatch(html, /proj-research/);
   });
 });

@@ -81,33 +81,17 @@
          chrome behind the content and nav. See initDotField() in main.ts. -->
     <canvas class="dot-field" aria-hidden="true"></canvas>
 
-    <!-- Nav -->
-    <nav class="nav" id="nav" aria-label="Main navigation">
-        <div class="nav-inner">
-            <a class="nav-mark" href="#top" aria-label="Hank Sha — home">
-                <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                    <text x="32" y="29" fill="currentColor"
-                        font-family="Geist Mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
-                        font-size="34" font-weight="600" letter-spacing="-1.5" text-anchor="middle"
-                        dominant-baseline="central">HS</text>
-                    <rect x="14" y="49" width="36" height="3" fill="currentColor" fill-opacity="0.5" />
-                </svg>
-            </a>
-            <ul class="nav-list">
-                <li class="nav-home"><a href="#top" class="nav-link">Home</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#writing" class="nav-link">Writing</a></li>
-                <li class="nav-stack"><a href="#stack" class="nav-link">Stack</a></li>
-                <li><a href="#work" class="nav-link">Work</a></li>
-                <li><a href="#personal" class="nav-link">About</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-                <!-- "Résumé", not "CV ↗": the Contact row and DESIGN.md both call it
-                     Résumé, and the ↗ is this site's mark for leaving it — /resume
-                     is the same tab. -->
-                <li><a href="/resume" class="nav-cta">Résumé</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Floating résumé button: the only chrome left after the nav was removed.
+         Fixed to the upper-right corner; the label slides out on hover/focus. -->
+    <a class="resume-fab" href="/resume" aria-label="Résumé">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none"
+            stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+            <path d="M14 3v5h5" />
+            <path d="M9 13h6M9 17h4" />
+        </svg>
+        <span class="resume-fab-label">Résumé</span>
+    </a>
 
     <main>
 
@@ -123,11 +107,11 @@
                  content so no-JS/reduced-motion still says something true. -->
             <p class="hero-eyebrow">
                 <span class="hero-eyebrow-dot" aria-hidden="true"></span>
-                <span class="hero-eyebrow-key">Open to</span>
-                <span class="typeline" aria-hidden="true"><span id="typewriter">Applied AI /
-                        FDE roles</span><span class="typeline-caret"></span></span><span class="sr-only">Open to
-                    Applied AI and forward-deployed engineering roles, Data Science/Analytics, Building agentic
-                    systems. </span>
+                <span class="hero-eyebrow-key">Seeking</span>
+                <span class="typeline" aria-hidden="true"><span id="typewriter">Deployment strategist / FDE</span><span
+                        class="typeline-caret"></span></span><span class="sr-only">Seeking deployment strategist
+                    or forward-deployed engineering, red teaming, evals, applied AI engineer, and research roles,
+                    and summer 2027 internships.</span>
             </p>
             <h1 class="hero-headline">Broad by instinct, <em>deep</em> by choice.</h1>
             <!-- Short accent rule between the headline and the intro. It is the only
@@ -150,7 +134,7 @@
             <dl class="spec">
                 <div>
                     <dt>Education</dt>
-                    <dd>UC Santa Barbara '26 — Stats &amp; DS</dd>
+                    <dd>Incoming M.S., Applied Data Intelligence — San José State<br>UC Santa Barbara '26 — Stats &amp; DS</dd>
                 </div>
                 <div>
                     <dt>Contact</dt>
@@ -191,7 +175,7 @@
                         </div>
                         <div>
                             <dt>Status</dt>
-                            <dd>Live, open to anyone</dd>
+                            <dd>Live, open to anyone · Revamp coming soon</dd>
                         </div>
                     </dl>
                 </div>
@@ -204,92 +188,110 @@
                 <div class="sec-head">
                     <h2 id="projects-h"><span aria-hidden="true">01</span>Projects</h2>
                 </div>
-                <div class="bento">
+                <div class="proj">
 
                     <!-- content:projects -->
-                    <article class="bento-tile bento-pid">
-                        <span class="bento-idx">01</span>
-                        <h3 class="bento-title"><a href="/pid-steering">Global PID Steering</a></h3>
-                        <p class="bento-desc">One averaged refusal vector beats per-layer PID at defending Gemma-2 without wrecking it on benign prompts.</p>
-                        <!-- The 2x2 tile's emphasis mechanism is area, so the area has to
-                             carry something. Every value here is lifted from the paper's
-                             own abstract — including the caveat, which is the row that
-                             makes the other three trustworthy. Verify against
-                             /assets/global-pid-steering.pdf before editing any number.
-                             An img with class "bento-art" above the dl takes the room
-                             instead, and the rows fall underneath it. -->
-                        <dl class="bento-spec">
-                            <div>
-                                <dt>Model</dt>
-                                <dd>Gemma-2-2B-it</dd>
-                            </div>
-                            <div>
-                                <dt>Method</dt>
-                                <dd>One averaged refusal vector, over a verified persistence window</dd>
-                            </div>
-                            <div>
-                                <dt>Benign refusals</dt>
-                                <dd>3.5% vs 96% for full-depth per-layer PID (1.5% unsteered)</dd>
-                            </div>
-                            <div>
-                                <dt>Caveat</dt>
-                                <dd>Both block all 104 GCG attacks, largely the model's existing alignment rather than the steering</dd>
-                            </div>
-                        </dl>
-                        <div class="bento-foot">
-                            <span class="bento-tag">Research · AI Safety</span>
-                            <span class="bento-cue" aria-hidden="true">Read the paper&nbsp;→</span>
-                        </div>
-                    </article>
+                    <section class="proj-group proj-engineering" aria-labelledby="proj-engineering-h">
+                        <header class="proj-group-head">
+                            <h3 id="proj-engineering-h">Engineering</h3>
+                            <span class="proj-count">04</span>
+                        </header>
+                        <div class="proj-track">
 
-                    <article class="bento-tile bento-d4g">
-                        <span class="bento-idx">02</span>
-                        <h3 class="bento-title"><a href="https://devpost.com/software/project-nexus" target="_blank" rel="noopener noreferrer">Data4Good Hackathon</a></h3>
-                        <p class="bento-desc">Won the Civic Engagement &amp; Policy track at UCSB's Data4Good hackathon.</p>
-                        <div class="bento-foot">
-                            <span class="bento-tag">Hackathon</span>
-                            <span class="bento-cue" aria-hidden="true">Devpost&nbsp;↗</span>
-                        </div>
-                    </article>
+                            <article class="bento-tile bento-d4g">
+                                <span class="bento-idx">01</span>
+                                <h4 class="bento-title"><a href="https://devpost.com/software/project-nexus" target="_blank" rel="noopener noreferrer">Data4Good Hackathon</a></h4>
+                                <p class="bento-desc">Won the Civic Engagement &amp; Policy track at UCSB's Data4Good hackathon.</p>
+                                <div class="bento-foot">
+                                    <span class="bento-tag">Hackathon</span>
+                                    <span class="bento-cue" aria-hidden="true">Devpost&nbsp;↗</span>
+                                </div>
+                            </article>
 
-                    <article class="bento-tile bento-nba">
-                        <span class="bento-idx">03</span>
-                        <h3 class="bento-title"><a href="https://nba-contract-analytics.vercel.app/" target="_blank" rel="noopener noreferrer">NBA Contract Value</a></h3>
-                        <p class="bento-desc">Ranks all NBA contracts against performance and other metrics.</p>
-                        <div class="bento-foot">
-                            <span class="bento-tag">Personal Project</span>
-                            <span class="bento-cue" aria-hidden="true">Live&nbsp;↗</span>
-                        </div>
-                    </article>
+                            <article class="bento-tile bento-nba">
+                                <span class="bento-idx">02</span>
+                                <h4 class="bento-title"><a href="https://nba-contract-analytics.vercel.app/" target="_blank" rel="noopener noreferrer">NBA Contract Value</a></h4>
+                                <p class="bento-desc">Ranks all NBA contracts against performance and other metrics.</p>
+                                <div class="bento-foot">
+                                    <span class="bento-tag">Personal Project</span>
+                                    <span class="bento-cue" aria-hidden="true">Live&nbsp;↗</span>
+                                </div>
+                            </article>
 
-                    <article class="bento-tile bento-zet">
-                        <span class="bento-idx">04</span>
-                        <h3 class="bento-title"><a href="https://github.com/cubeerea/zettel-ai" target="_blank" rel="noopener noreferrer">Zettel AI</a></h3>
-                        <p class="bento-desc">Non-linear note-taking app that surfaces connections between notes and visualizes them as a knowledge graph.</p>
-                        <div class="bento-foot">
-                            <span class="bento-tag">Personal Project</span>
-                            <span class="bento-cue" aria-hidden="true">GitHub&nbsp;↗</span>
-                        </div>
-                    </article>
+                            <article class="bento-tile bento-zet">
+                                <span class="bento-idx">03</span>
+                                <h4 class="bento-title"><a href="https://github.com/cubeerea/zettel-ai" target="_blank" rel="noopener noreferrer">Zettel AI</a></h4>
+                                <p class="bento-desc">Non-linear note-taking app that surfaces connections between notes and visualizes them as a knowledge graph.</p>
+                                <div class="bento-foot">
+                                    <span class="bento-tag">Personal Project</span>
+                                    <span class="bento-cue" aria-hidden="true">GitHub&nbsp;↗</span>
+                                </div>
+                            </article>
 
-                    <article class="bento-tile bento-xeno">
-                        <span class="bento-idx">05</span>
-                        <h3 class="bento-title"><a href="https://github.com/cubeerea/xeno-cli" target="_blank" rel="noopener noreferrer">Xeno CLI</a></h3>
-                        <p class="bento-desc">Six specialist agents plan, code, and review changes autonomously inside sandboxed, network-isolated containers.</p>
-                        <div class="bento-foot">
-                            <span class="bento-tag">Personal Project</span>
-                            <span class="bento-cue" aria-hidden="true">GitHub&nbsp;↗</span>
+                            <article class="bento-tile bento-xeno">
+                                <span class="bento-idx">04</span>
+                                <h4 class="bento-title"><a href="https://github.com/cubeerea/xeno-cli" target="_blank" rel="noopener noreferrer">Xeno CLI</a></h4>
+                                <p class="bento-desc">Six specialist agents plan, code, and review changes autonomously inside sandboxed, network-isolated containers.</p>
+                                <div class="bento-foot">
+                                    <span class="bento-tag">Personal Project</span>
+                                    <span class="bento-cue" aria-hidden="true">GitHub&nbsp;↗</span>
+                                </div>
+                            </article>
                         </div>
-                    </article>
+                    </section>
 
-                    <article class="bento-tile bento-topo bento-static">
-                        <span class="bento-idx">06</span>
-                        <h3 class="bento-title">Exploring How LLMs Improve Graph Quality Using Topological Signatures</h3>
-                        <p class="bento-desc">Authored work on node classification and graph unlearning. Pending IEEE BigData 2026.</p>
-                        <div class="bento-foot">
-                            <span class="bento-tag">Research · GNNs</span>
+                    <section class="proj-group proj-research" aria-labelledby="proj-research-h">
+                        <header class="proj-group-head">
+                            <h3 id="proj-research-h">Research</h3>
+                            <span class="proj-count">02</span>
+                        </header>
+                        <div class="proj-track">
+
+                            <article class="bento-tile bento-pid">
+                                <span class="bento-idx">01</span>
+                                <h4 class="bento-title"><a href="/pid-steering">Global PID Steering</a></h4>
+                                <p class="bento-desc">One averaged refusal vector beats per-layer PID at defending Gemma-2 without wrecking it on benign prompts.</p>
+                                <!-- The 2x2 tile's emphasis mechanism is area, so the area has to
+                                     carry something. Every value here is lifted from the paper's
+                                     own abstract — including the caveat, which is the row that
+                                     makes the other three trustworthy. Verify against
+                                     /assets/global-pid-steering.pdf before editing any number.
+                                     An img with class "bento-art" above the dl takes the room
+                                     instead, and the rows fall underneath it. -->
+                                <dl class="bento-spec">
+                                    <div>
+                                        <dt>Model</dt>
+                                        <dd>Gemma-2-2B-it</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Method</dt>
+                                        <dd>One averaged refusal vector, over a verified persistence window</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Benign refusals</dt>
+                                        <dd>3.5% vs 96% for full-depth per-layer PID (1.5% unsteered)</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Caveat</dt>
+                                        <dd>Both block all 104 GCG attacks, largely the model's existing alignment rather than the steering</dd>
+                                    </div>
+                                </dl>
+                                <div class="bento-foot">
+                                    <span class="bento-tag">Research · AI Safety</span>
+                                    <span class="bento-cue" aria-hidden="true">Read the paper&nbsp;→</span>
+                                </div>
+                            </article>
+
+                            <article class="bento-tile bento-topo bento-static">
+                                <span class="bento-idx">02</span>
+                                <h4 class="bento-title">Exploring How LLMs Improve Graph Quality Using Topological Signatures</h4>
+                                <p class="bento-desc">Authored work on node classification and graph unlearning. Accepted to IEEE BigData 2026.</p>
+                                <div class="bento-foot">
+                                    <span class="bento-tag">Research · GNNs</span>
+                                </div>
+                            </article>
                         </div>
-                    </article>
+                    </section>
                     <!-- /content:projects -->
 
                 </div>

@@ -89,11 +89,15 @@ function initTypewriter(): void {
   // Keep every phrase under ~26 characters: the eyebrow is one mono line at
   // 320px, and a phrase that wraps pushes the headline down a line-height each
   // time it comes round. ("Mechanistic interpretability" was exactly that.)
+  // phrases[0] must match the static text of #typewriter in index.html, since
+  // the loop starts by deleting what is already on screen.
   const phrases = [
-    'Applied AI',
-    'FDE roles',
-    'Building agentic systems',
-    'ML research',
+    'Deployment strategist / FDE',
+    'Red teaming roles',
+    'Evals roles',
+    'Applied AI engineer',
+    'Research roles',
+    'Summer 2027 internships',
   ];
 
   const TYPE_MS = 52;
@@ -228,7 +232,7 @@ function initMagneticButtons(): void {
   const MAX_OFFSET = 6;
   const STRENGTH = 0.35;
 
-  document.querySelectorAll<HTMLElement>('.spec .cta, .nav-cta').forEach((btn) => {
+  document.querySelectorAll<HTMLElement>('.spec .cta, .resume-fab').forEach((btn) => {
     btn.addEventListener('pointermove', (e: PointerEvent) => {
       const rect = btn.getBoundingClientRect();
       const relX = e.clientX - (rect.left + rect.width / 2);
@@ -242,74 +246,6 @@ function initMagneticButtons(): void {
       animate(btn, { transform: 'translate(0px, 0px)' }, { type: 'spring', stiffness: 300, damping: 20 });
     });
   });
-}
-
-// ========================================
-// Active Nav Link Tracking
-// ========================================
-
-/**
- * Highlights the section whose top edge is closest above the nav line.
- *
- * An IntersectionObserver can't do this reliably: with a fixed threshold, a
- * section taller than `viewport / threshold` never reaches the required ratio
- * and so never fires at all. #work can run past 3000px with a couple of rows
- * expanded. Measuring positions directly has no such failure.
- */
-function initNavTracking(): void {
-  const NAV_LINE = 72; // must match scroll-padding-top in style.css
-
-  const targets = Array.from(
-    document.querySelectorAll<HTMLAnchorElement>('.nav-link'),
-  )
-    .map((link) => {
-      const id = link.getAttribute('href')?.replace('#', '');
-      const el = id ? document.getElementById(id) : null;
-      return el ? { link, el } : null;
-    })
-    .filter((t): t is { link: HTMLAnchorElement; el: HTMLElement } => t !== null);
-
-  if (!targets.length) return;
-
-  let queued = false;
-
-  function update(): void {
-    queued = false;
-
-    let active = targets[0];
-
-    const atBottom =
-      window.innerHeight + window.scrollY >=
-      document.documentElement.scrollHeight - 2;
-
-    if (atBottom) {
-      // Trailing sections can be too short to ever cross the nav line.
-      active = targets[targets.length - 1];
-    } else {
-      let closest = -Infinity;
-      targets.forEach((t) => {
-        const offset = t.el.getBoundingClientRect().top - NAV_LINE;
-        if (offset <= 0 && offset > closest) {
-          closest = offset;
-          active = t;
-        }
-      });
-    }
-
-    targets.forEach(({ link }) => {
-      link.classList.toggle('is-active', link === active.link);
-    });
-  }
-
-  function schedule(): void {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(update);
-  }
-
-  window.addEventListener('scroll', schedule, { passive: true });
-  window.addEventListener('resize', schedule, { passive: true });
-  update();
 }
 
 // ========================================
@@ -610,7 +546,6 @@ function init(): void {
   initTypewriter();
   initScrollReveal();
   initMagneticButtons();
-  initNavTracking();
   initExperienceCards();
   initCopyEmail();
   initPortraitDeck();
